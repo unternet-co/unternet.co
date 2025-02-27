@@ -6,9 +6,16 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
 ---
 
 <main>
-  <img src="/assets/unternet-logo-light.png" class="hero-logo" />
+  <section class="hero-image">
+    <figure class="map-projection">
+      {% include "assets/map-projection.svg" %}
+    </figure>
+    <figure class="wordmark">
+      {% include "assets/unternet-wordmark.svg" %}
+    </figure>
+  </section>
   <p class="about">
-        We're working on a new, intelligent client for the web &mdash;<br /> and the open software ecosystem that will power it.
+    We're working on a new, <a href="#">intelligent client</a> for the web &mdash;<br /> and the open software ecosystem that will power it.
   </div>
   <ul class="links">
     <li>
@@ -18,5 +25,386 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
     <li>Jump in <a href="https://discord.gg/VsMuEKmqvt">Discord</a> to develop with us</li>
     <li>We're hiring! <a href="careers">Join our team</a></li>
     <li><a href="mailto:hello@unternet.co">Email us</a> if you want to chat</li>
-    </ul>
+  </ul>
+  
+  <!-- Background illustrations -->
+  <div class="background-illustrations">
+    <img src="/assets/illustrations/cup.png" alt="Coffee cup illustration" class="illustration cup-illustration">
+    <img src="/assets/illustrations/pencil.png" alt="Pencil illustration" class="illustration pencil-illustration">
+    <img src="/assets/illustrations/screwdriver.png" alt="Screwdriver illustration" class="illustration screwdriver-illustration">
+  </div>
 </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  // Function to create draggable windows
+  function createDraggableWindows() {
+    const container = document.querySelector('main');
+    const linksList = document.querySelector('.links');
+    const heroSection = document.querySelector('.hero-image');
+    const aboutSection = document.querySelector('.about');
+    
+    if (!linksList) return;
+    
+    // Get all list items
+    const listItems = linksList.querySelectorAll('li');
+    
+    // Create a container for the draggable windows
+    const windowsContainer = document.createElement('div');
+    windowsContainer.className = 'draggable-windows-container';
+    
+    // Insert the container after the about section
+    if (aboutSection) {
+      aboutSection.after(windowsContainer);
+    } else {
+      container.appendChild(windowsContainer);
+    }
+    
+    // Remove the original list
+    linksList.remove();
+    
+    // Create draggable windows for each list item
+    listItems.forEach((item, index) => {
+      // Create window container
+      const windowElement = document.createElement('div');
+      windowElement.className = 'draggable-window';
+      
+      // Create window header
+      const windowHeader = document.createElement('div');
+      windowHeader.className = 'window-header';
+      
+      // Add dots to header
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'header-dot';
+        windowHeader.appendChild(dot);
+      }
+      
+      // Create window content
+      const windowContent = document.createElement('div');
+      windowContent.className = 'window-content';
+      windowContent.innerHTML = item.innerHTML;
+      
+      // Append header and content to window
+      windowElement.appendChild(windowHeader);
+      windowElement.appendChild(windowContent);
+      
+      // Apply random horizontal offset, alternating direction based on index
+      applyRandomOffset(windowElement, index % 2 === 0);
+      
+      // Make the window draggable
+      makeDraggable(windowElement, windowsContainer);
+      
+      // Add to container
+      windowsContainer.appendChild(windowElement);
+    });
+  }
+  
+  // Function to apply random horizontal offset to a window
+  function applyRandomOffset(element, isPositive) {
+    // Get the container and its width
+    const container = element.parentElement || document.querySelector('.draggable-windows-container');
+    const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
+    const elementWidth = element.getBoundingClientRect().width || 250; // Default width if not yet rendered
+    
+    // Calculate maximum safe offset to keep element in view
+    // Leave at least 50px of the element visible
+    const maxOffset = Math.max(20, (containerWidth - elementWidth) / 2 - 100);
+    
+    // Generate a random offset between 20px and maxOffset
+    const randomOffset = Math.floor(Math.random() * (maxOffset - 20)) + 20;
+    
+    // Apply the offset as a transform, with direction based on isPositive
+    element.style.transform = `translateX(${isPositive ? randomOffset : -randomOffset}px)`;
+  }
+  
+  // Function to make an element draggable
+  function makeDraggable(element, container) {
+    // Find the header element
+    const header = element.querySelector('.window-header');
+    
+    if (!header) return;
+    
+    let isDragging = false;
+    let initialMouseX, initialMouseY;
+    let initialElementX, initialElementY;
+    
+    // Mouse down event on the header
+    header.addEventListener('mousedown', (e) => {
+      if (isDragging) return;
+      isDragging = true;
+      
+      // Store the initial mouse position
+      initialMouseX = e.clientX;
+      initialMouseY = e.clientY;
+      
+      // Get current position in the page
+      const rect = element.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      
+      // Convert to absolute positioning if not already
+      if (window.getComputedStyle(element).position !== 'absolute') {
+        // Create a placeholder to maintain the layout
+        const placeholder = document.createElement('div');
+        placeholder.className = 'window-placeholder';
+        placeholder.style.height = `${rect.height}px`;
+        placeholder.style.width = `${rect.width}px`;
+        placeholder.style.margin = window.getComputedStyle(element).margin;
+        placeholder.dataset.forWindow = element.id || `window-${Date.now()}`;
+        
+        // If element doesn't have an ID, assign one
+        if (!element.id) {
+          element.id = placeholder.dataset.forWindow;
+        }
+        
+        // Insert placeholder before removing element from flow
+        element.parentNode.insertBefore(placeholder, element);
+        
+        // Remove the transform that was adding the random offset
+        element.style.transform = '';
+        
+        // Set absolute position to match current visual position
+        element.style.position = 'absolute';
+        element.style.left = `${rect.left - containerRect.left}px`;
+        element.style.top = `${rect.top - containerRect.top}px`;
+        element.style.width = `${rect.width}px`;
+      }
+      
+      // Store the initial element position relative to the container
+      initialElementX = rect.left - containerRect.left;
+      initialElementY = rect.top - containerRect.top;
+      
+      // Add active class for styling
+      element.classList.add('dragging');
+      
+      // Bring the window to the front
+      bringToFront(element);
+      
+      // Prevent default behavior
+      e.preventDefault();
+      
+      // Mouse move event on the document
+      const mouseMoveHandler = (e) => {
+        if (!isDragging) return;
+        
+        // Calculate the mouse movement delta
+        const deltaX = e.clientX - initialMouseX;
+        const deltaY = e.clientY - initialMouseY;
+        
+        // Calculate new position
+        let newX = initialElementX + deltaX;
+        let newY = initialElementY + deltaY;
+        
+        // Get the container bounds
+        const containerRect = container.getBoundingClientRect();
+        
+        // Get the element dimensions
+        const elementRect = element.getBoundingClientRect();
+        const elementWidth = elementRect.width;
+        const elementHeight = elementRect.height;
+        
+        // Keep the element within the container bounds
+        newX = Math.max(0, Math.min(newX, containerRect.width - elementWidth));
+        newY = Math.max(0, Math.min(newY, containerRect.height - elementHeight));
+        
+        // Apply the position
+        element.style.left = `${newX}px`;
+        element.style.top = `${newY}px`;
+        
+        // Prevent default behavior
+        e.preventDefault();
+      };
+      
+      // Mouse up event on the document
+      const mouseUpHandler = () => {
+        isDragging = false;
+        element.classList.remove('dragging');
+        
+        // Remove the event listeners
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      };
+      
+      // Add the event listeners
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
+    });
+    
+    // Touch events for mobile support
+    header.addEventListener('touchstart', (e) => {
+      if (isDragging) return;
+      isDragging = true;
+      
+      // Store the initial touch position
+      const touch = e.touches[0];
+      initialMouseX = touch.clientX;
+      initialMouseY = touch.clientY;
+      
+      // Get current position in the page
+      const rect = element.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      
+      // Convert to absolute positioning if not already
+      if (window.getComputedStyle(element).position !== 'absolute') {
+        // Create a placeholder to maintain the layout
+        const placeholder = document.createElement('div');
+        placeholder.className = 'window-placeholder';
+        placeholder.style.height = `${rect.height}px`;
+        placeholder.style.width = `${rect.width}px`;
+        placeholder.style.margin = window.getComputedStyle(element).margin;
+        placeholder.dataset.forWindow = element.id || `window-${Date.now()}`;
+        
+        // If element doesn't have an ID, assign one
+        if (!element.id) {
+          element.id = placeholder.dataset.forWindow;
+        }
+        
+        // Insert placeholder before removing element from flow
+        element.parentNode.insertBefore(placeholder, element);
+        
+        // Remove the transform that was adding the random offset
+        element.style.transform = '';
+        
+        // Set absolute position to match current visual position
+        element.style.position = 'absolute';
+        element.style.left = `${rect.left - containerRect.left}px`;
+        element.style.top = `${rect.top - containerRect.top}px`;
+        element.style.width = `${rect.width}px`;
+      }
+      
+      // Store the initial element position relative to the container
+      initialElementX = rect.left - containerRect.left;
+      initialElementY = rect.top - containerRect.top;
+      
+      // Add active class for styling
+      element.classList.add('dragging');
+      
+      // Bring the window to the front
+      bringToFront(element);
+      
+      // Prevent default behavior
+      e.preventDefault();
+      
+      // Touch move event on the document
+      const moveHandler = (e) => {
+        // Calculate the touch movement delta
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - initialMouseX;
+        const deltaY = touch.clientY - initialMouseY;
+        
+        // Calculate new position
+        let newX = initialElementX + deltaX;
+        let newY = initialElementY + deltaY;
+        
+        // Get the container bounds
+        const containerRect = container.getBoundingClientRect();
+        
+        // Get the element dimensions
+        const elementRect = element.getBoundingClientRect();
+        const elementWidth = elementRect.width;
+        const elementHeight = elementRect.height;
+        
+        // Keep the element within the container bounds
+        newX = Math.max(0, Math.min(newX, containerRect.width - elementWidth));
+        newY = Math.max(0, Math.min(newY, containerRect.height - elementHeight));
+        
+        // Apply the position
+        element.style.left = `${newX}px`;
+        element.style.top = `${newY}px`;
+        
+        // Prevent default behavior (scrolling)
+        e.preventDefault();
+      };
+      
+      // Touch end event on the document
+      const endHandler = () => {
+        isDragging = false;
+        element.classList.remove('dragging');
+        
+        // Remove the event listeners
+        document.removeEventListener('touchmove', moveHandler);
+        document.removeEventListener('touchend', endHandler);
+      };
+      
+      // Add the event listeners
+      document.addEventListener('touchmove', moveHandler);
+      document.addEventListener('touchend', endHandler);
+    });
+  }
+  
+  // Function to bring a window to the front
+  function bringToFront(element) {
+    // Get all draggable windows
+    const windows = document.querySelectorAll('.draggable-window');
+    
+    // Find the highest z-index
+    let maxZ = 0;
+    windows.forEach(win => {
+      const zIndex = parseInt(window.getComputedStyle(win).zIndex) || 0;
+      maxZ = Math.max(maxZ, zIndex);
+    });
+    
+    // Set this window's z-index to be higher
+    element.style.zIndex = maxZ + 1;
+  }
+  
+  // Initialize draggable windows
+  createDraggableWindows();
+  
+  // Track window width for responsive adjustments
+  let lastWindowWidth = window.innerWidth;
+  
+  // Re-position windows when window is resized
+  window.addEventListener('resize', () => {
+    const windows = document.querySelectorAll('.draggable-window');
+    const container = document.querySelector('.draggable-windows-container');
+    
+    if (windows.length > 0 && container) {
+      const containerRect = container.getBoundingClientRect();
+      const currentWindowWidth = window.innerWidth;
+      
+      // Check if window width changed significantly (by more than 100px)
+      const widthChangedSignificantly = Math.abs(currentWindowWidth - lastWindowWidth) > 100;
+      
+      windows.forEach((windowElement, index) => {
+        // For absolutely positioned windows (that have been dragged)
+        if (window.getComputedStyle(windowElement).position === 'absolute') {
+          // Get the window's current position
+          const windowRect = windowElement.getBoundingClientRect();
+          
+          // Check if the window is outside the container bounds
+          // or if the viewport width changed significantly
+          if (windowRect.right > containerRect.right || 
+              windowRect.left < containerRect.left ||
+              widthChangedSignificantly) {
+            // Find the placeholder for this window
+            const placeholder = document.querySelector(`.window-placeholder[data-for-window="${windowElement.id}"]`);
+            
+            // Reset the window to its original flex position
+            windowElement.style.position = 'relative';
+            windowElement.style.left = '';
+            windowElement.style.top = '';
+            windowElement.style.width = '';
+            
+            // Apply a new random offset, alternating based on index
+            applyRandomOffset(windowElement, index % 2 === 0);
+            
+            // Remove the placeholder if it exists
+            if (placeholder) {
+              placeholder.parentNode.removeChild(placeholder);
+            }
+          }
+        } 
+        // For windows still in the flex layout
+        else if (widthChangedSignificantly) {
+          // Reapply random offset to ensure it's appropriate for the new viewport width
+          applyRandomOffset(windowElement, index % 2 === 0);
+        }
+      });
+      
+      // Update the last window width
+      lastWindowWidth = currentWindowWidth;
+    }
+  });
+});
+</script>

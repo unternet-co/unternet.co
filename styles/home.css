@@ -1,23 +1,184 @@
+:root {
+  --color-action: oklch(45.2% 0.313214 264.052); 
+  --color-highlight: oklch(93.59% 0.1528 101.65);
+  
+  --color-neutral-0: oklch(92.17% 0.0029 264.54);
+  --color-neutral-500: oklch(53.92% 0.0046 286.24);
+  --color-neutral-900: oklch(32.11% 0 0);
+}
+
+body {
+  color: var(--color-neutral-900);
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}
+
+footer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Courier New', Courier, monospace;
+  background: unset;
+  border: unset;
+  padding-left: 32px;
+  padding-top: 24px;
+  font-size: 14px;
+  color: var(--color-neutral-500);
+  font-weight: bold;
+}
+
+.about {
+  font-family: 'Times New Roman', serif;
+  font-size: 32px;
+}
+
+.main-header {
+  background: transparent;
+  border: unset;
+  font-family: Courier, monospace;
+}
+
+.main-header .logo-container {
+  opacity: 0;
+}
+
+.main-header li {
+  margin-left: 8px;
+}
+
+.main-header li + li::before {
+  content: '';
+  display: none;
+}
+
+.main-header a, .main-header a:not(.bare) {
+  font-size: 14px;
+  font-weight: normal;
+  color: var(--color-neutral-900);
+  text-decoration: none;
+  padding: 8px;
+}
+
+.main-header a:not(.bare):hover {
+  background-color: transparent;
+  color: var(--color-action);
+  text-decoration: underline;
+}
+
+.main-header .active a, .main-header .active a:hover {
+  background-color: var(--color-highlight);
+}
+
 main {
+  position: relative;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   padding: 20px;
   gap: 10px;
-  max-width: 600px;
   margin: 0 auto;
 }
 
-.hero-logo {
-  width: 250px;
+/* Draggable Windows Container */
+.draggable-windows-container {
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5vh;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+  margin-top: -5vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box;
 }
 
-.about {
-  font-size: 22px;
-  font-weight: 400;
+/* Draggable Windows Styles */
+.draggable-window {
+  position: relative;
+  background-color: white;
+  border: 1px solid var(--color-neutral-500);
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 250px;
+  max-width: 350px;
+  width: calc(100% - 40px); /* Responsive width with some margin */
+  z-index: 1;
+  cursor: default;
+  user-select: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.draggable-window.dragging {
+  position: absolute; /* Change to absolute when dragging */
+  opacity: 0.9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure it's on top when dragging */
+}
+
+.window-header {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: var(--color-neutral-0);
+  border-bottom: 1px solid var(--color-neutral-500);
+  cursor: move;
+  height: 20px;
+}
+
+.header-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-neutral-500);
+  margin-right: 5px;
+}
+
+.window-content {
+  padding: 10px 15px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  text-align: left;
+}
+
+.window-content a {
+  text-decoration: none;
+}
+
+a, a:not(.bare) {
+  font-weight: inherit;
+  color: var(--color-action);
+}
+
+a:hover, a:not(.bare):hover {
+  color: var(--color-action);
+  background-color: var(--color-highlight);
+}
+
+.hero-image {
+  margin-top: clamp(100px, 10vh, 150px);
+  position: relative;
+  width: 100vw;
+  max-width: 1000px;
+}
+
+.map-projection {
+  /* position: absolute;
+  top: 0;
+  left: 0; 
+  right: 0; */
+}
+
+.wordmark {
+  position: absolute;
+  top: 26%;
+  left: 0;
 }
 
 .links {
@@ -26,4 +187,62 @@ main {
   display: flex;
   flex-direction: column;
   font-size: 16px;
+}
+
+.unternet-wordmark-svg-root {
+  width: 100%;
+  height: auto;
+  
+  /* Base colors in OKLCH */
+  --bg-color: var(--color-neutral-900); 
+  --fg-color: var(--color-neutral-0); 
+  
+  /* Add transition for hover effect */
+  transition: transform 0.3s ease;
+}
+
+.unternet-wordmark-svg-bg:hover {
+  --bg-color: var(--color-action);
+}
+
+.unternet-wordmark-svg-bg:hover + .unternet-wordmark-svg-fg {
+  --fg-color: var(--color-highlight);
+}
+
+.unternet-wordmark-svg-bg,
+.unternet-wordmark-svg-fg {
+  transition: fill 0.3s ease;
+}
+
+.background-illustrations {
+  position: relative;
+  width: 100%;
+}
+
+.illustration {
+  mix-blend-mode: darken;
+  position: absolute;
+}
+
+.cup-illustration {
+  bottom: 0%;
+  left: 1%;
+}
+
+.pencil-illustration {
+  bottom: 200px;
+  right: -10%;
+}
+
+.screwdriver-illustration {
+  bottom: -200px;
+  left: 30%;
+}
+
+/* Placeholder for dragged windows */
+.window-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
 }
