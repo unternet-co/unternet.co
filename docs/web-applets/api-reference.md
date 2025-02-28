@@ -14,7 +14,7 @@ It is implemented by the `applets` object, which is either imported from the `@w
 ### AppletFactory.connect()
 
 ```js
-connect(window: Window): Promise<Applet>
+connect(window);
 ```
 
 Connects from a parent window to an applet that's running inside a child window (such as an iframe's `contentWindow` or a webview), and returns an Applet object representing the applet for the parent window.
@@ -29,12 +29,12 @@ Throws an `AppletConnectionError` if the connection times out before it can be e
 
 #### Return value
 
-A promise that resolves to a new instance of `Applet` that provides access to the applet's actions and data from the parent window.
+A `Promise` that resolves to a new instance of `Applet` that provides access to the applet's actions and data from the parent window.
 
 ### AppletFactory.register()
 
 ```js
-register(): AppletScope
+register();
 ```
 
 Creates and returns a new AppletScope object within the child window, which represents the applet implementation and lets the host (parent window) know it's ready for connection.
@@ -64,6 +64,38 @@ Creates a new `Applet` instance that communicates with the specified child windo
 `targetWindow`
 
 A `Window` object where the applet is implemented (typically an iframe's content window).
+
+## Instance methods
+
+### Applet.sendAction()
+
+```js
+async sendAction(actionId, args)
+```
+
+Sends an action to the applet for execution.
+
+#### Parameters
+
+`actionId`
+
+A `string` representing the identifier of the action to execute.
+
+`args`
+
+An `object` containing the arguments to pass to the action, or `undefined` if the action takes no arguments. This should fulfill the `params_schema` declared for the given action.
+
+#### Return value
+
+A `Promise` that resolves when the action has been sent to the applet.
+
+#### Example
+
+```js
+applet.sendAction('search', {
+  query: 'cafes in my neighbourhood',
+});
+```
 
 ## Instance properties
 
@@ -95,41 +127,41 @@ A `Window` object.
 
 ### Applet.manifest
 
-Contains the parsed contents of the applet's manifest, which defines its capabilities, actions, and properties.
+Contains the parsed contents of the applet's manifest, as declared by the `<link rel="manifest" href="...">` tag in the child window. Declares the initial set of actions for the applet, and contains properties like descrition, name, etc.
 
 #### Value
 
-A `WebApplicationManifest` declared by the `<link rel="manifest" href="...">` tag in the child window.
+A read-only JSON object containing the web app manifest. If no manifest link is present, this will be an empty object.
 
 ### Applet.actions
 
-```js
-readonly actions: AppletActionMap
-```
+A map of available actions that can be invoked on the applet.
 
-A map of available actions that can be invoked on the applet. Unlike the manifest `actions` key, this will update dynamically if the child applet defines new actions in code.
+#### Value
+
+An `AppletActionMap` object.
 
 ### Applet.width
 
-```js
-readonly width: number
-```
-
 The current width of the applet in pixels.
+
+#### Value
+
+A `number`.
 
 ### Applet.height
 
-```js
-readonly height: number
-```
-
 The current height of the applet in pixels.
+
+#### Value
+
+A `number`.
 
 ## Events
 
 ### connect
 
-An event of type `AppletEvent`, which is dispatched when the connection with the applet is established successfully.
+An `AppletEvent`, which is dispatched when the connection with the applet is established successfully.
 
 #### Properties
 
@@ -145,7 +177,7 @@ applet.addEventListener('connect', (event) => {
 
 ### actions
 
-An event of type `AppletEvent`, which is dispatched when the available actions of the applet change. This typically happens after initial connection or when the applet implementation adds or removes actions.
+An `AppletEvent`, which is dispatched when the available actions of the applet change. This typically happens after initial connection or when the applet implementation adds or removes actions.
 
 #### Event properties
 
@@ -163,36 +195,23 @@ applet.addEventListener('actions', (event) => {
 
 ### 'data'
 
-Fired when the applet's data changes. This occurs when the applet implementation updates its internal state.
+An `AppletEvent`, which is fired when the applet's data changes. This occurs when the applet implementation updates its internal state.
 
-**Properties:**
+#### Event properties
 
-- `event.data`: any - The updated data object
+`event.data`
 
-````js
+The data object, which can be any JSON-serializable value.
+
+#### Example
+
+```js
 applet.addEventListener('data', (event) => {
   console.log('Applet data updated:', event.data);
 });
 ```
 
-### Applet.sendAction()
-
-```js
-async sendAction(actionId: string, args: any): Promise<void>
-````
-
-Sends an action to the applet for execution.
-
-#### Parameters
-
-- `actionId`: The identifier of the action to execute
-- `args`: Arguments to pass to the action
-
-#### Return value
-
-A promise that resolves when the action has been sent to the applet.
-
-## Usage Example
+## Usage example
 
 The following example demonstrates how to connect to a maps applet, listen for events, and send an action:
 
@@ -209,9 +228,6 @@ iframe.onload = async () => {
   // Listen for data changes
   applet.addEventListener('data', (event) => console.log(event.data));
 
-  // When connected, send an action
-  applet.addEventListener('connect', () => {
-    applet.sendAction('hello', { name: 'Web Applets!' });
-  });
-};
+  // Send an action
+  applet.sendAction('search', { q: 'san francisco' });
 ```
