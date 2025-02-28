@@ -128,19 +128,36 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
     let isDragging = false;
     let initialMouseX, initialMouseY;
     let initialElementX, initialElementY;
+    let initialScrollX, initialScrollY;
+    
+    // For momentum tracking
+    let lastMouseX, lastMouseY;
+    let lastMouseTime;
+    let velocityX = 0, velocityY = 0;
+    let momentumAnimationId = null;
     
     // Mouse down event on the header
     header.addEventListener('mousedown', (e) => {
       if (isDragging) return;
       isDragging = true;
       
+      // Cancel any ongoing momentum animation
+      if (momentumAnimationId !== null) {
+        cancelAnimationFrame(momentumAnimationId);
+        momentumAnimationId = null;
+      }
+      
       // Store the initial mouse position
-      initialMouseX = e.clientX;
-      initialMouseY = e.clientY;
+      initialMouseX = lastMouseX = e.clientX;
+      initialMouseY = lastMouseY = e.clientY;
+      lastMouseTime = Date.now();
+      
+      // Store initial scroll position
+      initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      initialScrollY = window.pageYOffset || document.documentElement.scrollTop;
       
       // Get current position in the page
       const rect = element.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
       
       // Convert to absolute positioning if not already
       if (window.getComputedStyle(element).position !== 'absolute') {
@@ -165,14 +182,17 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         
         // Set absolute position to match current visual position
         element.style.position = 'absolute';
-        element.style.left = `${rect.left - containerRect.left}px`;
-        element.style.top = `${rect.top - containerRect.top}px`;
+        element.style.left = `${rect.left + initialScrollX}px`;
+        element.style.top = `${rect.top + initialScrollY}px`;
         element.style.width = `${rect.width}px`;
+        
+        // Move to body to ensure it can be dragged across the document
+        document.body.appendChild(element);
       }
       
-      // Store the initial element position relative to the container
-      initialElementX = rect.left - containerRect.left;
-      initialElementY = rect.top - containerRect.top;
+      // Store the initial element position relative to the document
+      initialElementX = rect.left + initialScrollX;
+      initialElementY = rect.top + initialScrollY;
       
       // Add active class for styling
       element.classList.add('dragging');
@@ -187,29 +207,36 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       const mouseMoveHandler = (e) => {
         if (!isDragging) return;
         
-        // Calculate the mouse movement delta
-        const deltaX = e.clientX - initialMouseX;
-        const deltaY = e.clientY - initialMouseY;
+        // Get current scroll position
+        const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Calculate the mouse movement delta, accounting for scroll
+        const deltaX = (e.clientX + currentScrollX) - (initialMouseX + initialScrollX);
+        const deltaY = (e.clientY + currentScrollY) - (initialMouseY + initialScrollY);
         
         // Calculate new position
         let newX = initialElementX + deltaX;
         let newY = initialElementY + deltaY;
         
-        // Get the container bounds
-        const containerRect = container.getBoundingClientRect();
-        
-        // Get the element dimensions
-        const elementRect = element.getBoundingClientRect();
-        const elementWidth = elementRect.width;
-        const elementHeight = elementRect.height;
-        
-        // Keep the element within the container bounds
-        newX = Math.max(0, Math.min(newX, containerRect.width - elementWidth));
-        newY = Math.max(0, Math.min(newY, containerRect.height - elementHeight));
-        
         // Apply the position
         element.style.left = `${newX}px`;
         element.style.top = `${newY}px`;
+        
+        // Track velocity for momentum
+        const now = Date.now();
+        const timeDelta = now - lastMouseTime;
+        
+        if (timeDelta > 0) {
+          // Calculate velocity in pixels per millisecond, accounting for scroll
+          velocityX = ((e.clientX + currentScrollX) - (lastMouseX + (window.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
+          velocityY = ((e.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
+          
+          // Update last position and time
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+          lastMouseTime = now;
+        }
         
         // Prevent default behavior
         e.preventDefault();
@@ -219,6 +246,14 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       const mouseUpHandler = () => {
         isDragging = false;
         element.classList.remove('dragging');
+        
+        // Apply momentum if velocity is significant
+        const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+        
+        if (speed > 0.05) {
+          // Apply momentum with decay
+          applyMomentum(element, velocityX, velocityY);
+        }
         
         // Remove the event listeners
         document.removeEventListener('mousemove', mouseMoveHandler);
@@ -235,14 +270,24 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       if (isDragging) return;
       isDragging = true;
       
+      // Cancel any ongoing momentum animation
+      if (momentumAnimationId !== null) {
+        cancelAnimationFrame(momentumAnimationId);
+        momentumAnimationId = null;
+      }
+      
       // Store the initial touch position
       const touch = e.touches[0];
-      initialMouseX = touch.clientX;
-      initialMouseY = touch.clientY;
+      initialMouseX = lastMouseX = touch.clientX;
+      initialMouseY = lastMouseY = touch.clientY;
+      lastMouseTime = Date.now();
+      
+      // Store initial scroll position
+      initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      initialScrollY = window.pageYOffset || document.documentElement.scrollTop;
       
       // Get current position in the page
       const rect = element.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
       
       // Convert to absolute positioning if not already
       if (window.getComputedStyle(element).position !== 'absolute') {
@@ -267,14 +312,17 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         
         // Set absolute position to match current visual position
         element.style.position = 'absolute';
-        element.style.left = `${rect.left - containerRect.left}px`;
-        element.style.top = `${rect.top - containerRect.top}px`;
+        element.style.left = `${rect.left + initialScrollX}px`;
+        element.style.top = `${rect.top + initialScrollY}px`;
         element.style.width = `${rect.width}px`;
+        
+        // Move to body to ensure it can be dragged across the document
+        document.body.appendChild(element);
       }
       
-      // Store the initial element position relative to the container
-      initialElementX = rect.left - containerRect.left;
-      initialElementY = rect.top - containerRect.top;
+      // Store the initial element position relative to the document
+      initialElementX = rect.left + initialScrollX;
+      initialElementY = rect.top + initialScrollY;
       
       // Add active class for styling
       element.classList.add('dragging');
@@ -287,30 +335,37 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       
       // Touch move event on the document
       const moveHandler = (e) => {
-        // Calculate the touch movement delta
+        // Get current scroll position
+        const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Calculate the touch movement delta, accounting for scroll
         const touch = e.touches[0];
-        const deltaX = touch.clientX - initialMouseX;
-        const deltaY = touch.clientY - initialMouseY;
+        const deltaX = (touch.clientX + currentScrollX) - (initialMouseX + initialScrollX);
+        const deltaY = (touch.clientY + currentScrollY) - (initialMouseY + initialScrollY);
         
         // Calculate new position
         let newX = initialElementX + deltaX;
         let newY = initialElementY + deltaY;
         
-        // Get the container bounds
-        const containerRect = container.getBoundingClientRect();
-        
-        // Get the element dimensions
-        const elementRect = element.getBoundingClientRect();
-        const elementWidth = elementRect.width;
-        const elementHeight = elementRect.height;
-        
-        // Keep the element within the container bounds
-        newX = Math.max(0, Math.min(newX, containerRect.width - elementWidth));
-        newY = Math.max(0, Math.min(newY, containerRect.height - elementHeight));
-        
         // Apply the position
         element.style.left = `${newX}px`;
         element.style.top = `${newY}px`;
+        
+        // Track velocity for momentum
+        const now = Date.now();
+        const timeDelta = now - lastMouseTime;
+        
+        if (timeDelta > 0) {
+          // Calculate velocity in pixels per millisecond, accounting for scroll
+          velocityX = ((touch.clientX + currentScrollX) - (lastMouseX + (window.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
+          velocityY = ((touch.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
+          
+          // Update last position and time
+          lastMouseX = touch.clientX;
+          lastMouseY = touch.clientY;
+          lastMouseTime = now;
+        }
         
         // Prevent default behavior (scrolling)
         e.preventDefault();
@@ -321,6 +376,14 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         isDragging = false;
         element.classList.remove('dragging');
         
+        // Apply momentum if velocity is significant
+        const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+        
+        if (speed > 0.05) {
+          // Apply momentum with decay
+          applyMomentum(element, velocityX, velocityY);
+        }
+        
         // Remove the event listeners
         document.removeEventListener('touchmove', moveHandler);
         document.removeEventListener('touchend', endHandler);
@@ -330,6 +393,93 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       document.addEventListener('touchmove', moveHandler);
       document.addEventListener('touchend', endHandler);
     });
+    
+    // Function to apply momentum with decay
+    function applyMomentum(element, initialVelocityX, initialVelocityY) {
+      // Current velocity
+      let currentVelocityX = initialVelocityX * 15; // Scale up for more noticeable effect
+      let currentVelocityY = initialVelocityY * 15;
+      
+      // Friction factor (0-1, lower = more friction)
+      const friction = 0.95;
+      
+      // Minimum velocity to continue animation
+      const minVelocity = 0.1;
+      
+      // Current position
+      const rect = element.getBoundingClientRect();
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      let currentX = rect.left + scrollX;
+      let currentY = rect.top + scrollY;
+      
+      // Animation function
+      function animateMomentum() {
+        // Get current scroll position for each frame
+        const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Apply velocity to position
+        currentX += currentVelocityX;
+        currentY += currentVelocityY;
+        
+        // Apply friction
+        currentVelocityX *= friction;
+        currentVelocityY *= friction;
+        
+        // Get viewport dimensions
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Get element dimensions
+        const elementWidth = element.offsetWidth;
+        const elementHeight = element.offsetHeight;
+        
+        // Check for boundary collisions with viewport, but in document coordinates
+        // Convert viewport boundaries to document coordinates
+        const viewportLeftDoc = currentScrollX;
+        const viewportTopDoc = currentScrollY;
+        const viewportRightDoc = currentScrollX + viewportWidth;
+        const viewportBottomDoc = currentScrollY + viewportHeight;
+        
+        // Constrain to viewport boundaries (in document coordinates)
+        if (currentX < viewportLeftDoc) {
+          currentX = viewportLeftDoc;
+          currentVelocityX = -currentVelocityX * 0.5; // Bounce with energy loss
+        } else if (currentX + elementWidth > viewportRightDoc) {
+          currentX = viewportRightDoc - elementWidth;
+          currentVelocityX = -currentVelocityX * 0.5; // Bounce with energy loss
+        }
+        
+        if (currentY < viewportTopDoc) {
+          currentY = viewportTopDoc;
+          currentVelocityY = -currentVelocityY * 0.5; // Bounce with energy loss
+        } else if (currentY + elementHeight > viewportBottomDoc) {
+          currentY = viewportBottomDoc - elementHeight;
+          currentVelocityY = -currentVelocityY * 0.5; // Bounce with energy loss
+        }
+        
+        // Apply the position (in document coordinates)
+        element.style.left = `${currentX}px`;
+        element.style.top = `${currentY}px`;
+        
+        // Calculate current speed
+        const speed = Math.sqrt(
+          currentVelocityX * currentVelocityX + 
+          currentVelocityY * currentVelocityY
+        );
+        
+        // Continue animation if speed is above threshold
+        if (speed > minVelocity) {
+          momentumAnimationId = requestAnimationFrame(animateMomentum);
+        } else {
+          momentumAnimationId = null;
+        }
+      }
+      
+      // Start animation
+      momentumAnimationId = requestAnimationFrame(animateMomentum);
+    }
   }
   
   // Function to bring a window to the front
