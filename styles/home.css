@@ -2,12 +2,20 @@
   --color-action: oklch(45.2% 0.313214 264.052); 
   --color-highlight: oklch(93.59% 0.1528 101.65);
   
-  --color-neutral-0: oklch(92.17% 0.0029 264.54);
+  --color-neutral-0: oklch(99.39% 0.002854 264.5422);
+  --color-neutral-50: oklch(95.79% 0.0029 264.54);
+  --color-neutral-100: oklch(92.17% 0.0029 264.54);
+  --color-neutral-300: oklch(77.32% 0.0044 271.36);
+  --color-neutral-400: oklch(92.17% 0.0029 264.54);
   --color-neutral-500: oklch(53.92% 0.0046 286.24);
+  --color-neutral-600: oklch(92.17% 0.0029 264.54);
+  --color-neutral-700: oklch(92.17% 0.0029 264.54);
+  --color-neutral-800: oklch(92.17% 0.0029 264.54);
   --color-neutral-900: oklch(32.11% 0 0);
 }
 
 body {
+  background-color: var(--color-neutral-100);
   color: var(--color-neutral-900);
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
@@ -102,10 +110,10 @@ main {
 /* Draggable Windows Styles */
 .draggable-window {
   position: relative;
-  background-color: white;
-  border: 1px solid var(--color-neutral-500);
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-neutral-50);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px color-mix(in oklch, var(--color-neutral-900) 10%, transparent);
   overflow: hidden;
   min-width: 250px;
   max-width: 350px;
@@ -118,19 +126,26 @@ main {
 
 .draggable-window.dragging {
   position: absolute; /* Change to absolute when dragging */
-  opacity: 0.9;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 18px color-mix(in oklch, var(--color-neutral-900) 15%, transparent);
   z-index: 10; /* Ensure it's on top when dragging */
+  border: 1px solid var(--color-action);
 }
 
 .window-header {
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  background-color: var(--color-neutral-0);
-  border-bottom: 1px solid var(--color-neutral-500);
   cursor: move;
   height: 20px;
+}
+
+.window-header:before {
+  content: '⠿';
+  font-size: 20px;
+  transform: rotate(90deg);
+  position: relative;
+  left: -8px;
+  top: -2px;
 }
 
 .header-dot {
@@ -143,13 +158,11 @@ main {
 
 .window-content {
   padding: 10px 15px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 14px;
+  font-size: 20px;
   text-align: left;
-}
-
-.window-content a {
-  text-decoration: none;
+  border-radius: 4px;
+  background-color: var(--color-neutral-0);
+  border: 1px solid var(--color-neutral-300);
 }
 
 a, a:not(.bare) {
@@ -197,7 +210,7 @@ a:hover, a:not(.bare):hover {
   height: auto;
   
   /* Base colors in OKLCH */
-  --bg-color: var(--color-neutral-0); 
+  --bg-color: var(--color-neutral-100); 
   --text-color: var(--color-neutral-900);
   --stroke-color: var(--color-neutral-900); 
   
