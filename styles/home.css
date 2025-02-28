@@ -241,6 +241,7 @@ a:hover, a:not(.bare):hover {
 }
 
 .illustration {
+  pointer-events: none;
   mix-blend-mode: darken;
   position: absolute;
 }
