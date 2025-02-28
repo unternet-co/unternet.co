@@ -104,39 +104,29 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
           
           if (svgDoc) {
             // Find the background element for this part
-            const bgElement = svgDoc.querySelector(`.unternet-wordmark-svg-bg.phoneme-${part}`);
+            const syllableElement = svgDoc.querySelector(`.unternet-wordmark-svg-syllable.syllable-${part}`);
             
-            if (bgElement) {
+            if (syllableElement) {
               // Apply the hover effect
-              bgElement.style.fill = 'var(--color-action)';
-              
-              // Find the foreground element that follows the background
-              const fgElement = bgElement.nextElementSibling;
-              if (fgElement && fgElement.classList.contains('unternet-wordmark-svg-fg')) {
-                fgElement.style.fill = 'var(--color-highlight)';
-              }
+              syllableElement.classList.add('speaking');
               
               // Remove the hover effect after the utterance is done
               utterance.onend = () => {
-                // Reset styles
-                bgElement.style.fill = '';
-                if (fgElement && fgElement.classList.contains('unternet-wordmark-svg-fg')) {
-                  fgElement.style.fill = '';
-                }
+                syllableElement.classList.remove('speaking');
                 
                 // Speak the next part after a small delay
-                setTimeout(() => speakPart(index + 1), 200);
+                setTimeout(() => speakPart(index + 1), 100);
               };
             } else {
               console.log(`SVG element for '${part}' not found`);
               utterance.onend = () => {
-                setTimeout(() => speakPart(index + 1), 200);
+                setTimeout(() => speakPart(index + 1), 100);
               };
             }
           } else {
             console.log('SVG document not found');
             utterance.onend = () => {
-              setTimeout(() => speakPart(index + 1), 200);
+              setTimeout(() => speakPart(index + 1), 100);
             };
           }
           
