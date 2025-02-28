@@ -169,6 +169,11 @@ a:hover, a:not(.bare):hover {
 }
 
 .map-projection {
+  mix-blend-mode: darken;
+  transform: scale(0.98);
+  position: relative;
+  left: -1%;
+  top: -4%;
   /* position: absolute;
   top: 0;
   left: 0; 
@@ -178,7 +183,7 @@ a:hover, a:not(.bare):hover {
 .wordmark {
   position: absolute;
   top: 26%;
-  left: 0;
+  left: 3%;
 }
 
 .links {
