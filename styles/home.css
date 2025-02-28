@@ -170,18 +170,18 @@ a:hover, a:not(.bare):hover {
 }
 
 .map-projection {
-  margin: 0;
-  mix-blend-mode: darken;
-  transform: scale(0.98);
-  position: relative;
-  top: -4%;
+  /* position: absolute;
+  top: 0;
+  left: 0; 
+  right: 0; */
+  margin-bottom: 10vh;
 }
 
 .wordmark {
   margin: 0;
   width: 100%;
   position: absolute;
-  top: 26%;
+  top: 24%;
 }
 
 .links {
