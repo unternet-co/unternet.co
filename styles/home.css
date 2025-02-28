@@ -29,6 +29,7 @@ footer {
 .about {
   font-family: 'Times New Roman', serif;
   font-size: 32px;
+  margin-top: -32px;
 }
 
 .main-header {
