@@ -100,6 +100,43 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
     });
   }
   
+  // Global registry to track all draggable windows and their momentum
+  const windowRegistry = {
+    windows: [],
+    register: function(element, momentumData) {
+      // Check if already registered
+      const existing = this.windows.find(w => w.element === element);
+      if (existing) {
+        // Update momentum data if provided
+        if (momentumData) {
+          existing.momentumData = momentumData;
+        }
+        return existing;
+      }
+      
+      // Add new window
+      const windowData = {
+        element: element,
+        momentumData: momentumData || {
+          velocityX: 0,
+          velocityY: 0,
+          animationId: null
+        }
+      };
+      this.windows.push(windowData);
+      return windowData;
+    },
+    unregister: function(element) {
+      this.windows = this.windows.filter(w => w.element !== element);
+    },
+    getWindowData: function(element) {
+      return this.windows.find(w => w.element === element);
+    },
+    getAllWindows: function() {
+      return this.windows;
+    }
+  };
+
   // Function to apply random horizontal offset to a window
   function applyRandomOffset(element, isPositive) {
     // Get the container and its width
@@ -396,15 +433,25 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
     
     // Function to apply momentum with decay
     function applyMomentum(element, initialVelocityX, initialVelocityY) {
+      // PARAMETER: Initial velocity multiplier - higher values create more dramatic movements
+      const velocityMultiplier = 5; // Adjust this to control the overall speed/momentum
+      
       // Current velocity
-      let currentVelocityX = initialVelocityX * 15; // Scale up for more noticeable effect
-      let currentVelocityY = initialVelocityY * 15;
+      let currentVelocityX = initialVelocityX * velocityMultiplier;
+      let currentVelocityY = initialVelocityY * velocityMultiplier;
       
-      // Friction factor (0-1, lower = more friction)
-      const friction = 0.95;
+      // Register or update this window in the registry
+      const windowData = windowRegistry.register(element, {
+        velocityX: currentVelocityX,
+        velocityY: currentVelocityY,
+        animationId: null
+      });
       
-      // Minimum velocity to continue animation
-      const minVelocity = 0.1;
+      // PARAMETER: Friction factor (0-1) - lower values create more friction/faster slowdown
+      const friction = 0.95; // Adjust between 0.9 (more friction) and 0.99 (less friction)
+      
+      // PARAMETER: Minimum velocity threshold to continue animation
+      const minVelocity = 0.1; // Adjust to control when windows stop moving
       
       // Current position
       const rect = element.getBoundingClientRect();
@@ -413,8 +460,22 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       let currentX = rect.left + scrollX;
       let currentY = rect.top + scrollY;
       
+      // PARAMETER: Mass calculation - affects how windows interact during collisions
+      const massMultiplier = 0; // Adjust to change the effect of window size on mass
+      const mass = (element.offsetWidth * element.offsetHeight) * massMultiplier || 1;
+      windowData.mass = mass;
+      
+      // Friction factor (0-1, lower = more friction)
+      const frictionFactor = 0.95;
+      
+      // Minimum velocity to continue animation
+      const minVelocityThreshold = 0.1;
+      
       // Animation function
       function animateMomentum() {
+
+        const wallSpringiness = 0.3;
+
         // Get current scroll position for each frame
         const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
         const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -426,6 +487,10 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         // Apply friction
         currentVelocityX *= friction;
         currentVelocityY *= friction;
+        
+        // Update velocity in registry
+        windowData.momentumData.velocityX = currentVelocityX;
+        windowData.momentumData.velocityY = currentVelocityY;
         
         // Get viewport dimensions
         const viewportWidth = window.innerWidth;
@@ -445,18 +510,155 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         // Constrain to viewport boundaries (in document coordinates)
         if (currentX < viewportLeftDoc) {
           currentX = viewportLeftDoc;
-          currentVelocityX = -currentVelocityX * 0.5; // Bounce with energy loss
+          currentVelocityX = -currentVelocityX * wallSpringiness; // Bounce with energy loss
+          windowData.momentumData.velocityX = currentVelocityX;
         } else if (currentX + elementWidth > viewportRightDoc) {
           currentX = viewportRightDoc - elementWidth;
-          currentVelocityX = -currentVelocityX * 0.5; // Bounce with energy loss
+          currentVelocityX = -currentVelocityX * wallSpringiness; // Bounce with energy loss
+          windowData.momentumData.velocityX = currentVelocityX;
         }
         
         if (currentY < viewportTopDoc) {
           currentY = viewportTopDoc;
-          currentVelocityY = -currentVelocityY * 0.5; // Bounce with energy loss
+          currentVelocityY = -currentVelocityY * wallSpringiness; // Bounce with energy loss
+          windowData.momentumData.velocityY = currentVelocityY;
         } else if (currentY + elementHeight > viewportBottomDoc) {
           currentY = viewportBottomDoc - elementHeight;
-          currentVelocityY = -currentVelocityY * 0.5; // Bounce with energy loss
+          currentVelocityY = -currentVelocityY * wallSpringiness; // Bounce with energy loss
+          windowData.momentumData.velocityY = currentVelocityY;
+        }
+        
+        // Check for collisions with other windows
+        const thisRect = {
+          left: currentX,
+          top: currentY,
+          right: currentX + elementWidth,
+          bottom: currentY + elementHeight,
+          width: elementWidth,
+          height: elementHeight
+        };
+        
+        // Get all other windows
+        const otherWindows = windowRegistry.getAllWindows().filter(w => w.element !== element);
+        
+        for (const otherWindow of otherWindows) {
+          const otherElement = otherWindow.element;
+          const otherRect = otherElement.getBoundingClientRect();
+          
+          // Convert other window's viewport coordinates to document coordinates
+          const otherDocRect = {
+            left: otherRect.left + currentScrollX,
+            top: otherRect.top + currentScrollY,
+            right: otherRect.right + currentScrollX,
+            bottom: otherRect.bottom + currentScrollY,
+            width: otherRect.width,
+            height: otherRect.height
+          };
+          
+          // Check if collision occurred
+          if (
+            thisRect.left < otherDocRect.right &&
+            thisRect.right > otherDocRect.left &&
+            thisRect.top < otherDocRect.bottom &&
+            thisRect.bottom > otherDocRect.top
+          ) {
+            // Collision detected!
+            
+            // Calculate collision normal (direction from this window to other window)
+            const thisCenter = {
+              x: thisRect.left + thisRect.width / 2,
+              y: thisRect.top + thisRect.height / 2
+            };
+            
+            const otherCenter = {
+              x: otherDocRect.left + otherDocRect.width / 2,
+              y: otherDocRect.top + otherDocRect.height / 2
+            };
+            
+            const collisionNormal = {
+              x: otherCenter.x - thisCenter.x,
+              y: otherCenter.y - thisCenter.y
+            };
+            
+            // Normalize the collision normal
+            const magnitude = Math.sqrt(collisionNormal.x * collisionNormal.x + collisionNormal.y * collisionNormal.y);
+            if (magnitude === 0) continue; // Avoid division by zero
+            
+            collisionNormal.x /= magnitude;
+            collisionNormal.y /= magnitude;
+            
+            // Calculate relative velocity
+            const otherVelocityX = otherWindow.momentumData?.velocityX || 0;
+            const otherVelocityY = otherWindow.momentumData?.velocityY || 0;
+            
+            const relativeVelocityX = currentVelocityX - otherVelocityX;
+            const relativeVelocityY = currentVelocityY - otherVelocityY;
+            
+            // Calculate relative velocity in terms of the collision normal
+            const velocityAlongNormal = 
+              relativeVelocityX * collisionNormal.x + 
+              relativeVelocityY * collisionNormal.y;
+            
+            // Only resolve if objects are moving toward each other
+            if (velocityAlongNormal > 0) continue;
+            
+            const restitution = 0; // Adjust between 0.1 (less bouncy) and 0.9 (very bouncy)
+            
+            // Calculate impulse scalar
+            const otherMass = otherWindow.mass || 1;
+            const impulseScalar = -(1 + restitution) * velocityAlongNormal / 
+                                  (1/mass + 1/otherMass);
+            
+            // Apply impulse
+            const impulseX = impulseScalar * collisionNormal.x;
+            const impulseY = impulseScalar * collisionNormal.y;
+            
+            // Update velocities based on impulse and mass
+            currentVelocityX -= impulseX / mass;
+            currentVelocityY -= impulseY / mass;
+            
+            // Update registry with new velocities
+            windowData.momentumData.velocityX = currentVelocityX;
+            windowData.momentumData.velocityY = currentVelocityY;
+            
+            // Apply impulse to other window if it's not already in motion
+            if (otherWindow.momentumData) {
+              otherWindow.momentumData.velocityX += impulseX / otherMass;
+              otherWindow.momentumData.velocityY += impulseY / otherMass;
+              
+              // Start momentum on the other window if it's not already animating
+              if (!otherWindow.momentumData.animationId) {
+                startMomentumOnWindow(otherWindow);
+              }
+            }
+            
+            // PARAMETER: Separation factor - controls how windows separate after collision
+            const separationFactor = 0.2; // Adjust between 0.1 (minimal) and 1.0 (maximum)
+            
+            // Resolve overlap (move windows apart)
+            const overlap = Math.min(
+              thisRect.right - otherDocRect.left,
+              otherDocRect.right - thisRect.left,
+              thisRect.bottom - otherDocRect.top,
+              otherDocRect.bottom - thisRect.top
+            );
+            
+            const separationX = overlap * collisionNormal.x * separationFactor;
+            const separationY = overlap * collisionNormal.y * separationFactor;
+            
+            // Move this window away from collision
+            currentX -= separationX;
+            currentY -= separationY;
+            
+            // Move other window away from collision (if it's not fixed)
+            if (otherWindow.momentumData) {
+              const otherCurrentX = otherDocRect.left;
+              const otherCurrentY = otherDocRect.top;
+              
+              otherElement.style.left = `${otherCurrentX + separationX}px`;
+              otherElement.style.top = `${otherCurrentY + separationY}px`;
+            }
+          }
         }
         
         // Apply the position (in document coordinates)
@@ -471,14 +673,36 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         
         // Continue animation if speed is above threshold
         if (speed > minVelocity) {
-          momentumAnimationId = requestAnimationFrame(animateMomentum);
+          windowData.momentumData.animationId = requestAnimationFrame(animateMomentum);
         } else {
-          momentumAnimationId = null;
+          windowData.momentumData.animationId = null;
+          windowData.momentumData.velocityX = 0;
+          windowData.momentumData.velocityY = 0;
         }
       }
       
       // Start animation
-      momentumAnimationId = requestAnimationFrame(animateMomentum);
+      windowData.momentumData.animationId = requestAnimationFrame(animateMomentum);
+    }
+    
+    // Function to start momentum on a window from registry data
+    function startMomentumOnWindow(windowData) {
+      if (!windowData || !windowData.momentumData) return;
+      
+      const element = windowData.element;
+      const velocityX = windowData.momentumData.velocityX;
+      const velocityY = windowData.momentumData.velocityY;
+      
+      // Only start if there's meaningful velocity
+      if (Math.abs(velocityX) < 0.1 && Math.abs(velocityY) < 0.1) return;
+      
+      // Cancel any existing animation
+      if (windowData.momentumData.animationId) {
+        cancelAnimationFrame(windowData.momentumData.animationId);
+      }
+      
+      // Apply momentum
+      applyMomentum(element, velocityX / 15, velocityY / 15); // Reverse the scaling we applied
     }
   }
   
@@ -500,6 +724,14 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
   
   // Initialize draggable windows
   createDraggableWindows();
+  
+  // Initialize the registry when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    // Register existing windows
+    document.querySelectorAll('.draggable-window').forEach(window => {
+      windowRegistry.register(window);
+    });
+  });
   
   // Track window width for responsive adjustments
   let lastWindowWidth = window.innerWidth;
