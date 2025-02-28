@@ -170,21 +170,18 @@ a:hover, a:not(.bare):hover {
 }
 
 .map-projection {
+  margin: 0;
   mix-blend-mode: darken;
   transform: scale(0.98);
   position: relative;
-  left: -1%;
   top: -4%;
-  /* position: absolute;
-  top: 0;
-  left: 0; 
-  right: 0; */
 }
 
 .wordmark {
+  margin: 0;
+  width: 100%;
   position: absolute;
   top: 26%;
-  left: 3%;
 }
 
 .links {
@@ -200,19 +197,24 @@ a:hover, a:not(.bare):hover {
   height: auto;
   
   /* Base colors in OKLCH */
-  --bg-color: var(--color-neutral-900); 
-  --fg-color: var(--color-neutral-0); 
+  --bg-color: var(--color-neutral-0); 
+  --text-color: var(--color-neutral-900);
+  --stroke-color: var(--color-neutral-900); 
   
   /* Add transition for hover effect */
   transition: transform 0.3s ease;
 }
 
-.unternet-wordmark-svg-bg:hover {
+.unternet-wordmark-svg-syllable:hover {
   --bg-color: var(--color-action);
+  --text-color: var(--color-highlight);
+  --stroke-color: var(--color-action);
 }
 
-.unternet-wordmark-svg-bg:hover + .unternet-wordmark-svg-fg {
-  --fg-color: var(--color-highlight);
+.unternet-wordmark-svg-syllable.speaking {
+  --bg-color: var(--color-highlight);
+  --text-color: var(--color-action);
+  --stroke-color: var(--color-action);
 }
 
 .unternet-wordmark-svg-bg,
