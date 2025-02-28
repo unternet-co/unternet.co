@@ -19,12 +19,23 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
   </p>
   <ul class="links">
     <li>
-      <a href="/blog" target="_blank">Follow our blog</a> for updates & early product releases
+      <span class="item-icon">🗞️</span> <a href="/blog" target="_blank">Follow our blog</a> for updates & early product releases
     </li>
-    <li><a href="https://github.com/unternet-co/web-applets" target="_blank">Web applets</a> is our open spec for intelligent software</li>
-    <li>Jump in <a href="https://discord.gg/VsMuEKmqvt">Discord</a> to develop with us</li>
-    <li>We're hiring! <a href="careers">Join our team</a></li>
-    <li><a href="mailto:hello@unternet.co">Email us</a> if you want to chat</li>
+    <li>
+      <span class="item-icon">🧠</span> Wondering what we mean by intelligent client? <a href="/directory">Test it out</a>
+    </li>
+    <li>
+      <span class="item-icon">🤖</span> <a href="https://github.com/unternet-co/web-applets" target="_blank">Web applets</a> is our open spec for intelligent software
+    </li>
+    <li>
+      <span class="item-icon">🧑‍💻</span> Jump in <a href="https://discord.gg/VsMuEKmqvt">Discord</a> to develop with us
+    </li>
+    <li>
+      <span class="item-icon">🤝</span> We're hiring! <a href="/careers">Join our team</a>
+    </li>
+    <li>
+      <span class="item-icon">📧</span> <a href="mailto:hello@unternet.co">Email us</a> if you want to chat
+    </li>
   </ul>
   
   <!-- Background illustrations -->
@@ -176,13 +187,6 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       // Create window header
       const windowHeader = document.createElement('div');
       windowHeader.className = 'window-header';
-      
-      // Add dots to header
-      for (let i = 0; i < 3; i++) {
-        const dot = document.createElement('span');
-        dot.className = 'header-dot';
-        windowHeader.appendChild(dot);
-      }
       
       // Create window content
       const windowContent = document.createElement('div');
