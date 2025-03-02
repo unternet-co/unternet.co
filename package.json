@@ -14,5 +14,8 @@
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "eleventy-plugin-date": "^1.0.0",
     "eleventy-plugin-metagen": "^1.8.3"
+  },
+  "devDependencies": {
+    "@11ty/eleventy-navigation": "^0.3.5"
   }
 }

@@ -1,6 +1,9 @@
 ---
 layout: docs
-title: Web applets documentation
+title: Web Applets documentation
+tags: docs
+eleventyNavigation:
+  key: Introduction
 ---
 
 # Introduction to Web Applets
@@ -14,3 +17,5 @@ Web Applets is an open specification for building software that both humans and 
 Web Applets lets you define a simple, computer-readable API for a web app running in a browser, webview, or iframe. You can send it actions as JSON objects, which an LLM can easily create (see [OpenAI's structured JSON endpoint](https://openai.com/index/introducing-structured-outputs-in-the-api/)), and they can update their UI instantly in-place. Plus, you can expose the internal state of the applets to the model so you can do cool stuff like chat to a map.
 
 We wanted anyone to be able to build these actions into their own third-party applets and distribute them. So, we extended the web & made it available to everyone!
+
+<!-- include how works -->

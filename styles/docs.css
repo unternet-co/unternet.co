@@ -8,10 +8,44 @@
   overflow-y: scroll;
   background: white;
 }
+.docs-content {
+  font-size: 17px;
+}
 
 .docs-content-inner {
   max-width: 740px;
   margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.docs-content h1 {
+  font-size: 36px;
+}
+
+.docs-content h2 {
+  margin-top: 64px;
+  font-size: 24px;
+  margin-bottom: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.docs-content h3 {
+  margin-top: 48px;
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+.docs-content h4 {
+  color: #555555;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.docs-content p {
+  margin: 12px 0;
 }
 
 .docs nav {
@@ -22,7 +56,15 @@
   border-right: 1px solid #ccc;
 }
 
+.docs #menu-button {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
+  .docs #menu-button {
+    display: block;
+  }
+
   .docs nav {
     padding: 12px;
     width: 100%;
@@ -67,6 +109,14 @@
   padding: 0;
 }
 
+.docs nav h2 {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  color: #888;
+  padding: 0;
+  margin: 18px 0 8px 0;
+}
+
 .docs nav ul {
   list-style: none;
   padding: 0;
@@ -74,6 +124,8 @@
 
 .docs nav a {
   color: #555;
+  display: block;
+  margin: 4px 0;
 }
 
 .docs nav a.active {
