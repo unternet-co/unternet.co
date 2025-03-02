@@ -94,11 +94,11 @@ So far we have defined an action and created a placeholder for it in the view. L
 ```jsx
 import { applets } from '@web-applets/sdk';
 
-const context = applets.getContext();
+const context = applets.register();
 
 // Define a 'set_name' action, and make it update the shared data object with the new name
 
-context.addActionHandler('set_name', ({ name }) => {
+context.setActionHandler('set_name', ({ name }) => {
   context.data = { name };
 });
 
