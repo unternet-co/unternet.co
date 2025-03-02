@@ -1,6 +1,9 @@
 ---
 layout: docs
 title: Web Applets documentation
+tags: docs
+eleventyNavigation:
+  key: Introduction
 ---
 
 # Introduction to Web Applets

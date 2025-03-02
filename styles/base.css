@@ -132,18 +132,20 @@ main.page {
   color: white;
 }
 
-pre,
 code:not(pre > *) {
   background: #eee;
-  border: 1px solid #dedede;
+  /* border: 1px solid #dedede; */
   padding: 0 4px;
   font-size: 13px;
+  font-weight: bold;
   border-radius: 3px;
 }
 
 pre {
-  padding: 12px;
+  /* padding: 12px; */
   border-radius: 6px;
+  overflow: hidden;
+  font-size: 13px;
 }
 
 blockquote {

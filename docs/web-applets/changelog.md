@@ -1,6 +1,7 @@
 ---
 layout: docs
 title: Changelog - Web Applets
+tags: docs
 ---
 
 ## RFCs

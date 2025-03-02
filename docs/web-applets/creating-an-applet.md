@@ -1,6 +1,9 @@
 ---
 layout: docs
 title: Quickstart - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Quickstart
 ---
 
 # Getting started

@@ -1,53 +1,7 @@
 ---
 layout: docs
-title: API reference - Web Applets
+title: API Reference - Web Applets
 ---
-
-# AppletFactory
-
-This is the main entry point for both connecting to existing applets (from the host app) and registering new ones (from within an applet).
-
-It is implemented by the `applets` object, which is either imported from the `@web-applets/sdk` node module, or part of the global scope if you've imported the Web Applets polyfill.
-
-## Instance methods
-
-### AppletFactory.connect()
-
-```js
-connect(window);
-```
-
-Connects from a parent window to an applet that's running inside a child window (such as an iframe's `contentWindow` or a webview), and returns an Applet object representing the applet for the parent window.
-
-The parent window uses this method to establish a communication channel with the child window containing the applet implementation.
-
-Throws an `AppletConnectionError` if the connection times out before it can be established.
-
-#### Parameters
-
-`window`: A `Window` object containing the applet
-
-#### Return value
-
-A `Promise` that resolves to a new instance of `Applet` that provides access to the applet's actions and data from the parent window.
-
-### AppletFactory.register()
-
-```js
-register();
-```
-
-Creates and returns a new AppletScope object within the child window, which represents the applet implementation and lets the host (parent window) know it's ready for connection.
-
-This method is called from within the applet's own window and checks for a `<link rel="manifest" href="...">` tag, then instantiates the applet's properties and actions based on the contents of the manifest.
-
-#### Parameters
-
-None.
-
-#### Returnvalue
-
-An `AppletScope` object representing the applet and its properties.
 
 # Applet
 
@@ -69,11 +23,13 @@ A `Window` object where the applet is implemented (typically an iframe's content
 
 ### Applet.sendAction()
 
+Sends an action to the applet for execution.
+
+#### Syntax
+
 ```js
 async sendAction(actionId, args)
 ```
-
-Sends an action to the applet for execution.
 
 #### Parameters
 
@@ -193,7 +149,7 @@ applet.addEventListener('actions', (event) => {
 });
 ```
 
-### 'data'
+### data
 
 An `AppletEvent`, which is fired when the applet's data changes. This occurs when the applet implementation updates its internal state.
 
@@ -209,25 +165,4 @@ The data object, which can be any JSON-serializable value.
 applet.addEventListener('data', (event) => {
   console.log('Applet data updated:', event.data);
 });
-```
-
-## Usage example
-
-The following example demonstrates how to connect to a maps applet, listen for events, and send an action:
-
-```js
-// Create an iframe
-const iframe = document.createElement('iframe');
-iframe.src = 'https://applets.unternet.co/maps';
-document.body.appendChild(iframe);
-
-// Connect to the applet in the iframe
-iframe.onload = async () => {
-  const applet = await applets.connect(iframe.contentWindow);
-
-  // Listen for data changes
-  applet.addEventListener('data', (event) => console.log(event.data));
-
-  // Send an action
-  applet.sendAction('search', { q: 'san francisco' });
 ```
