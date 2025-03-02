@@ -98,10 +98,6 @@ applet.defineAction('search', {
     },
     required: ['query'],
   },
-  handler: async (args) => {
-    const results = await searchDatabase(args.query);
-    applet.data = results;
-  },
 });
 ```
 
