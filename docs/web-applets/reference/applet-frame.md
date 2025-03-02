@@ -3,7 +3,7 @@ layout: docs
 title: API reference - Web Applets
 ---
 
-# AppletFrame
+# AppletFrameElement &lt;applet-frame&gt;
 
 The `<applet-frame>` element is a custom HTML element that provides a container for embedding and interacting with applets. It handles the connection to the applet, manages communication, and automatically resizes based on the applet's dimensions.
 
@@ -15,7 +15,7 @@ HTML:
 <applet-frame src="path/to/applet.html"></applet-frame>
 ```
 
-## Attributes
+## DOM attributes
 
 ### src
 
@@ -67,21 +67,6 @@ const data = frame.applet.data;
 
 // Send an action to the applet
 frame.applet.sendAction('search', { query: 'example' });
-```
-
-### AppletFrame.data
-
-Sets the data to be synchronized with the applet. If the applet is not yet loaded, the data will be set once the applet is ready.
-
-#### Value
-
-Can be any value that is JSON-serializable.
-
-#### Example
-
-```js
-// Set data to be synchronized with the applet
-frame.data = { items: ['Item 1', 'Item 2'] };
 ```
 
 ### AppletFrame.container

@@ -11,9 +11,11 @@ While you can define actions dynamically in code with `AppletContext.defineActio
 
 > We recommend creating a manifest for every applet you write, and including all _initial_ actions.
 
-## Declaration
+## Detecting the manifest
 
-You _must_ declare your manifest in your applet's html, with a link tag in order for it to be discoverable:
+In accordance with the Web App Manifest spec, the manifest is discoverable through a `<link rel="manifest">` tag on your applet's webpage. The manifest itself can live anywhere on your site, so long as you provide the correct `href` value.
+
+You _must_ declare your manifest in your applet's html with a link tag in order for it to be discoverable:
 
 ```html
 <link rel="manifest" href="manifest.json" />
@@ -21,11 +23,7 @@ You _must_ declare your manifest in your applet's html, with a link tag in order
 
 ## Specification
 
-The Web Applets manifest file is a lightweight extension of the Web App Manifest, with the inclusion of an `applets` property.
-
-```json
-{}
-```
+The Web Applets manifest file is a lightweight extension of the Web App Manifest, with the inclusion of an `actions` key, which contains a dictionary of action IDs (`string`) mapping to `AppletActionDescriptor` values.
 
 ## Example
 
@@ -44,6 +42,7 @@ Here's an example manifest object:
   "entrypoint": "index.html",
   "actions": {
     "calculate": {
+      "title": "Calculate",
       "description": "Calculate an expression, or short piece of mathematical code",
       "params_schema": {
         "type": "object",

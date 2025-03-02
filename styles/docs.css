@@ -124,6 +124,8 @@
 
 .docs nav a {
   color: #555;
+  display: block;
+  margin: 4px 0;
 }
 
 .docs nav a.active {

@@ -28,7 +28,7 @@ Sends an action to the applet for execution.
 #### Syntax
 
 ```js
-async sendAction(actionId, args)
+await sendAction(actionId, args);
 ```
 
 #### Parameters

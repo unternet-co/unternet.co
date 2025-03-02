@@ -76,11 +76,7 @@ A `string` representing the identifier of the action.
 
 `definition`
 
-An object containing the action definition and an optional handler function. The definition should include:
-
-- `title` &mdash; a string containing a user-readable title for the action
-- `description` &mdash; a description of the action for the model
-- `params_schema` &mdash; a JSON Schema object declaring the schema of parameters to fulfil when calling this action
+An `AppletActionDescriptor` object describing the action.
 
 #### Return value
 
@@ -150,7 +146,7 @@ A map of registered action handler functions.
 
 #### Value
 
-An `AppletActionHandlerMap` object.
+A map with `string` keys referring to the action ID, and values defining the action as `AppletActionDescriptor`.
 
 ### AppletScope.width
 
