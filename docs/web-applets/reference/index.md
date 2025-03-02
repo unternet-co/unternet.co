@@ -3,6 +3,8 @@ layout: docs
 title: API Reference - Web Applets
 ---
 
+**Note:** This API reference is pre-release, documents the alpha release of Web Applets (`npm install @web-applets/sdk@0.2.0-alpha.4`).
+
 ## Usage example
 
 The following example demonstrates how to connect to a maps applet, listen for events, and send an action:
