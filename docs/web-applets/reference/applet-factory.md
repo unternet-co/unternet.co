@@ -44,12 +44,14 @@ This method is called from within the applet's own window and checks for a `<lin
 #### Syntax
 
 ```js
-applets.register();
+applets.register(manifest);
 ```
 
 #### Parameters
 
-None.
+`manifest`
+
+An optional object that adheres to the Web App Manifest spec extension detailed in the "Manifest" section. You don't need to include this if you have an applet manifest linked in the html file.
 
 #### Returnvalue
 
