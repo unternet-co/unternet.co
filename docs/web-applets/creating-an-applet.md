@@ -51,9 +51,8 @@ We will define a `set_name` action in our manifest file, which our applet will u
 ```jsx
 {
   // ...
-  "actions":
-    {
-      "set_name" {
+  "actions": {
+    "set_name" {
       "description": "Sets the name of the user.",
       "params_schema": {
         "type": "object",
