@@ -16,12 +16,14 @@ Creates a new `AppletScope` instance and initiates connection with the parent wi
 #### Syntax
 
 ```js
-const applet = new AppletScope();
+const applet = new AppletScope(manifest);
 ```
 
 #### Parameters
 
-None.
+`manifest`
+
+An optional object that adheres to the Web App Manifest spec extension detailed in the "Manifest" section.
 
 ## Instance methods
 
