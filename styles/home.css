@@ -1,28 +1,5 @@
-:root {
-  --color-action: oklch(45.2% 0.313214 264.052); 
-  --color-highlight: oklch(93.59% 0.1528 101.65);
-  
-  --color-neutral-0: oklch(99.39% 0.002854 264.5422);
-  --color-neutral-50: oklch(95.79% 0.0029 264.54);
-  --color-neutral-100: oklch(92.17% 0.0029 264.54);
-  --color-neutral-300: oklch(77.32% 0.0044 271.36);
-  --color-neutral-400: oklch(92.17% 0.0029 264.54);
-  --color-neutral-500: oklch(53.92% 0.0046 286.24);
-  --color-neutral-600: oklch(92.17% 0.0029 264.54);
-  --color-neutral-700: oklch(92.17% 0.0029 264.54);
-  --color-neutral-800: oklch(92.17% 0.0029 264.54);
-  --color-neutral-900: oklch(32.11% 0 0);
-}
-
 body {
-  background-color: var(--color-neutral-100);
-  color: var(--color-neutral-900);
-  font-family: sans-serif;
   display: unset;
-}
-
-footer {
-  color: var(--color-neutral-500);
 }
 
 .about {
@@ -31,6 +8,7 @@ footer {
   margin-top: -5vh;
   position: relative;
   z-index: 1;
+  padding: 0px 24px;
 }
 
 @media screen and (min-width: 768px) {
@@ -38,25 +16,6 @@ footer {
     margin-top: -32px;
     font-size: 32px;
   }
-}
-
-.main-header li + li::before {
-  color: var(--color-neutral-100);
-}
-
-.main-header a, .main-header a:not(.bare) {
-  color: var(--color-neutral-100);
-}
-
-.main-header a:not(.bare):hover {
-  background-color: transparent;
-  color: var(--color-action);
-  text-decoration: underline;
-}
-
-.main-header .active a, .main-header .active a:hover {
-  background-color: var(--color-highlight);
-  color: var(--color-neutral-900);
 }
 
 main {
@@ -146,16 +105,6 @@ main {
   background-color: var(--color-neutral-0);
   border: 1px solid var(--color-neutral-300);
   align-self: stretch;
-}
-
-a, a:not(.bare) {
-  font-weight: inherit;
-  color: var(--color-action);
-}
-
-a:hover, a:not(.bare):hover {
-  color: var(--color-action);
-  background-color: var(--color-highlight);
 }
 
 .hero-image {
