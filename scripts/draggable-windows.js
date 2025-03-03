@@ -1,57 +1,12 @@
 
 
 function createDraggableWindows() {
-  const container = document.querySelector('main');
   const linksList = document.querySelector('.links');
-  const heroSection = document.querySelector('.hero-image');
-  const aboutSection = document.querySelector('.about');
-  
   if (!linksList) return;
-  
-  // Get all list items
-  const listItems = linksList.querySelectorAll('li');
-  
-  // Create a container for the draggable windows
-  const windowsContainer = document.createElement('div');
-  windowsContainer.className = 'draggable-windows-container';
-  
-  // Insert the container after the about section
-  if (aboutSection) {
-    aboutSection.after(windowsContainer);
-  } else {
-    container.appendChild(windowsContainer);
-  }
-  
-  // Remove the original list
-  linksList.remove();
-  
-  // Create draggable windows for each list item
+  const listItems = linksList.querySelectorAll('li');  
   listItems.forEach((item, index) => {
-    // Create window container
-    const windowElement = document.createElement('div');
-    windowElement.className = 'draggable-window';
-    
-    // Create window header
-    const windowHeader = document.createElement('div');
-    windowHeader.className = 'window-header';
-    
-    // Create window content
-    const windowContent = document.createElement('div');
-    windowContent.className = 'window-content';
-    windowContent.innerHTML = item.innerHTML;
-    
-    // Append header and content to window
-    windowElement.appendChild(windowHeader);
-    windowElement.appendChild(windowContent);
-    
-    // Apply random horizontal offset, alternating direction based on index
-    applyRandomOffset(windowElement, index % 2 === 0);
-    
-    // Make the window draggable
-    makeDraggable(windowElement, windowsContainer);
-    
-    // Add to container
-    windowsContainer.appendChild(windowElement);
+    applyRandomOffset(item, index % 2 === 0);
+    makeDraggable(item);
   });
 }
 
@@ -95,7 +50,7 @@ const windowRegistry = {
 // Function to apply random horizontal offset to a window
 function applyRandomOffset(element, isPositive) {
   // Get the container and its width
-  const container = element.parentElement || document.querySelector('.draggable-windows-container');
+  const container = element.parentElement || document.querySelector('.links');
   const containerWidth = container ? container.getBoundingClientRect().width : window.innerWidth;
   const elementWidth = element.getBoundingClientRect().width || 250; // Default width if not yet rendered
   
@@ -111,12 +66,9 @@ function applyRandomOffset(element, isPositive) {
 }
 
 // Function to make an element draggable
-function makeDraggable(element, container) {
+function makeDraggable(element) {
   // Find the header element
-  const header = element.querySelector('.window-header');
   const bounds = document.querySelector('main');
-  
-  if (!header) return;
   
   let isDragging = false;
   let initialMouseX, initialMouseY;
@@ -130,7 +82,7 @@ function makeDraggable(element, container) {
   let momentumAnimationId = null;
   
   // Mouse down event on the header
-  header.addEventListener('mousedown', (e) => {
+  element.addEventListener('mousedown', (e) => {
     if (isDragging) return;
     isDragging = true;
     
@@ -146,8 +98,8 @@ function makeDraggable(element, container) {
     lastMouseTime = Date.now();
     
     // Store initial scroll position
-    initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-    initialScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
+    initialScrollX = element.pageXOffset || document.documentElement.scrollLeft;
+    initialScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
     
     // Get current position in the page
     const rect = element.getBoundingClientRect();
@@ -158,8 +110,6 @@ function makeDraggable(element, container) {
       const placeholder = document.createElement('div');
       placeholder.className = 'window-placeholder';
       placeholder.style.height = `${rect.height}px`;
-      placeholder.style.width = `${rect.width}px`;
-      placeholder.style.margin = window.getComputedStyle(element).margin;
       placeholder.dataset.forWindow = element.id || `window-${Date.now()}`;
       
       // If element doesn't have an ID, assign one
@@ -201,8 +151,8 @@ function makeDraggable(element, container) {
       if (!isDragging) return;
       
       // Get current scroll position
-      const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      const currentScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
+      const currentScrollX = element.pageXOffset || document.documentElement.scrollLeft;
+      const currentScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
       
       // Calculate the mouse movement delta, accounting for scroll
       const deltaX = (e.clientX + currentScrollX) - (initialMouseX + initialScrollX);
@@ -259,7 +209,7 @@ function makeDraggable(element, container) {
   });
   
   // Touch events for mobile support - explicitly set as non-passive
-  header.addEventListener('touchstart', (e) => {
+  element.addEventListener('touchstart', (e) => {
     if (isDragging) return;
     isDragging = true;
     
@@ -276,8 +226,8 @@ function makeDraggable(element, container) {
     lastMouseTime = Date.now();
     
     // Store initial scroll position
-    initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-    initialScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
+    initialScrollX = element.pageXOffset || document.documentElement.scrollLeft;
+    initialScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
     
     // Get current position in the page
     const rect = element.getBoundingClientRect();
@@ -288,8 +238,6 @@ function makeDraggable(element, container) {
       const placeholder = document.createElement('div');
       placeholder.className = 'window-placeholder';
       placeholder.style.height = `${rect.height}px`;
-      placeholder.style.width = `${rect.width}px`;
-      placeholder.style.margin = window.getComputedStyle(element).margin;
       placeholder.dataset.forWindow = element.id || `window-${Date.now()}`;
       
       // If element doesn't have an ID, assign one
@@ -329,8 +277,8 @@ function makeDraggable(element, container) {
     // Touch move event on the document
     const moveHandler = (e) => {
       // Get current scroll position
-      const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const currentScrollX = element.pageXOffset || document.documentElement.scrollLeft;
+      const currentScrollY = element.pageYOffset || document.documentElement.scrollTop;
       
       // Calculate the touch movement delta, accounting for scroll
       const touch = e.touches[0];
@@ -351,8 +299,8 @@ function makeDraggable(element, container) {
       
       if (timeDelta > 0) {
         // Calculate velocity in pixels per millisecond, accounting for scroll
-        velocityX = ((touch.clientX + currentScrollX) - (lastMouseX + (window.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
-        velocityY = ((touch.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
+        velocityX = ((touch.clientX + currentScrollX) - (lastMouseX + (element.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
+        velocityY = ((touch.clientY + currentScrollY) - (lastMouseY + (element.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
         
         // Update last position and time
         lastMouseX = touch.clientX;
@@ -411,8 +359,8 @@ function makeDraggable(element, container) {
     
     // Current position
     const rect = element.getBoundingClientRect();
-    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollX = element.pageXOffset || document.documentElement.scrollLeft;
+    const scrollY = element.pageYOffset || document.documentElement.scrollTop;
     let currentX = rect.left + scrollX;
     let currentY = rect.top + scrollY;
     
@@ -433,8 +381,8 @@ function makeDraggable(element, container) {
       const wallSpringiness = 0.3;
 
       // Get current scroll position for each frame
-      const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const currentScrollX = element.pageXOffset || document.documentElement.scrollLeft;
+      const currentScrollY = element.pageYOffset || document.documentElement.scrollTop;
       
       // Apply velocity to position
       currentX += currentVelocityX;
@@ -449,8 +397,8 @@ function makeDraggable(element, container) {
       windowData.momentumData.velocityY = currentVelocityY;
       
       // Get viewport dimensions
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+      const viewportWidth = element.innerWidth;
+      const viewportHeight = element.innerHeight;
       
       // Get element dimensions
       const elementWidth = element.offsetWidth;
@@ -692,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Re-position windows when window is resized
   window.addEventListener('resize', () => {
     const windows = document.querySelectorAll('.draggable-window');
-    const container = document.querySelector('.draggable-windows-container');
+    const container = document.querySelector('.links');
     
     if (windows.length > 0 && container) {
       const containerRect = container.getBoundingClientRect();
