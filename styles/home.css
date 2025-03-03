@@ -22,14 +22,7 @@ body {
 }
 
 footer {
-  font-family: monospace;
-  background: unset;
-  border: unset;
-  padding-left: 32px;
-  padding-top: 24px;
-  font-size: 14px;
   color: var(--color-neutral-500);
-  font-weight: bold;
 }
 
 .about {
@@ -85,17 +78,18 @@ main {
 }
 
 /* Draggable Windows Container */
-.draggable-windows-container {
+.links {
   flex-shrink: 0;
   position: relative;
+  list-style-type: none;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5vh;
+  gap: 32px;
   padding-top: 10vh;
   padding-bottom: 10vh;
-  margin-top: -5vh;
+  margin: -5vh 0 0;
   overflow-x: hidden; /* Prevent horizontal scrolling */
   box-sizing: border-box;
   background-blend-mode: darken;
@@ -114,12 +108,14 @@ main {
 
 /* Draggable Windows Styles */
 .draggable-window {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   position: relative;
   background-color: var(--color-neutral-50);
-  padding: 8px;
+  padding: 3px 8px 8px;
   border-radius: 8px;
   box-shadow: 0 4px 12px color-mix(in oklch, var(--color-neutral-900) 10%, transparent);
-  overflow: hidden;
   min-width: 250px;
   max-width: 350px;
   width: calc(100% - 40px); /* Responsive width with some margin */
@@ -127,47 +123,33 @@ main {
   cursor: default;
   user-select: none;
   transition: box-shadow 0.2s ease;
+  cursor: move;
 }
 
 .draggable-window.dragging {
-  position: absolute; /* Change to absolute when dragging */
+  position: absolute; 
   box-shadow: 0 6px 18px color-mix(in oklch, var(--color-neutral-900) 15%, transparent);
-  z-index: 10; /* Ensure it's on top when dragging */
+  z-index: 10;
   border: 1px solid var(--color-action);
 }
 
-.window-header {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  cursor: move;
-  height: 20px;
-}
-
-.window-header:before {
+.draggable-window::before {
   content: '⠿';
+  display: inline-block;
   font-size: 20px;
   transform: rotate(90deg);
-  position: relative;
-  left: -8px;
-  top: -2px;
 }
 
-.header-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-neutral-500);
-  margin-right: 5px;
-}
-
-.window-content {
+.draggable-window-content {
+  cursor: default;
   padding: 10px 15px;
   font-size: 20px;
   text-align: left;
   border-radius: 4px;
+  flex-grow: 1;
   background-color: var(--color-neutral-0);
   border: 1px solid var(--color-neutral-300);
+  align-self: stretch;
 }
 
 a, a:not(.bare) {
@@ -188,10 +170,6 @@ a:hover, a:not(.bare):hover {
 }
 
 .map-projection {
-  /* position: absolute;
-  top: 0;
-  left: 0; 
-  right: 0; */
   margin-bottom: 10vh;
 }
 
@@ -200,14 +178,6 @@ a:hover, a:not(.bare):hover {
   width: 100%;
   position: absolute;
   top: 21%;
-}
-
-.links {
-  gap: 5px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  font-size: 16px;
 }
 
 .unternet-wordmark-svg-root {
