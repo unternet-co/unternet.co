@@ -13,6 +13,7 @@
   --color-neutral-700: oklch(38.2% 0.0029 264.54);
   --color-neutral-800: oklch(35.1% 0.0029 264.54);
   --color-neutral-900: oklch(32.11% 0.0029 264.54);
+  --color-neutral-1000: oklch(24.11% 0.0029 264.54);
 }
 
 * {
@@ -30,7 +31,9 @@ body {
 body {
   font-family: sans-serif;
   background-color: var(--color-neutral-100);
+  color: var(--color-neutral-1000);
   font-size: 16px;
+  line-height: 1.5;
 
   /* Font smoothing for macOS */
   -webkit-font-smoothing: antialiased;
@@ -63,15 +66,16 @@ a:not(.bare):hover {
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 400;
+  font-family: serif;
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 32px;
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 a {
@@ -98,8 +102,12 @@ footer {
   padding-right: 20px;
   box-sizing: border-box;
 }
+
 main.page {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 48px 20px;
 }
 
 .main-header {
