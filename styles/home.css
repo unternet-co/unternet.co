@@ -40,10 +40,6 @@ footer {
   }
 }
 
-.main-header .logo-container {
-  opacity: 0;
-}
-
 .main-header li + li::before {
   color: var(--color-neutral-100);
 }
