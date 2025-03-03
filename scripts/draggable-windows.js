@@ -67,172 +67,58 @@ function applyRandomOffset(element, isPositive) {
 
 // Function to make an element draggable
 function makeDraggable(element) {
-  // Find the header element
+  // Find the container element
   const bounds = document.querySelector('main');
   
   let isDragging = false;
-  let initialMouseX, initialMouseY;
+  let initialPointerX, initialPointerY;
   let initialElementX, initialElementY;
   let initialScrollX, initialScrollY;
   
   // For momentum tracking
-  let lastMouseX, lastMouseY;
-  let lastMouseTime;
+  let lastPointerX, lastPointerY;
+  let lastPointerTime;
   let velocityX = 0, velocityY = 0;
   let momentumAnimationId = null;
   
-  // Mouse down event on the header
-  element.addEventListener('mousedown', (e) => {
-    if (isDragging) return;
-    isDragging = true;
-    
-    // Cancel any ongoing momentum animation
-    if (momentumAnimationId !== null) {
-      cancelAnimationFrame(momentumAnimationId);
-      momentumAnimationId = null;
+  /**
+   * Get pointer position from either mouse or touch event
+   * @param {Event} e - Mouse or Touch event
+   * @returns {Object} - x and y coordinates
+   */
+  function getPointerPosition(e) {
+    // Touch event
+    if (e.touches) {
+      return {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
     }
-    
-    // Store the initial mouse position
-    initialMouseX = lastMouseX = e.clientX;
-    initialMouseY = lastMouseY = e.clientY;
-    lastMouseTime = Date.now();
-    
-    // Store initial scroll position
-    initialScrollX = element.pageXOffset || document.documentElement.scrollLeft;
-    initialScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
-    
-    // Get current position in the page
-    const rect = element.getBoundingClientRect();
-    
-    // Convert to absolute positioning if not already
-    if (window.getComputedStyle(element).position !== 'absolute') {
-      // Create a placeholder to maintain the layout
-      const placeholder = document.createElement('div');
-      placeholder.className = 'window-placeholder';
-      placeholder.style.height = `${rect.height}px`;
-      placeholder.dataset.forWindow = element.id || `window-${Date.now()}`;
-      
-      // If element doesn't have an ID, assign one
-      if (!element.id) {
-        element.id = placeholder.dataset.forWindow;
-      }
-      
-      // Insert placeholder before removing element from flow
-      element.parentNode.insertBefore(placeholder, element);
-      
-      // Remove the transform that was adding the random offset
-      element.style.transform = '';
-      
-      // Set absolute position to match current visual position
-      element.style.position = 'absolute';
-      element.style.left = `${rect.left + initialScrollX}px`;
-      element.style.top = `${rect.top + initialScrollY}px`;
-      element.style.width = `${rect.width}px`;
-      
-      // Move to body to ensure it can be dragged across the document
-      bounds.appendChild(element);
-    }
-    
-    // Store the initial element position relative to the document
-    initialElementX = rect.left + initialScrollX;
-    initialElementY = rect.top + initialScrollY;
-    
-    // Add active class for styling
-    element.classList.add('dragging');
-    
-    // Bring the window to the front
-    bringToFront(element);
-    
-    // Prevent default behavior
-    e.preventDefault();
-    
-    // Mouse move event on the document
-    const mouseMoveHandler = (e) => {
-      if (!isDragging) return;
-      
-      // Get current scroll position
-      const currentScrollX = element.pageXOffset || document.documentElement.scrollLeft;
-      const currentScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
-      
-      // Calculate the mouse movement delta, accounting for scroll
-      const deltaX = (e.clientX + currentScrollX) - (initialMouseX + initialScrollX);
-      const deltaY = (e.clientY + currentScrollY) - (initialMouseY + initialScrollY);
-      
-      // Calculate new position
-      let newX = initialElementX + deltaX;
-      let newY = initialElementY + deltaY;
-      
-      // Apply the position
-      element.style.left = `${newX}px`;
-      element.style.top = `${newY}px`;
-      
-      // Track velocity for momentum
-      const now = Date.now();
-      const timeDelta = now - lastMouseTime;
-      
-      if (timeDelta > 0) {
-        // Calculate velocity in pixels per millisecond, accounting for scroll
-        velocityX = ((e.clientX + currentScrollX) - (lastMouseX + (window.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
-        velocityY = ((e.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop)) / timeDelta;
-        
-        // Update last position and time
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
-        lastMouseTime = now;
-      }
-      
-      // Prevent default behavior
-      e.preventDefault();
+    // Mouse event
+    return {
+      x: e.clientX,
+      y: e.clientY
     };
-    
-    // Mouse up event on the document
-    const mouseUpHandler = () => {
-      isDragging = false;
-      element.classList.remove('dragging');
-      
-      // Apply momentum if velocity is significant
-      const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-      
-      if (speed > 0.05) {
-        // Apply momentum with decay
-        applyMomentum(element, velocityX, velocityY);
-      }
-      
-      // Remove the event listeners
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
-    };
-    
-    // Add the event listeners
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
-  });
+  }
   
-  // Touch events for mobile support - explicitly set as non-passive
-  element.addEventListener('touchstart', (e) => {
-    if (isDragging) return;
-    isDragging = true;
-    
-    // Cancel any ongoing momentum animation
-    if (momentumAnimationId !== null) {
-      cancelAnimationFrame(momentumAnimationId);
-      momentumAnimationId = null;
-    }
-    
-    // Store the initial touch position
-    const touch = e.touches[0];
-    initialMouseX = lastMouseX = touch.clientX;
-    initialMouseY = lastMouseY = touch.clientY;
-    lastMouseTime = Date.now();
-    
-    // Store initial scroll position
-    initialScrollX = element.pageXOffset || document.documentElement.scrollLeft;
-    initialScrollY = (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
-    
-    // Get current position in the page
-    const rect = element.getBoundingClientRect();
-    
-    // Convert to absolute positioning if not already
+  /**
+   * Get current scroll position
+   * @returns {Object} - x and y scroll positions
+   */
+  function getScrollPosition() {
+    return {
+      x: element.pageXOffset || document.documentElement.scrollLeft,
+      y: (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop
+    };
+  }
+  
+  /**
+   * Set up element for dragging (convert to absolute positioning if needed)
+   * @param {Element} element - The element to prepare
+   * @param {DOMRect} rect - The element's bounding rectangle
+   * @param {Object} scrollPos - Current scroll position
+   */
+  function prepareElementForDragging(element, rect, scrollPos) {
     if (window.getComputedStyle(element).position !== 'absolute') {
       // Create a placeholder to maintain the layout
       const placeholder = document.createElement('div');
@@ -253,87 +139,139 @@ function makeDraggable(element) {
       
       // Set absolute position to match current visual position
       element.style.position = 'absolute';
-      element.style.left = `${rect.left + initialScrollX}px`;
-      element.style.top = `${rect.top + initialScrollY}px`;
+      element.style.left = `${rect.left + scrollPos.x}px`;
+      element.style.top = `${rect.top + scrollPos.y}px`;
       element.style.width = `${rect.width}px`;
       
-      // Move to body to ensure it can be dragged across the document
+      // Move to bounds container to ensure it can be dragged across the document
       bounds.appendChild(element);
     }
+  }
+  
+  /**
+   * Handle the start of a drag operation
+   * @param {Event} e - The initiating event (mouse or touch)
+   */
+  function handleDragStart(e) {
+    if (isDragging) return;
+    isDragging = true;
+    
+    // Cancel any ongoing momentum animation
+    if (momentumAnimationId !== null) {
+      cancelAnimationFrame(momentumAnimationId);
+      momentumAnimationId = null;
+    }
+    
+    // Get pointer position
+    const pointerPos = getPointerPosition(e);
+    initialPointerX = lastPointerX = pointerPos.x;
+    initialPointerY = lastPointerY = pointerPos.y;
+    lastPointerTime = Date.now();
+    
+    // Get scroll position
+    const scrollPos = getScrollPosition();
+    initialScrollX = scrollPos.x;
+    initialScrollY = scrollPos.y;
+    
+    // Get current position in the page
+    const rect = element.getBoundingClientRect();
+    
+    // Prepare element for dragging
+    prepareElementForDragging(element, rect, scrollPos);
     
     // Store the initial element position relative to the document
-    initialElementX = rect.left + initialScrollX;
-    initialElementY = rect.top + initialScrollY;
+    initialElementX = rect.left + scrollPos.x;
+    initialElementY = rect.top + scrollPos.y;
     
     // Add active class for styling
     element.classList.add('dragging');
     
     // Bring the window to the front
-    bringToFront(element);
+    element.parentNode.appendChild(element);
     
     // Prevent default behavior
     e.preventDefault();
     
-    // Touch move event on the document
-    const moveHandler = (e) => {
-      // Get current scroll position
-      const currentScrollX = element.pageXOffset || document.documentElement.scrollLeft;
-      const currentScrollY = element.pageYOffset || document.documentElement.scrollTop;
-      
-      // Calculate the touch movement delta, accounting for scroll
-      const touch = e.touches[0];
-      const deltaX = (touch.clientX + currentScrollX) - (initialMouseX + initialScrollX);
-      const deltaY = (touch.clientY + currentScrollY) - (initialMouseY + initialScrollY);
-      
-      // Calculate new position
-      let newX = initialElementX + deltaX;
-      let newY = initialElementY + deltaY;
-      
-      // Apply the position
-      element.style.left = `${newX}px`;
-      element.style.top = `${newY}px`;
-      
-      // Track velocity for momentum
-      const now = Date.now();
-      const timeDelta = now - lastMouseTime;
-      
-      if (timeDelta > 0) {
-        // Calculate velocity in pixels per millisecond, accounting for scroll
-        velocityX = ((touch.clientX + currentScrollX) - (lastMouseX + (element.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
-        velocityY = ((touch.clientY + currentScrollY) - (lastMouseY + (element.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
-        
-        // Update last position and time
-        lastMouseX = touch.clientX;
-        lastMouseY = touch.clientY;
-        lastMouseTime = now;
-      }
-      
-      // Prevent default behavior (scrolling)
-      e.preventDefault();
-    };
+    // Set up the appropriate move and end handlers based on event type
+    if (e.type === 'mousedown') {
+      document.addEventListener('mousemove', handleDragMove);
+      document.addEventListener('mouseup', handleDragEnd);
+    } else if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', handleDragMove, { passive: false });
+      document.addEventListener('touchend', handleDragEnd);
+    }
+  }
+  
+  /**
+   * Handle the drag movement
+   * @param {Event} e - The move event (mouse or touch)
+   */
+  function handleDragMove(e) {
+    if (!isDragging) return;
     
-    // Touch end event on the document
-    const endHandler = () => {
-      isDragging = false;
-      element.classList.remove('dragging');
-      
-      // Apply momentum if velocity is significant
-      const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-      
-      if (speed > 0.05) {
-        // Apply momentum with decay
-        applyMomentum(element, velocityX, velocityY);
-      }
-      
-      // Remove the event listeners
-      document.removeEventListener('touchmove', moveHandler);
-      document.removeEventListener('touchend', endHandler);
-    };
+    // Get current pointer position
+    const pointerPos = getPointerPosition(e);
     
-    // Add the event listeners - explicitly set touchmove as non-passive
-    document.addEventListener('touchmove', moveHandler, { passive: false });
-    document.addEventListener('touchend', endHandler);
-  }, { passive: false });
+    // Get current scroll position
+    const scrollPos = getScrollPosition();
+    
+    // Calculate the pointer movement delta, accounting for scroll
+    const deltaX = (pointerPos.x + scrollPos.x) - (initialPointerX + initialScrollX);
+    const deltaY = (pointerPos.y + scrollPos.y) - (initialPointerY + initialScrollY);
+    
+    // Calculate new position
+    const newX = initialElementX + deltaX;
+    const newY = initialElementY + deltaY;
+    
+    // Apply the position
+    element.style.left = `${newX}px`;
+    element.style.top = `${newY}px`;
+    
+    // Track velocity for momentum
+    const now = Date.now();
+    const timeDelta = now - lastPointerTime;
+    
+    if (timeDelta > 0) {
+      // Calculate velocity in pixels per millisecond, accounting for scroll
+      velocityX = ((pointerPos.x + scrollPos.x) - (lastPointerX + (element.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
+      velocityY = ((pointerPos.y + scrollPos.y) - (lastPointerY + (element.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop)) / timeDelta;
+      
+      // Update last position and time
+      lastPointerX = pointerPos.x;
+      lastPointerY = pointerPos.y;
+      lastPointerTime = now;
+    }
+    
+    // Prevent default behavior
+    e.preventDefault();
+  }
+  
+  /**
+   * Handle the end of a drag operation
+   */
+  function handleDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    element.classList.remove('dragging');
+    
+    // Apply momentum if velocity is significant
+    const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+    
+    if (speed > 0.05) {
+      // Apply momentum with decay
+      applyMomentum(element, velocityX, velocityY);
+    }
+    
+    // Remove the event listeners
+    document.removeEventListener('mousemove', handleDragMove);
+    document.removeEventListener('mouseup', handleDragEnd);
+    document.removeEventListener('touchmove', handleDragMove);
+    document.removeEventListener('touchend', handleDragEnd);
+  }
+  
+  // Add event listeners for both mouse and touch events
+  element.addEventListener('mousedown', handleDragStart);
+  element.addEventListener('touchstart', handleDragStart, { passive: false });
   
   // Function to apply momentum with decay
   function applyMomentum(element, initialVelocityX, initialVelocityY) {
@@ -608,22 +546,6 @@ function makeDraggable(element) {
     // Apply momentum
     applyMomentum(element, velocityX / 15, velocityY / 15); // Reverse the scaling we applied
   }
-}
-
-// Function to bring a window to the front
-function bringToFront(element) {
-  // Get all draggable windows
-  const windows = document.querySelectorAll('.draggable-window');
-  
-  // Find the highest z-index
-  let maxZ = 0;
-  windows.forEach(win => {
-    const zIndex = parseInt(window.getComputedStyle(win).zIndex) || 0;
-    maxZ = Math.max(maxZ, zIndex);
-  });
-  
-  // Set this window's z-index to be higher
-  element.style.zIndex = maxZ + 1;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
