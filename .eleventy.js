@@ -7,6 +7,7 @@ const eleventyNavigationPlugin = require('@11ty/eleventy-navigation');
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('assets');
   eleventyConfig.addPassthroughCopy('styles');
+  eleventyConfig.addPassthroughCopy('scripts');
   eleventyConfig.addPlugin(pluginDate);
   eleventyConfig.addPlugin(pluginRSS);
   eleventyConfig.addPlugin(metagen);
