@@ -6,6 +6,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('assets');
   eleventyConfig.addPassthroughCopy('styles');
   eleventyConfig.addPassthroughCopy('scripts');
+  
+  // Add watch target for JavaScript files
+  eleventyConfig.addWatchTarget('./scripts/**/*.js');
+  
   eleventyConfig.addPlugin(pluginDate);
   eleventyConfig.addPlugin(pluginRSS);
   eleventyConfig.addPlugin(metagen);
