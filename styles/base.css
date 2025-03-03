@@ -14,6 +14,16 @@
   --color-neutral-800: oklch(35.1% 0.0029 264.54);
   --color-neutral-900: oklch(32.11% 0.0029 264.54);
   --color-neutral-1000: oklch(24.11% 0.0029 264.54);
+
+  /* Font size */
+  --text-scale: 1.125;
+  --text-3xl: calc(var(--text-2xl) * var(--text-scale));
+  --text-2xl: calc(var(--text-xl) * var(--text-scale));
+  --text-xl: calc(var(--text-lg) * var(--text-scale));
+  --text-lg: calc(var(--text-base) * var(--text-scale));
+  --text-base: 20px;
+  --text-sm: calc(var(--text-base) / var(--text-scale));
+  --text-xs: calc(var(--text-sm) / var(--text-scale));
 }
 
 * {
@@ -26,18 +36,14 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
+  font-size: var(--text-base);
 }
 
 body {
-  font-family: sans-serif;
+  font-family: serif;
   background-color: var(--color-neutral-100);
   color: var(--color-neutral-1000);
-  font-size: 16px;
-  line-height: 1.5;
-
-  /* Font smoothing for macOS */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.3;
 
   /* Font smoothing for other browsers */
   text-rendering: optimizeLegibility;
@@ -65,17 +71,31 @@ a:not(.bare):hover {
 
 h1,
 h2,
-h3 {
-  font-weight: 400;
-  font-family: serif;
+h3,
+h4,
+h5,
+h6 {
+  font-family: sans-serif;
 }
 
 h1 {
-  font-size: 32px;
+  font-size: var(--text-3xl);
 }
 
 h2 {
-  font-size: 24px;
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
+  max-width: 64ch;
 }
 
 a {
@@ -86,9 +106,11 @@ footer {
   /* margin-top: 20px; */
   flex-shrink: 0;
   background: var(--color-neutral-0);
-  padding: 7px 0;
-  font-size: 14px;
+  padding: 16px 0;
+  font-size: var(--text-xs);
   color: var(--color-neutral-500);
+  line-height: 1;
+  font-family: monospace;
   text-align: center;
   border-top: 1px solid var(--color-neutral-300);
 }
@@ -107,10 +129,12 @@ main.page {
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding: 48px 20px;
+  padding: 48px 20px 80px;
 }
 
 .main-header {
+  font-family: sans-serif;
+  font-size: var(--text-sm);
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
@@ -171,7 +195,7 @@ code:not(pre > *) {
   background: #eee;
   border: 1px solid #dedede;
   padding: 0 4px;
-  font-size: 13px;
+  font-size: var(--text-sm);
   border-radius: 3px;
 }
 
