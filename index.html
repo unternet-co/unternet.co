@@ -527,10 +527,10 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         document.removeEventListener('touchend', endHandler);
       };
       
-      // Add the event listeners
-      document.addEventListener('touchmove', moveHandler);
+      // Add the event listeners - explicitly set touchmove as non-passive
+      document.addEventListener('touchmove', moveHandler, { passive: false });
       document.addEventListener('touchend', endHandler);
-    });
+    }, { passive: false });
     
     // Function to apply momentum with decay
     function applyMomentum(element, initialVelocityX, initialVelocityY) {
