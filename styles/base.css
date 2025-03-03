@@ -1,4 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200..900&display=swap');
+:root {
+  --color-action: oklch(45.2% 0.313214 264.052); 
+  --color-highlight: oklch(93.59% 0.1528 101.65);
+  
+  --color-neutral-0: oklch(99.39% 0.002854 264.5422);
+  --color-neutral-50: oklch(95.79% 0.0029 264.54);
+  --color-neutral-100: oklch(92.17% 0.0029 264.54);
+  --color-neutral-200: oklch(85.5% 0.0029 264.54);
+  --color-neutral-300: oklch(77.32% 0.0044 271.36);
+  --color-neutral-400: oklch(65.8% 0.0029 264.54);
+  --color-neutral-500: oklch(53.92% 0.0046 286.24);
+  --color-neutral-600: oklch(45.5% 0.0029 264.54);
+  --color-neutral-700: oklch(38.2% 0.0029 264.54);
+  --color-neutral-800: oklch(35.1% 0.0029 264.54);
+  --color-neutral-900: oklch(32.11% 0.0029 264.54);
+}
 
 * {
   box-sizing: border-box;
@@ -13,10 +28,8 @@ body {
 }
 
 body {
-  font-family: 'Source Sans 3', system-ui, sans-serif;
-  background: #fafafa;
-  /* background: #111;
-  color: white; */
+  font-family: sans-serif;
+  background-color: var(--color-neutral-100);
   font-size: 16px;
 
   /* Font smoothing for macOS */
@@ -40,8 +53,11 @@ a:not(.bare) {
 }
 
 a:not(.bare):hover {
-  background: black;
-  color: white;
+  color: var(--color-action);
+}
+
+a:not(.bare):hover {
+  background: var(--color-highlight);
 }
 
 h1,
@@ -65,12 +81,12 @@ a {
 footer {
   /* margin-top: 20px; */
   flex-shrink: 0;
-  background: #eee;
+  background: var(--color-neutral-0);
   padding: 7px 0;
   font-size: 14px;
-  color: #999;
+  color: var(--color-neutral-500);
   text-align: center;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--color-neutral-300);
 }
 
 .page {
@@ -92,8 +108,8 @@ main.page {
   justify-content: space-between;
   align-items: center;
   overflow-x: scroll;
-  background: #151515;
-  border-bottom: 1px solid #313131;
+  background: var(--color-neutral-900);
+  border-bottom: 1px solid var(--color-neutral-300);
   padding: 0 20px;
 }
 
@@ -121,14 +137,25 @@ main.page {
 
 .main-header li + li::before {
   content: '\2022';
-  color: #898989;
+  color: var(--color-neutral-100);
   display: inline-block;
   margin-left: -15px;
   position: absolute;
 }
 
-.main-header li.active {
-  color: white;
+.main-header li.active a:not(.bare) {
+  color: var(--color-highlight);
+  text-decoration: none;
+}
+
+.main-header a, .main-header a:not(.bare) {
+  color: var(--color-neutral-100);
+}
+
+.main-header a:not(.bare):hover {
+  background-color: transparent;
+  color: var(--color-highlight);
+  text-decoration: underline;
 }
 
 pre,
