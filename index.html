@@ -260,6 +260,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
   function makeDraggable(element, container) {
     // Find the header element
     const header = element.querySelector('.window-header');
+    const bounds = document.querySelector('main');
     
     if (!header) return;
     
@@ -292,7 +293,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       
       // Store initial scroll position
       initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      initialScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      initialScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
       
       // Get current position in the page
       const rect = element.getBoundingClientRect();
@@ -325,7 +326,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         element.style.width = `${rect.width}px`;
         
         // Move to body to ensure it can be dragged across the document
-        document.body.appendChild(element);
+        bounds.appendChild(element);
       }
       
       // Store the initial element position relative to the document
@@ -347,7 +348,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         
         // Get current scroll position
         const currentScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const currentScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
         
         // Calculate the mouse movement delta, accounting for scroll
         const deltaX = (e.clientX + currentScrollX) - (initialMouseX + initialScrollX);
@@ -368,7 +369,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         if (timeDelta > 0) {
           // Calculate velocity in pixels per millisecond, accounting for scroll
           velocityX = ((e.clientX + currentScrollX) - (lastMouseX + (window.pageXOffset || document.documentElement.scrollLeft))) / timeDelta;
-          velocityY = ((e.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop))) / timeDelta;
+          velocityY = ((e.clientY + currentScrollY) - (lastMouseY + (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop)) / timeDelta;
           
           // Update last position and time
           lastMouseX = e.clientX;
@@ -403,7 +404,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       document.addEventListener('mouseup', mouseUpHandler);
     });
     
-    // Touch events for mobile support
+    // Touch events for mobile support - explicitly set as non-passive
     header.addEventListener('touchstart', (e) => {
       if (isDragging) return;
       isDragging = true;
@@ -422,7 +423,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
       
       // Store initial scroll position
       initialScrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      initialScrollY = window.pageYOffset || document.documentElement.scrollTop;
+      initialScrollY = (window.pageYOffset || document.documentElement.scrollTop) - bounds.offsetTop;
       
       // Get current position in the page
       const rect = element.getBoundingClientRect();
@@ -455,7 +456,7 @@ description: "Unternet is a San Francisco-based remote startup building a new, o
         element.style.width = `${rect.width}px`;
         
         // Move to body to ensure it can be dragged across the document
-        document.body.appendChild(element);
+        bounds.appendChild(element);
       }
       
       // Store the initial element position relative to the document
