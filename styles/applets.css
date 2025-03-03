@@ -1,14 +1,5 @@
 .intro {
-  display: flex;
-  flex-direction: column;
   text-align: center;
-  padding: 12px 20px 40px 20px;
-  gap: 8px;
-}
-
-.intro h1,
-.intro p {
-  margin: 0;
 }
 
 .applets-list {
@@ -17,18 +8,15 @@
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
-  gap: 12px;
+  gap: 16px;
 }
 
 .applet {
   width: calc(50% - 12px);
-  background: #eee;
-  border: 1px solid #ddd;
-  /* border: 1px solid #333; */
-  /* background: #222; */
-  border-radius: 4px;
+  background: var(--color-neutral-0);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
   padding: 12px;
-  font-size: 15px;
 }
 
 .applet header {
@@ -37,7 +25,7 @@
   gap: 8px;
 }
 
-.applet header h1 {
+.applet header h2 {
   padding: 0;
   margin: 0;
 }
@@ -48,24 +36,18 @@
 }
 
 a.applet-url {
-  background: black;
+  background: var(--color-neutral-900);
   color: white;
   /* background: #444; */
   display: inline-block;
   padding: 4px 8px;
   border-radius: 4px;
   margin-bottom: 0;
-  /* color: #ccc; */
-}
-
-a.applet-url:hover {
-  color: #ccc;
 }
 
 .applet-url.disabled,
 .applet-url.disabled:hover {
   background: inherit;
   cursor: default;
-  /* color: #ccc; */
-  color: #777;
+  color: var(--color-neutral-500);
 }
