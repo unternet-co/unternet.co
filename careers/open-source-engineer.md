@@ -1,11 +1,12 @@
 ---
 layout: page
 title: Open-Source Engineer
+stylesheet: career-detail
 ---
 
-# Open Source Engineer (Remote, or San Francisco)
+# Open Source Engineer 
 
-_This role is available either full-time or contract._
+_Remote, or San Francisco. This role is available either full-time or contract._
 
 ## About the company
 

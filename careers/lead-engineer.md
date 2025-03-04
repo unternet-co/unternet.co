@@ -1,9 +1,12 @@
 ---
 layout: page
 title: Lead Engineer
+stylesheet: career-detail
 ---
 
-# Lead Designer (Remote, or San Francisco)
+# Lead Designer
+
+_Remote, or San Francisco_
 
 ## About the company
 
