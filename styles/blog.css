@@ -1,18 +1,10 @@
-main.page {
-  padding-bottom: 100px;
-}
-
 article {
-  max-width: 650px;
+  max-width: 72ch;
 }
 
 .article-list article {
-  border-top: 1px solid #ddd;
-  padding-top: 28px;
-}
-
-article h2 {
-  margin-top: 14px;
+  border-top: 2px groove var(--color-neutral-0);
+  padding-top: 40px;
 }
 
 article img,
@@ -27,31 +19,30 @@ article video {
 .date {
   margin: 0;
   display: inline-block;
-  background: #ddd;
-  padding: 2px 4px;
+  background: var(--color-neutral-900);
+  color: var(--color-neutral-100);
+  padding: 4px 8px;
   border-radius: 4px;
-  font-size: 15px;
+  font-family: monospace;
+  font-size-adjust: 0.52;
+  line-height: 1;
+  font-size: var(--text-xs);
+  border: 1px outset var(--color-neutral-1000);
 }
 
 .callout {
   font-weight: 500;
-  font-size: 1.1em;
+  font-size: var(--text-lg);
 }
 
 form {
-  background: #ddd;
-  border-radius: 4px;
-  padding: 12px;
+  max-width: 72ch;
+  background: var(--color-neutral-0);
+  border-radius: 8px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-form p,
-form label {
-  font-weight: 500;
-  padding: 0;
-  margin: 0;
+  gap: 16px;
 }
 
 form .fields {
@@ -61,11 +52,9 @@ form .fields {
 }
 
 form input {
-  border: 1px solid transparent;
   border-radius: 4px;
-  padding: 6px 8px;
-  background: #fafafa;
-  outline: none;
+  padding: 8px 16px;
+  border-width: 1px;
 }
 
 form input[type='email'] {
@@ -73,8 +62,7 @@ form input[type='email'] {
 }
 
 form input[type='submit'] {
-  background: #111;
-  color: #ddd;
-  border-color: #444;
-  font-weight: 600;
+  background: var(--color-action);
+  cursor: pointer;
+  color: var(--color-neutral-100);
 }

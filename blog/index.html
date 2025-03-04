@@ -4,31 +4,34 @@ stylesheet: blog
 title: Updates
 ---
 
-<p class="callout">
-  We're sending out weekly notes, documenting our progress as we build the
-  future of the user agent.
-</p>
-<div class="form-container">
-  <form
-    action="https://buttondown.com/api/emails/embed-subscribe/unternet"
-    method="post"
-    target="popupwindow"
-    onsubmit="window.open('https://buttondown.com/unternet', 'popupwindow')"
-    class="embeddable-buttondown-form"
-  >
-    <p>Subscribe to updates in your inbox:</p>
-    <div class="fields">
-      <input
-        type="email"
-        name="email"
-        placeholder="yourname@example.com"
-        id="bd-email"
-      />
+<aside>
+  <h1>Updates</h1>
+  <p class="callout">
+    We're sending out weekly notes, documenting our progress as we build the
+    future of the user agent.
+  </p>
+  <div class="form-container">
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/unternet"
+      method="post"
+      target="popupwindow"
+      onsubmit="window.open('https://buttondown.com/unternet', 'popupwindow')"
+      class="embeddable-buttondown-form"
+    >
+      <label>Subscribe to updates in your inbox:</label>
+      <div class="fields">
+        <input
+          type="email"
+          name="email"
+          placeholder="yourname@example.com"
+          id="bd-email"
+        />
 
-      <input type="submit" value="Subscribe" />
-    </div>
-  </form>
-</div>
+        <input type="submit" value="Subscribe" />
+      </div>
+    </form>
+  </div>
+</aside>
 
 {%- for post in collections.posts reversed -%}
 
