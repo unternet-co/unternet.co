@@ -193,11 +193,13 @@ main.page {
 code:not(pre > *) {
   font-family: monospace;
   font-size-adjust: 0.46;
-  background: #eee;
-  /* border: 1px solid #dedede; */
+  background: var(--color-neutral-100);
+  border: 1px inset var(--color-neutral-300);
+  overflow-x: auto;
   padding: 0 4px;
   font-size: var(--text-sm);
   border-radius: 3px;
+  max-width: 80ch;
 }
 
 pre {
