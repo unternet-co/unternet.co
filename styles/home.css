@@ -99,7 +99,7 @@ main {
 .draggable-window-content {
   cursor: default;
   padding: 10px 15px;
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   text-align: left;
   border-radius: 4px;
   flex-grow: 1;
