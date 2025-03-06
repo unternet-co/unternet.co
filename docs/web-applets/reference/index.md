@@ -14,7 +14,7 @@ The main entrypoint into the Web Applets API is through the `applets` object, wh
 
 ## Usage examples
 
-The following example demonstrates how to declare an applet that renders a map. Here we focus on the JavaScript, assuming certain map functions, as well as a manifest.json file and index.html file. For more details, see the quickstart.
+The following example demonstrates how to declare an applet that renders a map. Here we focus on the JavaScript, assuming certain map functions, as well as a manifest.json file and index.html file. For more details, see the [quickstart](/docs/web-applets/creating-an-applet).
 
 ```js
 // Register the applet
