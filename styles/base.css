@@ -21,7 +21,7 @@
   --text-2xl: calc(var(--text-xl) * var(--text-scale));
   --text-xl: calc(var(--text-lg) * var(--text-scale));
   --text-lg: calc(var(--text-base) * var(--text-scale));
-  --text-base: 20px;
+  --text-base: 18px;
   --text-sm: calc(var(--text-base) / var(--text-scale));
   --text-xs: calc(var(--text-sm) / var(--text-scale));
 }
@@ -81,6 +81,8 @@ h4,
 h5,
 h6 {
   font-family: sans-serif;
+  font-weight: 500;
+  margin-bottom: 24px;
 }
 
 h1 {
@@ -88,6 +90,7 @@ h1 {
 }
 
 h2 {
+  margin-top: 48px;
   font-size: var(--text-2xl);
 }
 
@@ -100,7 +103,7 @@ h4 {
 }
 
 p, li {
-  max-width: 64ch;
+  max-width: 80ch;
 }
 
 a {
@@ -116,8 +119,8 @@ footer {
   flex-shrink: 0;
   background: var(--color-neutral-0);
   padding: 16px 0;
-  font-size: var(--text-xs);
-  color: var(--color-neutral-500);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-700);
   line-height: 1;
   font-family: monospace;
   text-align: center;
@@ -142,8 +145,8 @@ main.page {
 }
 
 .main-header {
-  font-family: sans-serif;
   font-size: var(--text-sm);
+  font-family: sans-serif;
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
@@ -190,14 +193,18 @@ main.page {
   text-decoration: underline;
 }
 
-code:not(pre > *) {
+code {
   font-family: monospace;
-  font-size-adjust: 0.46;
-  background: var(--color-neutral-100);
-  border: 1px inset var(--color-neutral-300);
+  font-size-adjust: 0.43;
+  line-height: 1;
+}
+
+code:not(pre > *) {
+  background: var(--color-neutral-50);
+  border: 1px inset var(--color-neutral-50);
   overflow-x: auto;
-  padding: 0 4px;
-  font-size: var(--text-sm);
+  padding: 2px 6px;
+  font-size: var(--text-base);
   border-radius: 3px;
   max-width: 80ch;
 }
@@ -206,7 +213,7 @@ pre {
   /* padding: 12px; */
   border-radius: 6px;
   overflow: hidden;
-  font-size: 13px;
+  font-size: var(--text-base);
 }
 
 blockquote {

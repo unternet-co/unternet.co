@@ -1,5 +1,6 @@
 article {
-  max-width: 72ch;
+  max-width: 80ch;
+  /* font-size: var(--text-lg); */
 }
 
 .article-list article {
@@ -24,25 +25,25 @@ article video {
   padding: 4px 8px;
   border-radius: 4px;
   font-family: monospace;
-  font-size-adjust: 0.52;
   line-height: 1;
   font-size: var(--text-xs);
   border: 1px outset var(--color-neutral-1000);
 }
 
 .callout {
-  font-weight: 500;
   font-size: var(--text-lg);
+  max-width: 64ch;
 }
 
 form {
-  max-width: 72ch;
+  max-width: 80ch;
   background: var(--color-neutral-0);
   border-radius: 8px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* font-size: var(--text-lg); */
 }
 
 form .fields {
@@ -64,5 +65,14 @@ form input[type='email'] {
 form input[type='submit'] {
   background: var(--color-action);
   cursor: pointer;
-  color: var(--color-neutral-100);
+  color: var(--color-neutral-0);
+  border-color: var(--color-action);
+  border-style: inset;
+  border-width: 1px;
+}
+
+form input[type='submit']:hover {
+  color: var(--color-highlight);
+  border-color: var(--color-highlight);
+  border-style: outset;
 }

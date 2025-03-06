@@ -1,45 +1,35 @@
 .docs {
   display: flex;
   overflow: hidden;
+  /* font-size: var(--text-lg); */
 }
 
 .docs-content {
   padding: 30px;
   overflow-y: scroll;
-  background: var(--color-neutral-0);
-}
-.docs-content {
-  font-size: 17px;
 }
 
 .docs-content-inner {
-  max-width: 740px;
+  max-width: 80ch;
   margin: 0 auto;
   padding-bottom: 80px;
 }
 
-.docs-content h1 {
-  font-size: 36px;
-}
-
 .docs-content h2 {
-  margin-top: 64px;
-  font-size: 24px;
-  margin-bottom: 0;
   padding-bottom: 8px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px groove var(--color-neutral-0);
 }
 
 .docs-content h3 {
   margin-top: 48px;
   margin-bottom: 8px;
-  font-size: 22px;
 }
 
 .docs-content h4 {
-  color: #555555;
+  color: var(--color-neutral-700);
   text-transform: uppercase;
-  font-size: 15px;
+  font-size: var(--text-base);
+  font-weight: 400;
   margin-top: 24px;
   margin-bottom: 0;
 }
@@ -53,7 +43,9 @@
   padding: 32px;
   width: 240px;
   flex-shrink: 0;
-  border-right: 1px solid var(--color-neutral-0);
+  border-right: 2px groove var(--color-neutral-0);
+  font-family: sans-serif;
+  font-size: var(--text-base);
 }
 
 .docs #menu-button {
@@ -105,16 +97,17 @@
 }
 
 .docs nav h1 {
-  font-size: inherit;
   padding: 0;
 }
 
 .docs nav h2 {
   text-transform: uppercase;
-  font-size: 0.9em;
-  color: #888;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  color: var(--color-neutral-700);
   padding: 0;
-  margin: 18px 0 8px 0;
+  /* margin: 18px 0 8px 0; */
 }
 
 .docs nav ul {
@@ -128,13 +121,14 @@
   color: var(--color-neutral-700);
 }
 
-.docs nav a.active {
+.docs nav a:hover {
+  background-color: unset;
+}
+
+.docs nav a.active,
+.docs nav a.active:hover {
   text-decoration: none;
   background-color: var(--color-highlight);
-  /* background: #ddd; */
-}
-.docs nav a.active:hover {
-  background: inherit;
 }
 
 .docs article {
@@ -144,6 +138,13 @@
 
 .docs img {
   max-width: 100%;
-  border: 1px solid var(--color-neutral-100);
+  border: 1px outset var(--color-neutral-200);
+  border-radius: 4px;
+}
+
+.hljs {
+  background: var(--color-neutral-50);
+  border: 1px inset var(--color-neutral-50);
+  margin: 20px 0;
   border-radius: 4px;
 }

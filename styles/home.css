@@ -4,7 +4,7 @@ body {
 
 .about {
   font-family: serif;
-  font-size: 20px;
+  font-size: var(--text-xl);
   margin-top: -5vh;
   position: relative;
   z-index: 1;
@@ -14,7 +14,7 @@ body {
 @media screen and (min-width: 768px) {
   .about {
     margin-top: -32px;
-    font-size: 32px;
+    font-size: var(--text-3xl);
   }
 }
 
@@ -92,14 +92,14 @@ main {
 .draggable-window::before {
   content: '⠿';
   display: inline-block;
-  font-size: 20px;
+  font-size: var(--text-lg);
   transform: rotate(90deg);
 }
 
 .draggable-window-content {
   cursor: default;
   padding: 10px 15px;
-  font-size: 20px;
+  font-size: var(--text-xl);
   text-align: left;
   border-radius: 4px;
   flex-grow: 1;
