@@ -79,6 +79,7 @@ main {
   user-select: none;
   transition: box-shadow 0.2s ease;
   cursor: move;
+  margin: 0;
 }
 
 .draggable-window.dragging {

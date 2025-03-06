@@ -302,17 +302,6 @@ function makeDraggable(element) {
     let currentX = rect.left + scrollX;
     let currentY = rect.top + scrollY;
     
-    // PARAMETER: Mass calculation - affects how windows interact during collisions
-    const massMultiplier = 0; // Adjust to change the effect of window size on mass
-    const mass = (element.offsetWidth * element.offsetHeight) * massMultiplier || 1;
-    windowData.mass = mass;
-    
-    // Friction factor (0-1, lower = more friction)
-    const frictionFactor = 0.95;
-    
-    // Minimum velocity to continue animation
-    const minVelocityThreshold = 0.1;
-    
     // Animation function
     function animateMomentum() {
 
@@ -335,8 +324,8 @@ function makeDraggable(element) {
       windowData.momentumData.velocityY = currentVelocityY;
       
       // Get viewport dimensions
-      const viewportWidth = element.innerWidth;
-      const viewportHeight = element.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
       
       // Get element dimensions
       const elementWidth = element.offsetWidth;
@@ -368,139 +357,6 @@ function makeDraggable(element) {
         currentY = viewportBottomDoc - elementHeight;
         currentVelocityY = -currentVelocityY * wallSpringiness; // Bounce with energy loss
         windowData.momentumData.velocityY = currentVelocityY;
-      }
-      
-      // Check for collisions with other windows
-      const thisRect = {
-        left: currentX,
-        top: currentY,
-        right: currentX + elementWidth,
-        bottom: currentY + elementHeight,
-        width: elementWidth,
-        height: elementHeight
-      };
-      
-      // Get all other windows
-      const otherWindows = windowRegistry.getAllWindows().filter(w => w.element !== element);
-      
-      for (const otherWindow of otherWindows) {
-        const otherElement = otherWindow.element;
-        const otherRect = otherElement.getBoundingClientRect();
-        
-        // Convert other window's viewport coordinates to document coordinates
-        const otherDocRect = {
-          left: otherRect.left + currentScrollX,
-          top: otherRect.top + currentScrollY,
-          right: otherRect.right + currentScrollX,
-          bottom: otherRect.bottom + currentScrollY,
-          width: otherRect.width,
-          height: otherRect.height
-        };
-        
-        // Check if collision occurred
-        if (
-          thisRect.left < otherDocRect.right &&
-          thisRect.right > otherDocRect.left &&
-          thisRect.top < otherDocRect.bottom &&
-          thisRect.bottom > otherDocRect.top
-        ) {
-          // Collision detected!
-          
-          // Calculate collision normal (direction from this window to other window)
-          const thisCenter = {
-            x: thisRect.left + thisRect.width / 2,
-            y: thisRect.top + thisRect.height / 2
-          };
-          
-          const otherCenter = {
-            x: otherDocRect.left + otherDocRect.width / 2,
-            y: otherDocRect.top + otherDocRect.height / 2
-          };
-          
-          const collisionNormal = {
-            x: otherCenter.x - thisCenter.x,
-            y: otherCenter.y - thisCenter.y
-          };
-          
-          // Normalize the collision normal
-          const magnitude = Math.sqrt(collisionNormal.x * collisionNormal.x + collisionNormal.y * collisionNormal.y);
-          if (magnitude === 0) continue; // Avoid division by zero
-          
-          collisionNormal.x /= magnitude;
-          collisionNormal.y /= magnitude;
-          
-          // Calculate relative velocity
-          const otherVelocityX = otherWindow.momentumData?.velocityX || 0;
-          const otherVelocityY = otherWindow.momentumData?.velocityY || 0;
-          
-          const relativeVelocityX = currentVelocityX - otherVelocityX;
-          const relativeVelocityY = currentVelocityY - otherVelocityY;
-          
-          // Calculate relative velocity in terms of the collision normal
-          const velocityAlongNormal = 
-            relativeVelocityX * collisionNormal.x + 
-            relativeVelocityY * collisionNormal.y;
-          
-          // Only resolve if objects are moving toward each other
-          if (velocityAlongNormal > 0) continue;
-          
-          const restitution = 0; // Adjust between 0.1 (less bouncy) and 0.9 (very bouncy)
-          
-          // Calculate impulse scalar
-          const otherMass = otherWindow.mass || 1;
-          const impulseScalar = -(1 + restitution) * velocityAlongNormal / 
-                                (1/mass + 1/otherMass);
-          
-          // Apply impulse
-          const impulseX = impulseScalar * collisionNormal.x;
-          const impulseY = impulseScalar * collisionNormal.y;
-          
-          // Update velocities based on impulse and mass
-          currentVelocityX -= impulseX / mass;
-          currentVelocityY -= impulseY / mass;
-          
-          // Update registry with new velocities
-          windowData.momentumData.velocityX = currentVelocityX;
-          windowData.momentumData.velocityY = currentVelocityY;
-          
-          // Apply impulse to other window if it's not already in motion
-          if (otherWindow.momentumData) {
-            otherWindow.momentumData.velocityX += impulseX / otherMass;
-            otherWindow.momentumData.velocityY += impulseY / otherMass;
-            
-            // Start momentum on the other window if it's not already animating
-            if (!otherWindow.momentumData.animationId) {
-              startMomentumOnWindow(otherWindow);
-            }
-          }
-          
-          // PARAMETER: Separation factor - controls how windows separate after collision
-          const separationFactor = 0.2; // Adjust between 0.1 (minimal) and 1.0 (maximum)
-          
-          // Resolve overlap (move windows apart)
-          const overlap = Math.min(
-            thisRect.right - otherDocRect.left,
-            otherDocRect.right - thisRect.left,
-            thisRect.bottom - otherDocRect.top,
-            otherDocRect.bottom - thisRect.top
-          );
-          
-          const separationX = overlap * collisionNormal.x * separationFactor;
-          const separationY = overlap * collisionNormal.y * separationFactor;
-          
-          // Move this window away from collision
-          currentX -= separationX;
-          currentY -= separationY;
-          
-          // Move other window away from collision (if it's not fixed)
-          if (otherWindow.momentumData) {
-            const otherCurrentX = otherDocRect.left;
-            const otherCurrentY = otherDocRect.top;
-            
-            otherElement.style.left = `${otherCurrentX + separationX}px`;
-            otherElement.style.top = `${otherCurrentY + separationY}px`;
-          }
-        }
       }
       
       // Apply the position (in document coordinates)
