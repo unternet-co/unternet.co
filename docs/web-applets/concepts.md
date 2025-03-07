@@ -1,7 +1,6 @@
 ---
 layout: docs
 title: Concepts - Web Applets
-tags: docs
 ---
 
 # Concepts
@@ -28,13 +27,23 @@ For example, this is an applet:
 
 This applet can now declare actions using <a href="/docs/web-applets/reference/applet-scope#defineAction">`defineAction()`</a>.
 
-## Where can this be used?
+## Rendering an applet
 
-Web Applets is designed to be used everywhere the web works.
+Web Applets should be a simple addition to any web application rendering process, whether that's a basic HTML website, or a complex React application.
 
-We think a particularly compelling use case will be embedding small, focused, portable apps that exist within a larger **intelligent client** environment, allowing models to coordinate multiple applets in response to user queries.
+If you're building an applet to run as an embedded application (for example, an AI chat widget), we recommend using action handlers primarily as functions to update the `data` object. You can then update the view in the `data` event handler, ensuring applet state can be rehydrated when the page is reloaded.
 
-However, there are also compelling use cases in **browsers** and **browser extensions** conducting actions on the active page (e.g. interacting with a design app using natural language), and web crawling (indexing a list of actions across all applets that can be taken across the web).
+```js
+self.setActionHandler('search', async () => {
+  this.data = await getSearchResults();
+});
+
+self.ondata = () => {
+  renderView(self.data);
+};
+```
+
+## Optimizing for model-legibility
 
 ## Security model
 

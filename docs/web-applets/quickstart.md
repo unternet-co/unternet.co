@@ -6,10 +6,7 @@ tags: docs
 
 # Quickstart
 
-In this document:
-
-- [Creating an applet](#applet)
-- [Creating a client](#client)
+Here we'll quickly get you set up with how to [create an applet](#applet) or [a client](#client)
 
 <a id="applet"></a>
 

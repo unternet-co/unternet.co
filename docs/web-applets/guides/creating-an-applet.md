@@ -16,10 +16,10 @@ This tutorial will walkthrough how an applet communicates with an external sourc
 
 ## Setup
 
-Let's start with a typical web applet template, which we can generate using our command-line tool. (Later, we will see how to add an applet to an existing web app in your favorite framework.)
+Let's start with an npm-based web applet template that uses TypeScript and Vite.
 
-```jsx
-npx @web-applets/create
+```bash
+git clone https://github.com/unternet-co/web-applet-template-ts-vite.git
 ```
 
 **Folder structure**
@@ -32,9 +32,8 @@ npx @web-applets/create
 ├── public
 │   ├── icon-128x128.png
 │   └── manifest.json
-├── src
-│   └── main.ts
-└── vite.config.js
+└── src
+    └── main.ts
 ```
 
 This is a simple single page app that is loaded on the main page `index.html`. The index page loads 2 files:
@@ -48,7 +47,7 @@ This is a simple single page app that is loaded on the main page `index.html`. T
 
 Let's look at how to define actions. We will define a `set_name` action in our manifest file, which our applet will use to update the name that's displayed in the UI. Open the manifest file and see the `actions` section. It should look like the following:
 
-```jsx
+```js
 {
   // ...
   "actions": {
@@ -69,7 +68,7 @@ Let's look at how to define actions. We will define a `set_name` action in our m
 
 In the actions object in our manifest file, we are providing information about our action such as an ID, description and the parameters it will accept. Our action, as per this definition, expects an object with the key `name` and a string value.
 
-```jsx
+```js
 {
   name: 'some name here';
 }
@@ -79,7 +78,7 @@ In the actions object in our manifest file, we are providing information about o
 
 So far we have only defined the action. We need to create a view that will respond to this action. Let's take a look at our `index.html`. We have a `<span>` with an `id`. This is where we'll take the `name` value we receive from the action to update the interface.
 
-```jsx
+```html
 Hello! <span id="name">whoever you are</span>.
 ```
 
@@ -91,7 +90,7 @@ So far we have defined an action and created a placeholder for it in the view. L
 2. `self.setActionHandler` This code adds an action handler, which can execute a function when an action is received from the client
 3. `self.ondata` callback function to be executed when new data is received. When we receive new data (name), we will query the `<span>` element we added by ID and update the inner text to reflect new data.
 
-```jsx
+```js
 import { applets } from '@web-applets/sdk';
 
 const self = applets.register();
