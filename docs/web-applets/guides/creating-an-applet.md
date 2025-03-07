@@ -4,9 +4,7 @@ title: Creating an applet - Web Applets
 tags: docs
 ---
 
-# Getting started
-
-We are excited for you to build your first applet. Let's dive in!
+# Creating an applet
 
 ## What we will be building
 

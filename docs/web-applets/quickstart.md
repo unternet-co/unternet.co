@@ -86,6 +86,10 @@ The <a href="/docs/web-applets/reference/applet-factory">`applets`</a> object wi
 applets.register() // etc.
 ```
 
+### Going further
+
+For a more detailed example of creating an applet, follow our <a href="/docs/web-applets//guides/creating-an-applet"> guide</a>.
+
 <a id="client"></a>
 
 ## Creating a client

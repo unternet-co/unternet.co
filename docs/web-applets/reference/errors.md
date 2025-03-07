@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Web Applets - Exceptions
+title: Errors - Web Applets
 ---
 
 # Errors

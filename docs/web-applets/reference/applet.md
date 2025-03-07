@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: API Reference - Web Applets
+title: Applet - Web Applets
 ---
 
 # Applet

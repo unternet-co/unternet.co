@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Web Applets - Events
+title: Events - Web Applets
 ---
 
 # Events
@@ -69,7 +69,7 @@ See corresponding property values in the `AppletEvent` interface above.
 
 ### connect
 
-Fired when a connection is established between an applet and its parent or between applets.
+Fired when a connection is established between an applet and its client or between applets.
 
 ```js
 applet.addEventListener('connect', (event) => {
