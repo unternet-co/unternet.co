@@ -101,7 +101,7 @@ An `AppletActionMap` object.
 
 ### Applet.width
 
-The current width of the applet in pixels.
+The current width of the applet's document in pixels.
 
 #### Value
 
@@ -109,7 +109,7 @@ A `number`.
 
 ### Applet.height
 
-The current height of the applet in pixels.
+The current height of the applet's document in pixels.
 
 #### Value
 
@@ -166,5 +166,21 @@ The data object, which can be any JSON-serializable value.
 ```js
 applet.addEventListener('data', (event) => {
   console.log('Applet data updated:', event.data);
+});
+```
+
+### resize
+
+An `AppletEvent`, which is fired when the applet's document changes dimensions.
+
+#### Event properties
+
+None.
+
+#### Example
+
+```js
+applet.addEventListener('resize', (event) => {
+  console.log('Applet size updated:', applet.width, applet.height);
 });
 ```
