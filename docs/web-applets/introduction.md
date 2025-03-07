@@ -10,6 +10,11 @@ Web Applets is an SDK, protocol and set of standards for building software that 
 
 The source code is hosted on GitHub <a href="https://github.com/unternet-co/web-applets" target="_blank">here</a>, and you can see a list of available web applets in our [Directory](/directory).
 
+<figure>
+<img src="/assets/blog/2025-01-maps-demo.gif" alt="A user interface showing a client loading up a graphical map applet in response to a query" />
+<figcaption>An example of our web applet client loading a map applet in response to a query, then responding to a follow-up question by reading the map's data.</figcaption>
+</figure>
+
 ## Why?
 
 [Unternet](https://unternet.co) is building a new, intelligent user agent that can do things for you across the web. As part of that effort, we needed a way to use client-side web software. You can do this with a computer use model, but for many use cases it's not suitable to point and click around in a virtual browser. Why make a computer talk to another computer via a clumsy web interface when they can just talk directly?
@@ -38,4 +43,4 @@ We're open sourcing Web Applets because we believe that the future of the web ne
 
 To get stuck right into code, view the [Quickstart](/docs/web-applets/quickstart). We recommend you review Web Applets [Concepts](/docs/web-applets/concepts) before you start.
 
-When you want to get further stuck in, you can take a look at our full [API reference](/docs/web-applets/reference).
+When you're ready to go further, our [API reference](docs/web-applets/reference) contains everything you need to create & use web applets in production.

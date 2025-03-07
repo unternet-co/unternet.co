@@ -27,6 +27,8 @@ An optional object that adheres to the Web App Manifest spec extension detailed 
 
 ## Instance methods
 
+<a id="setActionHandler"></a>
+
 ### AppletScope.setActionHandler()
 
 Registers a handler function for a specific action that's already been declared, either with the <a href="manifest">manifest.json</a> or through `defineAction()`.

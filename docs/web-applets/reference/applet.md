@@ -21,6 +21,8 @@ A `Window` object where the applet is implemented (typically an iframe's content
 
 ## Instance methods
 
+<a id="sendAction"></a>
+
 ### Applet.sendAction()
 
 Sends an action to the applet for execution.

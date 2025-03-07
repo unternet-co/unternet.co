@@ -14,7 +14,7 @@ Here we'll quickly get you set up with how to [create an applet](#applet) or [a 
 
 ### Using npm
 
-First, let's create an npm project that will build a static website.
+First, let's create an npm project that will build a static website (or clone one of our [templates](/docs/web-applets/resources/templates)).
 
 In this example, we'll use <a href="https://vite.dev/" target="_blank">Vite</a> for our bundling, but you can use any bundler.
 
