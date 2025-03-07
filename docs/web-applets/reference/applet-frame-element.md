@@ -3,13 +3,17 @@ layout: docs
 title: API reference - Web Applets
 ---
 
-# AppletFrameElement &lt;applet-frame&gt;
+# AppletFrameElement
 
-The `<applet-frame>` element is a custom HTML element that provides a container for embedding and interacting with applets. It handles the connection to the applet, manages communication, and automatically resizes based on the applet's dimensions.
+`AppletFrameElement` is a custom HTML element that provides a container for embedding and interacting with applets. It handles the connection to the applet, manages communication, and automatically resizes based on the applet's dimensions.
+
+> **Note:** Currently `AppletFrameElement` does not accept the `allow` attribute, meaning that it is not sandboxed by default and should only be used for trusted applications or in low-risk settings. In the meantime, we recommend using an `iframe` manually for production settings.
+
+`AppletFrameElement` extends <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" target="_blank">`HTMLElement`</a>, and inherits its properties and methods. In addition, it implements the below.
 
 ## Usage
 
-HTML:
+In an HTML file:
 
 ```html
 <applet-frame src="path/to/applet.html"></applet-frame>
@@ -53,7 +57,7 @@ frame.src = 'https://example.com/new-applet';
 
 ### AppletFrame.applet
 
-Provides access to the `Applet` instance that represents the connection to the embedded applet.
+Provides read-only access to the `Applet` instance that represents the connection to the embedded applet.
 
 #### Value
 
@@ -69,21 +73,13 @@ const data = frame.applet.data;
 frame.applet.sendAction('search', { query: 'example' });
 ```
 
-### AppletFrame.container
+### AppletFrame.contentWindow
 
-A reference to the internal iframe element that contains the applet.
-
-#### Value
-
-An `HTMLIFrameElement` or `undefined` if the element is not yet initialized.
-
-### AppletFrame.ready
-
-Indicates whether the applet is ready for interaction.
+A reference to contentWindow that contains the applet.
 
 #### Value
 
-A `boolean` or `undefined`.
+A read-only `Window` object.
 
 ## Events
 
@@ -136,27 +132,5 @@ The data object, which can be any JSON-serializable value.
 ```js
 frame.addEventListener('data', (event) => {
   console.log('Applet data updated:', event.data);
-});
-```
-
-### resize
-
-Fired when the applet's dimensions change.
-
-#### Event properties
-
-`width: number`
-
-The new width of the applet in pixels.
-
-`height: number`
-
-The new height of the applet in pixels.
-
-#### Example
-
-```js
-frame.addEventListener('resize', (event) => {
-  console.log('Applet resized:', event.width, event.height);
 });
 ```

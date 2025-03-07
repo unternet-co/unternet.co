@@ -5,9 +5,11 @@ title: API reference - Web Applets
 
 # Actions
 
+<a id="AppletActionDescriptor"></a>
+
 ## AppletActionDescriptor
 
-A dictionary used in the web applet manifest, as well as `AppletScope` and `Applet` classes that describes the properties of an Applet action, and its params schema.
+A dictionary used in the web applet manifest, as well as <a href="/docs/web-applets/reference/applet-scope">`AppletScope`</a> and <a href="/docs/web-applets/reference/applet">`Applet`</a> classes that describes the properties of an Applet action, and its params schema.
 
 ### Properties
 

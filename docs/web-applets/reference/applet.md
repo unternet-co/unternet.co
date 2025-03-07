@@ -5,13 +5,13 @@ title: API Reference - Web Applets
 
 # Applet
 
-The `Applet` class represents the interface through which the parent window interacts with an applet running in a child window. It is returned by the `AppletFactory.connect()` method and provides access to the applet's properties, data, and actions.
+The `Applet` class represents the interface through which the client interacts with an applet window. It is returned by the `AppletFactory.connect()` method and provides access to the applet's properties, data, and actions.
 
 ## Constructor
 
 ### Applet()
 
-Creates a new `Applet` instance that communicates with the specified child window. Don't use this directly, this class should only be instantiated through the `applets.connect()` method.
+Creates a new `Applet` instance that communicates with the specified applet window. Don't use this directly, this class should only be instantiated through the `applets.connect()` method.
 
 #### Parameters
 
@@ -57,7 +57,7 @@ applet.sendAction('search', {
 
 ### Applet.data
 
-Provides access to the current state of the applet's data. This object reflects the data defined in the applet implementation and is synchronized between the parent and child windows.
+Provides access to the current state of the applet's data. This object reflects the data defined in the applet implementation and is synchronized between the client and applet windows.
 
 #### Value
 
@@ -66,16 +66,16 @@ Can be any value that is JSON-serializable.
 #### Example
 
 ```js
-/* In parent window */
+/* In client */
 applet.data = 'Hello world!';
 
-/* In child window */
+/* In applet */
 applet.ondata = (e) => console.log(e.data); // "Hello world!"
 ```
 
 ### Applet.window
 
-A read-only reference to the child window where the applet is implemented.
+A read-only reference to the window where the applet is implemented.
 
 #### Value
 
@@ -83,7 +83,7 @@ A `Window` object.
 
 ### Applet.manifest
 
-Contains the parsed contents of the applet's manifest, as declared by the `<link rel="manifest" href="...">` tag in the child window. Declares the initial set of actions for the applet, and contains properties like descrition, name, etc.
+Contains the parsed contents of the applet's manifest, as declared by the `<link rel="manifest" href="...">` tag in the applet window. Declares the initial set of actions for the applet, and contains properties like descrition, name, etc.
 
 #### Value
 

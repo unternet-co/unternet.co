@@ -147,3 +147,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+.docs blockquote {
+  border-color: #f6b912;
+}

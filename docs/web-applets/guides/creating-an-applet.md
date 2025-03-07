@@ -1,9 +1,7 @@
 ---
 layout: docs
-title: Quickstart - Web Applets
+title: Creating an applet - Web Applets
 tags: docs
-eleventyNavigation:
-  key: Quickstart
 ---
 
 # Getting started
@@ -12,7 +10,9 @@ We are excited for you to build your first applet. Let's dive in!
 
 ## What we will be building
 
-You will be building a simple applet that says hello when we send it an action. This tutorial will walkthrough how an applet communicates with an external source and is able to pass data through the communication protocol. In addition, we will cover integrating the SDK to a web app, inspecting it during development, building and deploying it so you get a feel for the end to end process. Let's get started!
+You will be building a very simple applet that says hello when we send it an action.
+
+This tutorial will walkthrough how an applet communicates with an external source and is able to pass data through the communication protocol. In addition, we will cover integrating the SDK to a web app, inspecting it during development, building and deploying it so you get a feel for the end to end process. Let's get started!
 
 ![](/assets/docs/run-your-applet.png)
 
@@ -41,8 +41,10 @@ npx @web-applets/create
 
 This is a simple single page app that is loaded on the main page `index.html`. The index page loads 2 files:
 
-1. A manifest file in the public directory - This is a standard [web app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest), typically used to give browers and operating systems metadata about a web app when it's installed. We've extended the manifest spec to describe applet features like actions.
-2. A JS module - `main.ts` This is where we will be adding code to define the functionality of our applet.
+1. A manifest file in the public directory. This is a standard [web app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest), typically used to give browers and operating systems metadata about a web app when it's installed. We've <a href="/docs/web-applets/reference/manifest">extended the manifest spec</a> to allow for declaring action schemas.
+2. A module, `main.ts`, which is where we will be adding code to define the functionality of our applet.
+
+> **Note:** You can define actions directly in code using <a href="/docs/web-applets/reference/applet-scope#defineAction">AppletScope.defineAction()</a>, however we recommend creating a manifest if you plan to publish your applet, so its actions are indexable &amp; discoverable without having to run it first.
 
 ## Add some functionality
 
@@ -75,9 +77,9 @@ In the actions object in our manifest file, we are providing information about o
 }
 ```
 
-### Modify the view
+### Modify the UI
 
-So far we have only defined the action. We need to create a view that will respond to this action. Let's take a look at our `index.html`. We have a `<span>` with an `id`. This is where we'll take the `name` value we receive from the action to update the view.
+So far we have only defined the action. We need to create a view that will respond to this action. Let's take a look at our `index.html`. We have a `<span>` with an `id`. This is where we'll take the `name` value we receive from the action to update the interface.
 
 ```jsx
 Hello! <span id="name">whoever you are</span>.
@@ -87,22 +89,22 @@ Hello! <span id="name">whoever you are</span>.
 
 So far we have defined an action and created a placeholder for it in the view. Let's connect the two. Open the `main.ts` file. You will notice a few things:
 
-1. An `applets.register()` call - this will register our applet and provide us context. Context is where you can set data for the applet to use
-2. `context.setActionHandler` This code adds an action handler that uses the context object and updates shared data
-3. `context.ondata` callback function to be executed when new data is received. When we receive new data (name), we will query the `<span>` element we added by ID and update the inner text to reflect new data.
+1. An `applets.register()` call - this will register our applet, and send its properties, actions, and data to the client.
+2. `self.setActionHandler` This code adds an action handler, which can execute a function when an action is received from the client
+3. `self.ondata` callback function to be executed when new data is received. When we receive new data (name), we will query the `<span>` element we added by ID and update the inner text to reflect new data.
 
 ```jsx
 import { applets } from '@web-applets/sdk';
 
-const context = applets.register();
+const self = applets.register();
 
 // Define a 'set_name' action, and make it update the shared data object with the new name
-context.setActionHandler('set_name', ({ name }) => {
-  context.data = { name };
+self.setActionHandler('set_name', ({ name }) => {
+  self.data = { name };
 });
 
 // Whenever the data is updated, update the view
-context.ondata = () => {
+self.ondata = () => {
   const nameElement = document.getElementById('name');
   if (nameElement) {
     nameElement.innerText = context.data.name;
@@ -114,7 +116,7 @@ With this you have all three pieces in place:
 
 1. The manifest, where you define all your actions
 2. A script that handles actions, mutates state, and updates the view
-3. The HTML view, where new changes will be rendered
+3. The HTML page, where new changes will be rendered
 
 ### Inspect your applet
 
@@ -126,9 +128,9 @@ To inspect our applet, we need to run it. To get your applet running, run `npm r
 
 ![](/assets/docs/plain-inspector.png)
 
-> **Good to know**: The inspector is a Node express server running on a different port and allows you to inspect your web app. It has some additional UI to test your actions easily.
+> **Good to know:** The inspector is a Node express server running on a different port and allows you to inspect your web app. It has some additional UI to test your actions easily.
 
-Now that you have a handy way to test your actions, let's dispatch a sample event. In the params section, let's give it data in the format it expects.
+Now that you have a way to test your actions, let's dispatch a sample event. In the params section, let's give it data in the format it expects.
 
 ```javascript
 {
@@ -142,7 +144,7 @@ When you click "dispatch action", you can see the view layer respond according t
 
 Congratulations! 🎉
 
-You just created a web applet that can respond to externally dispatched events in a meaningful way. This is a trivial example of how the message passing protocol works in action. Once your applet is embedded in the operator, it will be one of many apps that can respond to the user's actions and pass data to user's context in helpful ways. 
+You just created a web applet that can respond to externally dispatched events in a meaningful way. This is a trivial example of how the message passing protocol works in action. Once your applet is embedded in the operator, it will be one of many apps that can respond to the user's actions and pass data to user's context in helpful ways.
 
 ### Build
 
@@ -150,10 +152,10 @@ Now that you have verified that the actions work as expected, you can build your
 
 ### Deploy & use
 
-Web applets are regular web apps, and can be hosted anywhere you would normally host static sites.(For example, [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/)). Web applets can be embedded & used anywhere the SDK is accepted, for example our [official reference client](https://github.com/unternet-co/operator).
+Web applets are regular web apps, and can be hosted anywhere you would normally host static sites (for example, [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/)). Web applets can be embedded & used anywhere the SDK is implemented.
 
 ### Taking it forward
 
-You can extrapolate this idea to define multiple actions that make sense to the applet you are creating. By having a list of actions that can be dispatched externally and writing your action handlers to respond to these events, you can create rich experiences for your consumers.
+You can extrapolate this idea to define multiple actions that make sense for the applet you are creating. By having a list of actions that can be dispatched externally and writing your action handlers to respond to these events, you can create rich experiences for users.
 
-If you build something cool, [make a pull request](https://github.com/unternet-co/applets), so we can list your applet in the official directory for others to view and use. 
+If you build something cool, [make a pull request](https://github.com/unternet-co/applets), so we can list your applet in the official directory for others to view and use.

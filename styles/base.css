@@ -132,13 +132,18 @@ main.page {
   color: white;
 }
 
-code:not(pre > *) {
+code:not(pre > *):not(a > *) {
   background: #eee;
   /* border: 1px solid #dedede; */
   padding: 0 4px;
   font-size: 13px;
   font-weight: bold;
   border-radius: 3px;
+}
+
+a > code {
+  font-size: 13px;
+  font-weight: bold;
 }
 
 pre {

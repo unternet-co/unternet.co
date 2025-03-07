@@ -5,13 +5,13 @@ title: API reference - Web Applets
 
 # AppletScope
 
-The `AppletScope` class represents the interface for an applet's implementation in a child window. It handles communication with the parent window, manages action handlers, and maintains the applet's state.
+The `AppletScope` class represents the interface for an applet's implementation in the applet window. It handles communication with the client, manages action handlers, and maintains the applet's state.
 
 ## Constructor
 
 ### AppletScope()
 
-Creates a new `AppletScope` instance and initiates connection with the parent window.
+Creates a new `AppletScope` instance and initiates connection with the client.
 
 #### Syntax
 
@@ -60,6 +60,8 @@ applet.setActionHandler('search', async (args) => {
 });
 ```
 
+<a id="defineAction"></a>
+
 ### AppletScope.defineAction()
 
 Defines a new action with its properties and optional handler.
@@ -76,9 +78,16 @@ defineAction(actionId, definition);
 
 A `string` representing the identifier of the action.
 
-`definition`
+`definition`  
+An object describing the action, with the following properties:
 
-An `AppletActionDescriptor` object describing the action.
+- `title`<br>A short human-readable `string` title for the action.
+
+- `description`<br>A human-readable `string` description of what the action does.
+
+- `params_schema`<br>A JSON schema object describing the parameters your action expects.
+
+- `handler`<br>An optional `function` that is invoked whenever the action is executed. Receives one argument, an object matching the validated schema. If is omitted, this defaults to whatever the current action handler is for this action, if any.
 
 #### Return value
 
@@ -100,6 +109,9 @@ applet.defineAction('search', {
     },
     required: ['query'],
   },
+  handler: ({ query }) => {
+    // do stuff
+  },
 });
 ```
 
@@ -107,7 +119,7 @@ applet.defineAction('search', {
 
 ### AppletScope.data
 
-Provides access to the current state of the applet's data. When modified, this property automatically synchronizes the data with the parent window.
+Provides access to the current state of the applet's data. When modified, this property automatically synchronizes the data with the client.
 
 #### Value
 
@@ -116,10 +128,10 @@ Can be any value that is JSON-serializable.
 #### Example
 
 ```js
-/* In child window */
+/* In applet window */
 applet.data = { results: ['Item 1', 'Item 2'] };
 
-/* Data will be automatically synchronized with parent window */
+/* Data will be automatically synchronized with client */
 ```
 
 ### AppletScope.actions
@@ -128,7 +140,7 @@ A map of available actions defined for the applet.
 
 #### Value
 
-An `AppletActionMap` object. When modified, this property automatically notifies the parent window of the updated actions.
+An `AppletActionMap` object. When modified, this property automatically notifies the client of the updated actions.
 
 ### AppletScope.manifest
 
@@ -166,7 +178,7 @@ A read-only `number`.
 
 ### connect
 
-An `AppletEvent`, which is dispatched when the connection with the parent window is established successfully.
+An `AppletEvent`, which is dispatched when the connection with the client is established successfully.
 
 #### Properties
 
@@ -176,7 +188,7 @@ None.
 
 ```js
 applet.addEventListener('connect', (event) => {
-  console.log('Connected to parent window');
+  console.log('Connected to client!');
 });
 ```
 
