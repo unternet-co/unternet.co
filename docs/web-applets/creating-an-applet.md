@@ -18,10 +18,12 @@ You will be building a simple applet that says hello when we send it an action. 
 
 ## Setup
 
-Let's start with a typical web applet template, which we can generate using our command-line tool. (Later, we will see how to add an applet to an existing web app in your favorite framework.)
+Let's start with a typical web app template, using Vite and TypeScript.
 
-```jsx
-npx @web-applets/create
+```
+mkdir my-applet && cd my-applet
+npm init
+npm install -D vite
 ```
 
 **Folder structure**
@@ -87,14 +89,14 @@ Hello! <span id="name">whoever you are</span>.
 
 So far we have defined an action and created a placeholder for it in the view. Let's connect the two. Open the `main.ts` file. You will notice a few things:
 
-1. An `applets.register()` call - this will register our applet and provide us context. Context is where you can set data for the applet to use
+1. An `applets.getContext()` call - this will register our applet and provide us context. Context is where you can set data for the applet to use
 2. `context.setActionHandler` This code adds an action handler that uses the context object and updates shared data
 3. `context.ondata` callback function to be executed when new data is received. When we receive new data (name), we will query the `<span>` element we added by ID and update the inner text to reflect new data.
 
 ```jsx
 import { applets } from '@web-applets/sdk';
 
-const context = applets.register();
+const context = applets.getContext();
 
 // Define a 'set_name' action, and make it update the shared data object with the new name
 context.setActionHandler('set_name', ({ name }) => {
@@ -142,7 +144,7 @@ When you click "dispatch action", you can see the view layer respond according t
 
 Congratulations! 🎉
 
-You just created a web applet that can respond to externally dispatched events in a meaningful way. This is a trivial example of how the message passing protocol works in action. Once your applet is embedded in the operator, it will be one of many apps that can respond to the user's actions and pass data to user's context in helpful ways. 
+You just created a web applet that can respond to externally dispatched events in a meaningful way. This is a trivial example of how the message passing protocol works in action. Once your applet is embedded in the operator, it will be one of many apps that can respond to the user's actions and pass data to user's context in helpful ways.
 
 ### Build
 
@@ -156,4 +158,4 @@ Web applets are regular web apps, and can be hosted anywhere you would normally 
 
 You can extrapolate this idea to define multiple actions that make sense to the applet you are creating. By having a list of actions that can be dispatched externally and writing your action handlers to respond to these events, you can create rich experiences for your consumers.
 
-If you build something cool, [make a pull request](https://github.com/unternet-co/applets), so we can list your applet in the official directory for others to view and use. 
+If you build something cool, [make a pull request](https://github.com/unternet-co/applets), so we can list your applet in the official directory for others to view and use.
