@@ -35,7 +35,7 @@ However, there are also compelling use cases in **web browsers** and **browser e
 
 Unternet is a <a href="https://www.cooleygo.com/faq-delaware-public-benefit-corporations/" target="_blank">Public Benefit Corporation</a> with a mission to increase user agency &amp; software interoperability on the web.
 
-We've been seeing this sort of AI-actuated software as an emerging use case for the future of computing. But if this functionality is reserved for proprietary integrations, or if one closed platform dominates above others, then the open web as we know it could be at risk.
+We believe a new kind of AI-native software will be the foundation for the next phase of computing &amp; the web. But if one proprietary platform dominates this, instead of a shared standard anyone can participate in, then the open web as we know it will be at risk.
 
 We're open sourcing Web Applets because we believe that the future of the web needs to be open. Web Applets can be implemented by any client, can be hosted anywhere on the web, and indexed by anyone.
 
