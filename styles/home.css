@@ -7,7 +7,6 @@ main {
   text-align: center;
   padding: 20px;
   gap: 10px;
-  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -25,5 +24,34 @@ main {
   text-align: left;
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+  font-size: 17px;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  height: 400px;
+  margin-bottom: -40px;
+}
+
+.hero .wordmark,
+.hero .squiggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero .squiggle {
+  width: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.hero .wordmark {
+  z-index: 100;
 }
