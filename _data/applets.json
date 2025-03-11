@@ -29,23 +29,30 @@
   },
   {
     "title": "unternet-co/rich-text-editor",
-    "favicon": "https://applets.unternet.co/rich-text-editor/icon-128x128.png",
+    "favicon": "https://applets.unternet.co/rich-text-editor/icon-512x512.png",
     "url": "https://applets.unternet.co/rich-text-editor",
     "source_url": "https://github.com/unternet-co/applets/tree/main/src/rich-text-editor",
     "description": "A rich text editor, that can write a new buffer of text or append to an existing one."
   },
   {
-    "title": "unternet-co/weather",
-    "favicon": "https://applets.unternet.co/weather/icon-512x512.png",
-    "url": "https://applets.unternet.co/weather",
-    "source_url": "https://github.com/unternet-co/applets/tree/main/src/weather",
-    "description": "Simple 7-day weather forecasts for your city."
+    "title": "unternet-co/codepad",
+    "favicon": "https://applets.unternet.co/codepad/icon-96x96.png",
+    "url": "https://applets.unternet.co/codepad",
+    "source_url": "https://github.com/unternet-co/applets/tree/main/src/codepad",
+    "description": "Edit code collaboratively with an LLM."
+  },
+  {
+    "title": "unternet-co/crossword",
+    "favicon": "https://applets.unternet.co/crossword/icon-286x286.png",
+    "url": "https://applets.unternet.co/crossword",
+    "source_url": "https://github.com/unternet-co/applets/tree/main/src/crossword",
+    "description": "A simple crossword puzzle. You can ask for hints, and get the model to fill out answers when you get it right."
   },
   {
     "title": "unternet-co/web",
     "favicon": "https://applets.unternet.co/web/icon-128x128.png",
     "url": "https://applets.unternet.co/web",
     "source_url": "https://github.com/unternet-co/applets/tree/main/src/web",
-    "description": "Search the web."
+    "description": "Search & extract information from the web."
   }
 ]
