@@ -36,6 +36,6 @@ If you want to learn to develop one together, here's a 4-minute tutorial buildin
 
 <iframe width="100%" height="380" src="https://www.youtube.com/embed/ZsadocyGj3I?si=YosPjtJ_vlb-0o7M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-At this stage, the API is nearing production-readiness, and we invite you to start building your own AI-native apps, hosting them on the open web, and experimenting with [making your own clients & chat UIs](http://localhost:1235/docs/web-applets/quickstart/#client) to run them.
+At this stage, the API is nearing production-readiness, and we invite you to start building your own AI-native apps, hosting them on the open web, and experimenting with [making your own clients & chat UIs](/docs/web-applets/quickstart/#client) to run them.
 
 If you make something cool or have feature suggestions, [jump into the Discord](https://discord.com/invite/VsMuEKmqvt) and let us know.
