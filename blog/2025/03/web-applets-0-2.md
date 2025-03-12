@@ -21,9 +21,9 @@ Here's an example of code from an applet that writes _"hello"_ on the screen whe
 ```javascript
 import { applets } from '@web-applets/sdk';
 
-applets.register();
+const self = applets.register();
 
-applets.defineAction('say_hello', {
+self.defineAction('say_hello', {
   handler: () => (document.body.innerText = 'Hello!'),
 });
 ```
