@@ -8,7 +8,9 @@ tags: docs
 
 Web Applets is an SDK, protocol and set of standards for building software that both humans and AI can understand and use together. It's built to be a light-weight layer over the existing web, that makes web apps legible to external systems, which can in turn send actions to them and receive data.
 
-The source code is hosted on GitHub <a href="https://github.com/unternet-co/web-applets" target="_blank">here</a>, and you can see a list of available web applets in our [Directory](/directory).
+> Want to try one out now? In your terminal (with Node installed) run `npx @web-applets/inspector` and in the Inspector's URL bar paste the link of an applet from our [directory](/directory).
+
+The project is MIT-licensed, and source code is hosted on GitHub <a href="https://github.com/unternet-co/web-applets" target="_blank">here</a>.
 
 <figure>
 <img src="/assets/blog/2025-01-maps-demo.gif" alt="A user interface showing a client loading up a graphical map applet in response to a query" />
