@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Templates - Web Appletds
+title: Templates - Web Applets
 ---
 
 # Templates
