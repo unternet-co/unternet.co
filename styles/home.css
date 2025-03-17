@@ -15,7 +15,7 @@ main {
 }
 
 .about {
-  font-size: 22px;
+  font-size: var(--text-lg);
   font-weight: 400;
 }
 
@@ -24,7 +24,6 @@ main {
   text-align: left;
   display: flex;
   flex-direction: column;
-  font-size: 17px;
 }
 
 .hero {
