@@ -15,6 +15,23 @@
     />
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
 
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://unternet.co">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ '/assets/opengraph.png' | url }}">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="unternet.co">
+    <meta property="twitter:url" content="https://unternet.co">
+    <meta name="twitter:title" content="{{ title}}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta property="twitter:image" content="{{ '/assets/opengraph.png' | url }}">
+
+  <!-- Meta Tags Generated via https://www.opengraph.xyz -->  
+
     <!-- and it's easy to individually load additional languages -->
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/javascript.min.js"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/html.min.js"></script>
@@ -39,7 +56,7 @@
   <body>
     <header class="main-header">
       <a href="/" class="bare logo-container"
-        ><img src="/assets/glyph.png" class="logo"
+        ><img src="/assets/glyph.svg" class="logo"
       /></a>
       <ul>
         <li class="{% if page.url == '/' %}active{% endif %}">

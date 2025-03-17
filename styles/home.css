@@ -30,27 +30,29 @@ main {
   position: relative;
   width: 100%;
   max-width: 650px;
-  height: 400px;
-  margin-bottom: -40px;
+  aspect-ratio: 2/1;
+  display: flex;
+  align-items: center;
+  margin-bottom: calc(var(--spacing) * 5);
 }
 
 .hero .wordmark,
-.hero .squiggle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero .squiggle {
-  width: 90%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
+.hero .projection {
+  position: relative;
+  margin: 0;
 }
 
 .hero .wordmark {
-  z-index: 100;
+  width: 100%;
+}
+
+.hero .projection {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+}
+
+.hero svg {
+  max-width: 100%;
 }
