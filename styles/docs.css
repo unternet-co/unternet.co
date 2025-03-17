@@ -74,6 +74,23 @@
   color: var(--color-reaction-600);
 }
 
+.hljs-addition, .hljs-built_in, .hljs-bullet, .hljs-code {
+  color: var(--color-success-400);
+}
+
+.hljs-tag .hljs-attr, .hljs-tag .hljs-name {
+  color: var(--color-text-default);
+  font-weight: 400;
+}
+
+.hljs-punctuation, .hljs-tag {
+  color: var(--color-text-muted);
+}
+
+.hljs-comment {
+  color: var(--color-text-muted);
+}
+
 @media screen and (max-width: 600px) {
   .docs #menu-button {
     display: block;

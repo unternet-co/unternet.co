@@ -18,6 +18,8 @@ body {
   background: var(--color-bg-content);
   font-size: var(--text-base);
 
+  color: var(--color-text-default);
+
   /* Font smoothing for macOS */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -90,8 +92,7 @@ main.page {
   justify-content: space-between;
   align-items: center;
   overflow-x: scroll;
-  background: var(--color-neutral-1000);
-  border-bottom: 1px solid var(--color-neutral-900);
+  background: var(--color-header-bg);
   padding: 0 20px;
 }
 
@@ -114,20 +115,20 @@ main.page {
 .main-header li {
   margin-left: 24px;
   position: relative;
-  color: var(--color-neutral-300);
+  color: var(--color-header-link);
   font-weight: 600;
 }
 
 .main-header li + li::before {
   content: '\2022';
-  color: var(--color-neutral-300);
+  color: var(--color-header-link);
   display: inline-block;
   margin-left: -15px;
   position: absolute;
 }
 
 .main-header li.active {
-  color: var(--color-neutral-0);
+  color: var(--color-header-link-active);
 }
 
 code:not(pre > *):not(a > *) {
@@ -157,7 +158,6 @@ blockquote {
   margin-top: 30px;
   margin-bottom: 30px;
   padding-left: 20px;
-  color: var(--color-text-muted);
 }
 
 figure {
