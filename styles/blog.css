@@ -7,7 +7,7 @@ article {
 }
 
 .article-list article {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border-default);
   padding-top: 28px;
 }
 
@@ -27,19 +27,19 @@ article video {
 .date {
   margin: 0;
   display: inline-block;
-  background: #ddd;
+  background: var(--color-bg-container);
   padding: 2px 4px;
   border-radius: 4px;
-  font-size: 15px;
+  font-size: var(--text-sm);
 }
 
 .callout {
   font-weight: 500;
-  font-size: 1.1em;
+  font-size: var(--text-lg);
 }
 
 form {
-  background: #ddd;
+  background: var(--color-bg-container);
   border-radius: 4px;
   padding: 12px;
   display: flex;
@@ -64,7 +64,8 @@ form input {
   border: 1px solid transparent;
   border-radius: 4px;
   padding: 6px 8px;
-  background: #fafafa;
+  background: var(--color-bg-content);
+  border: 1px solid var(--color-border-strong);
   outline: none;
 }
 
@@ -73,8 +74,9 @@ form input[type='email'] {
 }
 
 form input[type='submit'] {
-  background: #111;
-  color: #ddd;
-  border-color: #444;
+  cursor: pointer;
+  background: var(--color-action-800);
+  color: var(--color-neutral-0);
+  border-color: var(--color-action-800);
   font-weight: 600;
 }

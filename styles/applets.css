@@ -23,13 +23,11 @@
 
 .applet {
   width: calc(50% - 12px);
-  background: #eee;
-  border: 1px solid #ddd;
-  /* border: 1px solid #333; */
-  /* background: #222; */
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border-muted);
   border-radius: 4px;
   padding: 12px;
-  font-size: 15px;
+  font-size: var(--text-sm);
 }
 
 .applet header {
@@ -49,24 +47,21 @@
 }
 
 a.applet-url {
-  background: black;
-  color: white;
-  /* background: #444; */
+  background: var(--color-neutral-1000);
+  color: var(--color-neutral-0);
   display: inline-block;
   padding: 4px 8px;
   border-radius: 4px;
   margin-bottom: 0;
-  /* color: #ccc; */
 }
 
 a.applet-url:hover {
-  color: #ccc;
+  color: var(--color-neutral-100);
 }
 
 .applet-url.disabled,
 .applet-url.disabled:hover {
   background: inherit;
   cursor: default;
-  /* color: #ccc; */
-  color: #777;
+  color: var(--color-text-disabled);
 }

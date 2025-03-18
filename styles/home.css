@@ -7,7 +7,6 @@ main {
   text-align: center;
   padding: 20px;
   gap: 10px;
-  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -16,7 +15,7 @@ main {
 }
 
 .about {
-  font-size: 22px;
+  font-size: var(--text-lg);
   font-weight: 400;
 }
 
@@ -25,5 +24,35 @@ main {
   text-align: left;
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  aspect-ratio: 2/1;
+  display: flex;
+  align-items: center;
+  margin-bottom: calc(var(--spacing) * 5);
+}
+
+.hero .wordmark,
+.hero .projection {
+  position: relative;
+  margin: 0;
+}
+
+.hero .wordmark {
+  width: 100%;
+}
+
+.hero .projection {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+}
+
+.hero svg {
+  max-width: 100%;
 }
