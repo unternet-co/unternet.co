@@ -1,0 +1,15 @@
+<svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .border { stroke: #0000ff; }
+        .bg { fill: #FBFCFE; }
+        .fg { fill: #0000ff; }
+        @media (prefers-color-scheme: dark) {
+            .border { stroke: #FBFCFE; }
+            .bg { fill: #0000ff; }
+            .fg { fill: #FBFCFE; }
+        }
+    </style>
+    <rect width="124" height="85.79" x="2" y="20.61" fill="currentColor" rx="13.3" class="bg"/>
+    <rect width="124" height="85.79" x="2" y="20.61" stroke="currentColor" stroke-width="8" rx="13.3" class="border" />
+    <path fill="currentColor" class="fg" d="M36.66 88.25c-9.67 0-14.5-5.87-14.5-17.69V43.9h8.45v25.38c0 8.2 3.46 12.08 9.58 12.08 7.67 0 11.57-4.26 11.57-10.2V43.9h8.46v43.16h-8.46v-7.4h-.26c-3.4 4.6-7.22 8.6-14.84 8.6Zm54.27-45.57c9.67 0 14.5 5.87 14.5 17.69v26.67h-8.46V61.66c0-8.2-3.45-12.08-9.58-12.08-7.67 0-11.56 4.26-11.56 10.2v27.26h-8.46V43.89h8.46v7.4h.26c3.4-4.6 7.21-8.61 14.84-8.61Z"/>
+</svg>
