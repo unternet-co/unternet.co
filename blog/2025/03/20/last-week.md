@@ -30,3 +30,5 @@ We've got a new look! While we've been working away on the client, Ryan has put 
 This weekend I'll be in Seattle (along with a few members of the Unternet greater disapora) to attend the inaugural [ATmosphere conference](https://atprotocol.dev/atmosphereconf/). I'm quietly excited about AT protocol's potential to usher in an open data & identity layer that the internet has been sorely missing.
 
 Looking forward to connecting with the community and sharing some demos! Get in touch if you're going to be there.
+
+&mdash; Rupert
