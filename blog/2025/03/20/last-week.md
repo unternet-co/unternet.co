@@ -17,7 +17,7 @@ So, this week has been all about some of the finer points of product development
 
 <img src="/assets/blog/2025-03-wordmark.svg" alt="The Unternet logo" style="padding: 30px 0; width: 80%;" />
 
-We've got a new look! Ryan has been working on putting together a brand that reflects our love for the open web. In his words:
+We've got a new look! While we've been working away on the client, Ryan has put together a brand that reflects our love for the open web. In his words:
 
 > The web is built on defaults—colors, structures, and protocols that we barely notice but rely upon every day.
 >
