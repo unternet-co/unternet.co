@@ -4,11 +4,13 @@ main.page {
 
 article {
   max-width: 650px;
+  padding-top: 0;
+  padding-bottom: 40px;
 }
 
-.article-list article {
+article + article {
   border-top: 1px solid var(--color-border-default);
-  padding-top: 28px;
+  padding-top: 40px;
 }
 
 article h2 {
