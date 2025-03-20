@@ -21,9 +21,9 @@ We've got a new look! While we've been working away on the client, Ryan has put 
 
 > The web is built on defaults—colors, structures, and protocols that we barely notice but rely upon every day.
 >
-> The Unternet wordmark now breaks into its core syllables: un · ter · net—a nod to the rhythm of our speech, the tokens shaping AI interactions, and the composable and extensible nature of information itself. Our refreshed action blue (#0000FF) and reaction purple (#8207D7) accent colors expose the raw functional defaults of the links we click to navigate the web. And a variety of map projections remind us there's never just one way to understand this world.
+> The Unternet wordmark now breaks into its core syllables: un · ter · net—a nod to the rhythm of our speech, the tokens shaping AI interactions, and the composable and extensible nature of information itself. Our refreshed action blue (<span style="color:#0000FF; font-weight: bold;">#0000FF</span>) and reaction purple (<span style="color:#8207D7; font-weight: bold">#8207D7</span>) accent colors expose the raw functional defaults of the links we click to navigate the web. And a variety of map projections remind us there's never just one way to understand this world.
 >
-> At its root, “un” remains. We're here to untangle complexities, unburden users, and unlock a more open, resilient, and locally-driven approach to managing information.
+> At its root, “un” remains. We're here to untangle complexities, unburden users, and unbundle the web to create a more open, resilient, and locally-driven approach to managing information.
 
 ## ATmosphere conference
 
