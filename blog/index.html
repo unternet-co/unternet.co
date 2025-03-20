@@ -5,7 +5,7 @@ title: Updates
 ---
 
 <p class="callout">
-  We're sending out weekly notes, documenting our progress as we build the
+  We're sending out weekly-ish notes, documenting our progress as we build the
   future of the user agent.
 </p>
 <div class="form-container">
@@ -30,15 +30,18 @@ title: Updates
   </form>
 </div>
 
+<div class="article-list"></div>
 {%- for post in collections.posts reversed -%}
 
-<div class="article-list">
+
   <article class="post">
     <p class="date">{{ post.data.date | dateFilter }}</p>
     <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
 
     <div class="post-content">{{ post.templateContent }}</div>
   </article>
-</div>
+
 
 {%- endfor -%}
+
+</div>
