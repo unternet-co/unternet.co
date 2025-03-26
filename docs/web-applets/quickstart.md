@@ -95,7 +95,7 @@ For a more detailed example of creating an applet, follow our <a href="/docs/web
 
 To implement a Web Applets client, follow the same steps as above to create a web app that loads the Web Applets SDK, either through NPM or a polyfill.
 
-First, you need to have an applet running in a `Window` object somewhere. In our case, we'll use an <a href="/docs/web-applets/reference/applet-frame">`<applet-frame>`</a> element, which is made available when you import the SDK.
+First, you need to have an applet running in a `Window` object somewhere. In our case, we'll use an <a href="/docs/web-applets/reference/applet-frame-element">`<applet-frame>`</a> element, which is made available when you import the SDK.
 
 Somewhere in a JavaScript file that's loaded by your app, write:
 
