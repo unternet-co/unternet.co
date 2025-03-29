@@ -69,6 +69,9 @@
         <li class="{% if page.url == '/' %}active{% endif %}">
           <a href="/">Home</a>
         </li>
+        <li class="{% if page.url contains '/client/' %}active{% endif %}">
+          <a href="/client">Client</a>
+        </li>
         <li class="{% if page.url contains '/blog/' %}active{% endif %}">
           <a href="/blog">Updates</a>
         </li>

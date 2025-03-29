@@ -1,0 +1,35 @@
+---
+layout: base
+stylesheet: client
+---
+
+<main>
+  <div>
+    <h1>Operator</h1>
+    <h2>Think and do with an agent that's yours.</h2>
+    <ul class="features">
+        <li><strong>Direct manipulation:</strong> Chat is cumbersome. Agents should be quick. Operator gives you the best of both: mini apps for fast interactions, and a chat thread for everything else.</li>
+        <li><strong>Workspace-based:</strong> We know there's a lot happening in your life. Organize different workspaces with access to different resources, to help keep both you and your agent focused.</li>
+        <li><strong>Open & customizable:</strong> Missing something? It's infinitely extensible. Add the data and behaviours you need via the <a href="/docs/web-applets/introduction">web applets</a> protocol.</li>
+        <li><strong>Local & private:</strong> Operator is your own. No one else controls your agent. You can connect it to a cloud-based model if you want, but by default it will run locally through Ollama.</li>
+    </ul>
+  </div>
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/unternet"
+    method="post"
+    target="popupwindow"
+    onsubmit="window.open('https://buttondown.com/unternet', 'popupwindow')"
+    class="embeddable-buttondown-form"
+  >
+    <p>Subscribe for early access:</p>
+    <div class="fields">
+      <input
+        type="email"
+        name="email"
+        placeholder="yourname@example.com"
+        id="bd-email"
+      />
+      <input type="submit" value="Subscribe" />
+    </div>
+  </form>
+</main>
