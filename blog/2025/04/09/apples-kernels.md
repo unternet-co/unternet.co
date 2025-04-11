@@ -3,6 +3,7 @@ date: 2025-04-11
 tags: posts
 layout: post
 title: 'Last month at Unternet: Apples & kernels'
+author: Rupert
 ---
 
 We've been spending the last few weeks putting together a stable version of our client, the AI-powered open web workspace we've been moving towards since the company started late last year.
