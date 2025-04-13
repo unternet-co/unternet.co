@@ -104,7 +104,7 @@ self.setActionHandler('set_name', ({ name }) => {
 self.ondata = () => {
   const nameElement = document.getElementById('name');
   if (nameElement) {
-    nameElement.innerText = context.data.name;
+    nameElement.innerText = self.data.name;
   }
 };
 ```
