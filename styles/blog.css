@@ -45,6 +45,7 @@ form {
   border-radius: 4px;
   padding: 12px;
   display: flex;
+  border: 1px solid var(--color-border);
   flex-direction: column;
   gap: 12px;
 }

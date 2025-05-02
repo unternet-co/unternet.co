@@ -4,9 +4,32 @@ stylesheet: blog
 title: Updates
 ---
 
-<p class="callout">
+<style>
+.articles {
+  display: flex;
+}
+
+.articles-list {
+  font-size: 15px;
+  margin-left: 35px;
+  list-style: none;
+}
+
+.articles-list li {
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.articles-list .date-header {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+</style>
+
+<!-- <p class="callout">
   We're sending out regular notes, documenting our progress as we build the intelligent workspace for the web.
-</p>
+</p> -->
 <div class="form-container">
   <form
     action="https://buttondown.com/api/emails/embed-subscribe/unternet"
@@ -29,18 +52,26 @@ title: Updates
   </form>
 </div>
 
-<div class="article-list"></div>
+<div class="articles">
+<div class="articles-full">
 {%- for post in collections.posts reversed -%}
-
-
   <article class="post">
     <p class="date">{{ post.data.date | dateFilter }}</p>
     <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
 
     <div class="post-content">{{ post.templateContent }}</div>
   </article>
-
-
 {%- endfor -%}
-
+</div>
+<div class="articles-list">
+  {% assign currentMonth = "" %}
+  {%- for post in collections.posts reversed -%}
+    {% assign postMonth = post.data.date | date: "%B, %Y" %}
+    {% if postMonth != currentMonth %}
+      <p class="date-header">{{ postMonth }}</p>
+      {% assign currentMonth = postMonth %}
+    {% endif %}
+    <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
+  {%- endfor -%}
+</div>
 </div>
