@@ -54,5 +54,12 @@
     "url": "https://applets.unternet.co/web",
     "source_url": "https://github.com/unternet-co/applets/tree/main/src/web",
     "description": "Search & extract information from the web."
+  },
+    {
+    "title": "unternet-co/3d",
+    "favicon": "https://applets.unternet.co/3d/icon.png",
+    "url": "https://applets.unternet.co/3d",
+    "source_url": "https://github.com/unternet-co/applets/tree/main/src/3d",
+    "description": "A little toy for creating 3D models with natural language."
   }
 ]
