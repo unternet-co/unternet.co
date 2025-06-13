@@ -7,6 +7,13 @@
     "description": "A Google Maps applet for searching for locations and getting basic data, such as a description, address, reviews, and ratings. Shows locations as pins on the map."
   },
   {
+    "title": "unternet-co/spreadsheet",
+    "favicon": "https://applets.unternet.co/spreadsheet/icon-128x128.png",
+    "url": "https://applets.unternet.co/spreadsheet",
+    "source_url": "https://github.com/unternet-co/applets/tree/main/src/spreadsheet",
+    "description": "A simple spreadsheet for organizing data, that the model can write to. Supports formulas."
+  },
+  {
     "title": "unternet-co/tarot",
     "favicon": "https://applets.unternet.co/tarot/icon-128x128.png",
     "url": "https://applets.unternet.co/tarot",
@@ -55,7 +62,7 @@
     "source_url": "https://github.com/unternet-co/applets/tree/main/src/web",
     "description": "Search & extract information from the web."
   },
-    {
+  {
     "title": "unternet-co/3d",
     "favicon": "https://applets.unternet.co/3d/icon.png",
     "url": "https://applets.unternet.co/3d",
