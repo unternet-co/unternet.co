@@ -47,6 +47,14 @@ a:not(.bare):hover {
   color: var(--color-neutral-0);
 }
 
+.nav a {
+  text-decoration: none;
+}
+.nav a:hover {
+  background: inherit;
+  color: inherit;
+}
+
 h1,
 h2,
 h3 {
