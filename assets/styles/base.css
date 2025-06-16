@@ -14,11 +14,7 @@ body {
 }
 
 body {
-  font-family: var(--font-sans);
   background: var(--color-header-bg);
-  font-size: var(--text-base);
-
-  color: var(--color-text-default);
 
   /* Font smoothing for macOS */
   -webkit-font-smoothing: antialiased;
@@ -29,6 +25,14 @@ body {
 
   display: flex;
   flex-direction: column;
+}
+
+body,
+input,
+textarea {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-default);
 }
 
 main {
