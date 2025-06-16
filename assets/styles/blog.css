@@ -1,5 +1,5 @@
-main.page {
-  padding-bottom: 100px;
+.page {
+  padding: 30px 0;
 }
 
 article {
@@ -45,7 +45,6 @@ form {
   border-radius: 4px;
   padding: 12px;
   display: flex;
-  border: 1px solid var(--color-border);
   flex-direction: column;
   gap: 12px;
 }
@@ -68,7 +67,7 @@ form input {
   border-radius: 4px;
   padding: 6px 8px;
   background: var(--color-bg-content);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   outline: none;
 }
 
