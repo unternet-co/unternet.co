@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Manifest - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Manifest
+  parent: Reference
+  order: 8
 ---
 
 # Manifest

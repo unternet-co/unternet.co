@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: AppletScope - Web Applets
+tags: docs
+eleventyNavigation:
+  key: AppletScope
+  parent: Reference
+  order: 2
 ---
 
 # AppletScope

@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Applet - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Applet
+  parent: Reference
+  order: 3
 ---
 
 # Applet

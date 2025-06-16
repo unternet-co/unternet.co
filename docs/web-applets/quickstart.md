@@ -2,6 +2,10 @@
 layout: docs
 title: Quickstart - Web Applets
 tags: docs
+eleventyNavigation:
+  key: Quickstart
+  parent: Web Applets
+  order: 2
 ---
 
 # Quickstart

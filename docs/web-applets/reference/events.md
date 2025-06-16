@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Events - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Events
+  parent: Reference
+  order: 5
 ---
 
 # Events

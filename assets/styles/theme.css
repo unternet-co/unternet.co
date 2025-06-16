@@ -219,19 +219,27 @@
     --color-header-bg: var(--color-neutral-1000);
     --color-header-link: var(--color-neutral-300);
     --color-header-link-active: var(--color-neutral-0);
+
+    /* navigation */
+    --color-nav-selection: var(--color-neutral-100);
   
-    /* Font size */
-    --text-scale:   1.2;
+    /* Font size system */
+    --text-scale:   1.15;
     --text-base:    16px;
     --text-interval:1px;
+    
+    /* Calculated sizes using scale */
     --text-5xl:     round(calc(var(--text-4xl) * var(--text-scale)), var(--text-interval));
     --text-4xl:     round(calc(var(--text-3xl) * var(--text-scale)), var(--text-interval));
     --text-3xl:     round(calc(var(--text-2xl) * var(--text-scale)), var(--text-interval));
     --text-2xl:     round(calc(var(--text-xl) * var(--text-scale)), var(--text-interval));
     --text-xl:      round(calc(var(--text-lg) * var(--text-scale)), var(--text-interval));
     --text-lg:      round(calc(var(--text-base) * var(--text-scale)), var(--text-interval));
+    
+    /* Base and smaller sizes */
     --text-sm:      round(calc(var(--text-base) / var(--text-scale)), var(--text-interval));
     --text-xs:      round(calc(var(--text-sm) / var(--text-scale)), var(--text-interval));
+    --text-2xs:     round(calc(var(--text-xs) / var(--text-scale)), var(--text-interval));
   
     /* Leading */
     --leading-tight: 1.1;

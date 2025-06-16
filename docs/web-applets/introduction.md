@@ -2,6 +2,10 @@
 layout: docs
 title: Web Applets documentation
 tags: docs
+eleventyNavigation:
+  key: Introduction
+  parent: Web Applets
+  order: 1
 ---
 
 # Introduction to Web Applets

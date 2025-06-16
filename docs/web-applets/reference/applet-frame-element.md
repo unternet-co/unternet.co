@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: AppletFrameElement - Web Applets
+tags: docs
+eleventyNavigation:
+  key: AppletFrameElement
+  parent: Reference
+  order: 7
 ---
 
 # AppletFrameElement

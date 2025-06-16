@@ -1,6 +1,11 @@
 ---
 layout: docs
-title: Concepts - Web Applets
+title: Inspector - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Inspector
+  parent: Resources & Tools
+  order: 1
 ---
 
 # Inspector
