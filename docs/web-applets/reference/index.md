@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: API Reference - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Reference
+  parent: Web Applets
+  order: 5
 ---
 
 # Web Applets reference

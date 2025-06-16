@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: AppletFactory - Web Applets
+tags: docs
+eleventyNavigation:
+  key: AppletFactory
+  parent: Reference
+  order: 1
 ---
 
 # AppletFactory

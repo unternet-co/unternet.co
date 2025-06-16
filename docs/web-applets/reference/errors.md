@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Errors - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Errors
+  parent: Reference
+  order: 6
 ---
 
 # Errors

@@ -19,6 +19,7 @@ module.exports = function (eleventyConfig) {
       day: 'numeric',
     });
   });
+  // Process docs markdown files but also copy any potential dist folder
   // eleventyConfig.ignores.add('docs/**');
   // eleventyConfig.addPassthroughCopy({ 'docs/dist': 'docs' });
 };

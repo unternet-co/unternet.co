@@ -3,151 +3,70 @@ layout: base
 stylesheet: 'docs'
 ---
 
+{% comment %} Find the current section based on the page URL {% endcomment %}
+{% assign currentSection = "" %}
+{% if page.url contains '/docs/web-applets/' %}
+  {% assign currentSection = "Web Applets" %}
+{% elsif page.url contains '/docs/tabletop/' %}
+  {% assign currentSection = "Tabletop" %}
+{% else %}
+  {% assign currentSection = "Web Applets" %}
+{% endif %}
+
 <main class="docs">
-  <nav class="collapsed">
-    <svg class="menu-icon" id="menu-button" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
+  <!-- Primary navigation - docs sections -->
+  <nav class="docs-primary-nav">
     <ul>
       <li>
-        <ul>
-          <li>
-            <a
-              href="/docs/web-applets/introduction"
-              class="{% if page.url == '/docs/web-applets/introduction/' %}active{% endif %}"
-              >Introduction</a
-            >
-          </li>
-
-          <li>
-            <a
-              href="/docs/web-applets/quickstart"
-              class="{% if page.url == '/docs/web-applets/quickstart/' %}active{% endif %}"
-              >Quickstart</a
-            >
-          </li>
-
-          <li>
-            <a
-              href="/docs/web-applets/concepts"
-              class="{% if page.url == '/docs/web-applets/concepts/' %}active{% endif %}"
-              >Concepts</a
-            >
-          </li>
-
-          <li>
-            <h2>Guides</h2>
-            <ul>
-              <li>
-                <a
-                  href="/docs/web-applets/guides/creating-an-applet"
-                  class="{% if page.url == '/docs/web-applets/guides/creating-an-applet/' %}active{% endif %}"
-                  >Create your first applet</a
-                >
-              </li>
-            </ul>
-          </li>
-          <li>
-            <h2>Reference</h2>
-            <ul>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/"
-                  class="{% if page.url == '/docs/web-applets/reference/' %}active{% endif %}"
-                  >Overview</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/applet-factory"
-                  class="{% if page.url == '/docs/web-applets/reference/applet-factory/' %}active{% endif %}"
-                  >AppletFactory</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/applet-scope"
-                  class="{% if page.url == '/docs/web-applets/reference/applet-scope/' %}active{% endif %}"
-                  >AppletScope</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/applet"
-                  class="{% if page.url == '/docs/web-applets/reference/applet/' %}active{% endif %}"
-                  >Applet</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/actions/"
-                  class="{% if page.url == '/docs/web-applets/reference/actions/' %}active{% endif %}"
-                  >Actions</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/events/"
-                  class="{% if page.url == '/docs/web-applets/reference/events/' %}active{% endif %}"
-                  >Events</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/errors/"
-                  class="{% if page.url == '/docs/web-applets/reference/errors/' %}active{% endif %}"
-                  >Errors</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/applet-frame-element/"
-                  class="{% if page.url == '/docs/web-applets/reference/applet-frame-element/' %}active{% endif %}"
-                  >AppletFrameElement</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/reference/manifest/"
-                  class="{% if page.url == '/docs/web-applets/reference/manifest/' %}active{% endif %}"
-                  >Manifest</a
-                >
-              </li>
-            </ul>
-          </li>
-          <li>
-            <h2>Resources & Tools</h2>
-            <ul>
-              <li>
-                <a
-                  href="/docs/web-applets/resources/inspector/"
-                  class="{% if page.url == '/docs/web-applets/resources/inspector/' %}active{% endif %}"
-                  >Inspector</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/docs/web-applets/resources/templates/"
-                  class="{% if page.url == '/docs/web-applets/resources/templates/' %}active{% endif %}"
-                  >Templates</a
-                >
-              </li>
-            </ul>
-          </li>
-          <!-- <li><a href="">Changelog</a></li>
-          <li><a href="">Roadmap</a></li>
-          <li><a href="">Contributing</a></li> -->
-        </ul>
+        <a href="/docs/web-applets/introduction/" class="{% if currentSection == 'Web Applets' %}active{% endif %}">Web Applets</a>
       </li>
-    </ul>
+      <!-- <li>
+        <a href="/docs/tabletop/introduction/" class="{% if currentSection == 'Tabletop' %}active{% endif %}">Tabletop</a>
+      </li>
+    </ul> -->
   </nav>
-  <article class="docs-content">
-    <div class="docs-content-inner">{{ content }}</div>
-  </article>
+
+  <!-- Main docs layout -->
+  <div class="docs-main">
+    <!-- Secondary navigation - sidebar for current section -->
+    <nav class="docs-secondary-nav collapsed">
+      <svg class="menu-icon" id="menu-button" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+      
+      
+      {% assign sidebarNavigation = collections.all | eleventyNavigation: currentSection %}
+      
+      <ul>
+        {% for item in sidebarNavigation %}
+          {% if item.children and item.children.size > 0 %}
+            <li>
+              <h2>{{ item.title }}</h2>
+              <ul>
+                {% for child in item.children %}
+                  <li>
+                    <a href="{{ child.url }}" class="{% if page.url == child.url %}active{% endif %}">{{ child.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ item.url }}" class="{% if page.url == item.url %}active{% endif %}">{{ item.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+    <!-- Main content area -->
+    <article class="docs-content">
+      <div class="docs-content-inner">{{ content }}</div>
+    </article>
+  </div>
 </main>
 
 <script type="text/javascript">
   document.querySelector('#menu-button').addEventListener('click', () => {
-    document.querySelector('.docs nav').classList.toggle('collapsed');
+    document.querySelector('.docs-secondary-nav').classList.toggle('collapsed');
   });
 </script>

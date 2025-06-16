@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Actions - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Actions
+  parent: Reference
+  order: 4
 ---
 
 # Actions

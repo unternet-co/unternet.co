@@ -1,6 +1,11 @@
 ---
 layout: docs
 title: Concepts - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Concepts
+  parent: Web Applets
+  order: 3
 ---
 
 # Concepts

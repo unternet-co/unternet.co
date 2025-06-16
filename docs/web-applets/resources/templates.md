@@ -1,6 +1,11 @@
 ---
 layout: docs
-title: Templates - Web Appletds
+title: Templates - Web Applets
+tags: docs
+eleventyNavigation:
+  key: Templates
+  parent: Resources & Tools
+  order: 2
 ---
 
 # Templates
