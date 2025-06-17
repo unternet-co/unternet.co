@@ -10,14 +10,12 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "eleventy-plugin-date": "^1.0.0",
     "eleventy-plugin-metagen": "^1.8.3",
-    "luxon": "^3.6.1"
-  },
-  "devDependencies": {
+    "luxon": "^3.6.1",
     "@11ty/eleventy-navigation": "^0.3.5",
     "@types/node": "^22.14.0"
   }

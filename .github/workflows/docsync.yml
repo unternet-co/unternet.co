@@ -1,27 +1,20 @@
-
-name: Trigger rebuild
+name: Documentation Sync
 
 on:
-  repository_dispatch:
-    # Trigger a rebuild when docs update externally
-    types: [docs-updated]
-
-permissions:
-  contents: write
+  push:
+    branches: [ main ]
 
 jobs:
   trigger-rebuild:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Trigger rebuild via empty commit
+    - name: Trigger deployment
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit --allow-empty -m "docs: rebuild from ${{ github.event.client_payload.repository || 'manual trigger' }}"
-        git push
+        if [ -n "${{ secrets.DOCS_DEPLOY_HOOK }}" ]; then
+          echo "Triggering documentation rebuild..."
+          curl -X POST "${{ secrets.DOCS_DEPLOY_HOOK }}"
+          echo "Rebuild triggered successfully"
+        else
+          echo "DOCS_DEPLOY_HOOK not configured, skipping deployment trigger"
+        fi
