@@ -3,31 +3,46 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 class DocSync {
-  constructor() {
-    this.docsConfig = null;
-    this.buildDir = path.join(__dirname, '..', '_build');
-    this.tempDir = path.join(this.buildDir, 'repos');
-    this.docsDir = path.join(__dirname, '..', 'docs');
+  constructor(options = {}) {
+    this.config = null;
+    this.paths = {
+      root: options.rootDir || path.join(__dirname, '..'),
+      get configFile() { return path.join(this.root, 'docs.json'); },
+      get buildDir() { return path.join(this.root, '_build'); },
+      get tempDir() { return path.join(this.buildDir, 'repos'); },
+      get docsDir() { return path.join(this.root, 'docs'); },
+      get dataDir() { return path.join(this.root, '_data'); }
+    };
+    this.constants = {
+      defaultOrder: 999,
+      navigationDataFile: 'docsNavigation.json',
+      acronyms: ['API', 'SDK', 'CLI', 'HTTP', 'URL', 'JSON', 'XML', 'CSS', 'HTML', 'JS', 'TS']
+    };
   }
 
   async loadConfig() {
-    const configPath = path.join(__dirname, '..', 'docs.json');
-    const configContent = await fs.readFile(configPath, 'utf8');
-    this.docsConfig = JSON.parse(configContent);
+    try {
+      const configContent = await fs.readFile(this.paths.configFile, 'utf8');
+      this.config = JSON.parse(configContent);
+      
+      if (!this.config.sources || !Array.isArray(this.config.sources)) {
+        throw new Error('Invalid config: sources must be an array');
+      }
+    } catch (error) {
+      throw new Error(`Failed to load config from ${this.paths.configFile}: ${error.message}`);
+    }
   }
 
   async sync() {
     await this.loadConfig();
     
-    // Clean and recreate docs directory completely
-    console.log('Cleaning docs directory...');
-    await this.ensureCleanDirectory(this.docsDir);
+    console.log('Starting documentation sync...');
     
-    // Clean and create build directories for repos only
-    await this.ensureCleanDirectory(this.buildDir);
-    await fs.mkdir(this.tempDir, { recursive: true });
+    // Setup directories
+    await this.setupDirectories();
     
-    for (const docSource of this.docsConfig.sources) {
+    // Process each documentation source
+    for (const docSource of this.config.sources) {
       console.log(`Processing ${docSource.name}...`);
       await this.syncDocSource(docSource);
     }
@@ -38,43 +53,73 @@ class DocSync {
     console.log('Documentation sync complete!');
   }
 
+  async setupDirectories() {
+    console.log('Setting up directories...');
+    await this.ensureCleanDirectory(this.paths.docsDir);
+    await this.ensureCleanDirectory(this.paths.buildDir);
+    await fs.mkdir(this.paths.tempDir, { recursive: true });
+  }
+
   async syncDocSource(docSource) {
-    const targetPath = path.join(this.docsDir, docSource.slug);
+    this.validateDocSource(docSource);
+    
+    const targetPath = path.join(this.paths.docsDir, docSource.slug);
     
     if (!docSource.url) {
       console.log(`Skipping ${docSource.name} - no URL specified (local docs)`);
       return;
     }
 
-    let sourcePath;
-
-    // Check if it's a local path or git URL
-    if (docSource.url.startsWith('http') || docSource.url.startsWith('git@')) {
-      // Git repository - clone it
-      const tempRepoPath = path.join(this.tempDir, docSource.slug);
-      
-      try {
-        console.log(`Cloning ${docSource.url}...`);
-        execSync(`git clone ${docSource.url} ${tempRepoPath}`, { stdio: 'inherit' });
-      } catch (error) {
-        console.error(`Failed to clone ${docSource.url}:`, error.message);
-        return;
-      }
-      
-      sourcePath = path.join(tempRepoPath, docSource.path || '/docs');
-    } else {
-      // Local path
-      console.log(`Using local path ${docSource.url}...`);
-      sourcePath = path.resolve(docSource.url, docSource.path || 'docs');
-    }
-    
-    if (!(await this.pathExists(sourcePath))) {
-      console.warn(`Source path ${sourcePath} does not exist, skipping ${docSource.name}`);
-      return;
-    }
+    const sourcePath = await this.getSourcePath(docSource);
+    if (!sourcePath) return;
 
     // Process and copy markdown files
     await this.processMarkdownFiles(sourcePath, targetPath, docSource);
+  }
+
+  validateDocSource(docSource) {
+    const required = ['name', 'slug'];
+    for (const field of required) {
+      if (!docSource[field]) {
+        throw new Error(`Doc source missing required field: ${field}`);
+      }
+    }
+  }
+
+  async getSourcePath(docSource) {
+    let sourcePath;
+
+    if (this.isGitUrl(docSource.url)) {
+      sourcePath = await this.cloneRepository(docSource);
+    } else {
+      console.log(`Using local path ${docSource.url}...`);
+      sourcePath = path.resolve(docSource.url, docSource.path || 'docs');
+    }
+
+    if (!(await this.pathExists(sourcePath))) {
+      console.warn(`Source path ${sourcePath} does not exist, skipping ${docSource.name}`);
+      return null;
+    }
+
+    return sourcePath;
+  }
+
+  isGitUrl(url) {
+    return url.startsWith('http') || url.startsWith('git@');
+  }
+
+  async cloneRepository(docSource) {
+    const tempRepoPath = path.join(this.paths.tempDir, docSource.slug);
+    
+    try {
+      console.log(`Cloning ${docSource.url}...`);
+      execSync(`git clone ${docSource.url} ${tempRepoPath}`, { stdio: 'inherit' });
+    } catch (error) {
+      console.error(`Failed to clone ${docSource.url}:`, error.message);
+      return null;
+    }
+    
+    return path.join(tempRepoPath, docSource.path || 'docs');
   }
 
   async processMarkdownFiles(sourcePath, targetPath, docSource) {
@@ -334,23 +379,19 @@ class DocSync {
   }
 
   async generateNavigationData() {
-    const dataDir = path.join(__dirname, '..', '_data');
-    await fs.mkdir(dataDir, { recursive: true });
+    await fs.mkdir(this.paths.dataDir, { recursive: true });
     
-    // Create navigation data based on docs.json
     const navigationSections = [];
     
-    for (const docSource of this.docsConfig.sources) {
+    for (const docSource of this.config.sources) {
+      const sectionPath = path.join(this.paths.docsDir, docSource.slug);
       let url = `/docs/${docSource.slug}/`;
       
       // Find the first/main file for this section
-      const sectionPath = path.join(this.docsDir, docSource.slug);
       if (await this.pathExists(sectionPath)) {
         const mainFile = await this.findMainFile(sectionPath);
         if (mainFile) {
-          // Extract the clean filename for the URL
-          const fileName = path.basename(mainFile, '.md');
-          const cleanFileName = fileName.replace(/^\d+-/, '');
+          const cleanFileName = this.getCleanFileName(mainFile);
           url = `/docs/${docSource.slug}/${cleanFileName}/`;
         }
       }
@@ -363,9 +404,13 @@ class DocSync {
     }
     
     const navigationData = { sections: navigationSections };
-    const dataPath = path.join(dataDir, 'docsNavigation.json');
+    const dataPath = path.join(this.paths.dataDir, this.constants.navigationDataFile);
     await fs.writeFile(dataPath, JSON.stringify(navigationData, null, 2), 'utf8');
     console.log('Generated navigation data for Eleventy');
+  }
+
+  getCleanFileName(fileName) {
+    return path.basename(fileName, '.md').replace(/^\d+-/, '');
   }
 
   async findMainFile(sectionPath) {
@@ -386,14 +431,11 @@ class DocSync {
   }
 
   async generateFolderIndex(targetPath, folderName, docSource) {
-    // Common acronyms that should stay uppercase
-    const acronyms = ['API', 'SDK', 'CLI', 'HTTP', 'URL', 'JSON', 'XML', 'CSS', 'HTML', 'JS', 'TS'];
-    
-    const folderTitle = this.toSentenceCase(folderName.replace(/^\d+-/, ''), acronyms);
+    const folderTitle = this.toSentenceCase(folderName.replace(/^\d+-/, ''), this.constants.acronyms);
     
     // Extract order from folder name prefix
     const orderMatch = folderName.match(/^(\d+)-/);
-    const order = orderMatch ? parseInt(orderMatch[1]) : 999;
+    const order = orderMatch ? parseInt(orderMatch[1]) : this.constants.defaultOrder;
     
     const indexContent = `---
 layout: docs
