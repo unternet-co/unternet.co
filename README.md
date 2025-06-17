@@ -29,17 +29,18 @@ To have your repository automatically trigger documentation updates:
 
 1. **Add your repo to `docs.json`** (as shown above)
 
-2. **Copy `docsync.yml`** to your repository's root directory
+2. **Copy `.github/workflows/docsync.yml`** from this repository to your repository's `.github/workflows/` directory
 
-3. **Create a GitHub Personal Access Token**:
-   - Go to GitHub Settings → Developer settings → Personal access tokens
-   - Create a token with `repo` scope
+3. **Get your Render deploy hook URL**:
+   - Go to your Render service dashboard
+   - Navigate to Settings → Deploy Hook
+   - Copy the deploy hook URL
 
-4. **Add the token as a secret** in your repository:
+4. **Add the deploy hook as a secret** in your external repository:
    - Go to your repo's Settings → Secrets and variables → Actions
-   - Add a new secret named `DOCSYNC_TOKEN` with your token value
+   - Add a new secret named `RENDER_DEPLOY_HOOK` with your deploy hook URL
 
-5. **Push to main** - your docs will now automatically sync to the website!
+5. **Push to main** - your docs will now automatically trigger a website rebuild!
 
 ### Repository requirements
 
@@ -51,11 +52,14 @@ To have your repository automatically trigger documentation updates:
 
 ### How it works
 
-- External repos are cloned to `_build/repos/` (gitignored)
+- External repos directly trigger Render deploy hooks when docs change
+- During deployment, the build process automatically runs docsync (see `package.json` build script)
+- External repos are cloned to `_build/repos/` (gitignored) during build
 - Processed docs are output to `docs/` for Eleventy to build
 - Frontmatter is automatically generated with navigation structure
 - Relative asset paths are converted to absolute paths for proper loading
 - Navigation data is generated in `_data/docsNavigation.json`
+- The main site also rebuilds daily via scheduled workflow to keep docs fresh
 
 ### Skipping files
 

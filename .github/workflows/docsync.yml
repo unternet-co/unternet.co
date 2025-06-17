@@ -1,50 +1,20 @@
 name: Documentation Sync
 
 on:
-  # Run on pull requests to main
-  pull_request:
-    branches: [ main ]
-  
-  # Run on push to main (deployment)
   push:
     branches: [ main ]
-  
-  # Allow manual trigger
-  workflow_dispatch:
-  
-  # Allow external repositories to trigger this
-  repository_dispatch:
-    types: [docs-updated]
 
 jobs:
-  docsync:
+  trigger-rebuild:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        # Need full history for git operations
-        fetch-depth: 0
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run docsync
-      run: node scripts/docsync.js
-    
-    - name: Commit and push changes (on main branch)
-      if: github.ref == 'refs/heads/main' && steps.verify-changed-files.outputs.changed == 'true'
+    - name: Trigger deployment
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add docs/
-        git add _data/docsNavigation.json
-        git commit -m "docs: sync external documentation [skip ci]"
-        git push
+        if [ -n "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+          echo "Triggering documentation rebuild..."
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Rebuild triggered successfully"
+        else
+          echo "RENDER_DEPLOY_HOOK not configured, skipping deployment trigger"
+        fi
