@@ -37,9 +37,9 @@ To have your repository automatically trigger documentation updates:
 
 4. **Add the token as a secret** in your repository:
    - Go to your repo's Settings → Secrets and variables → Actions
-   - Add a new secret named `DOCSYNC_TOKEN` with your token value
+   - Add a new secret named `WEBSITE_DEPLOY_TOKEN` with your token value
 
-5. **Push to main** - your docs will now automatically sync to the website!
+5. **Push to main** - your changes will trigger a website rebuild with fresh docs!
 
 ### Repository requirements
 
