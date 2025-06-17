@@ -25,6 +25,8 @@ body {
 
   display: flex;
   flex-direction: column;
+  padding: 5px;
+  overflow: hidden;
 }
 
 body,
@@ -37,8 +39,12 @@ textarea {
 
 main {
   flex-grow: 1;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   background: var(--color-bg-content);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 100%;
 }
 
 a:not(.bare) {
@@ -78,13 +84,12 @@ a {
 }
 
 footer {
+  display: none;
   flex-shrink: 0;
-  background: var(--color-bg-container);
   padding: 7px 0;
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  color: var(--color-header-link);
   text-align: center;
-  /* border-top: 1px solid var(--color-border-muted); */
 }
 
 .page {
