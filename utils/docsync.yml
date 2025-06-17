@@ -1,5 +1,5 @@
 # For triggering a docsync from an external repo
-# (Not for use with this repo)
+# (Not for us )
 
 name: Trigger documentation sync
 
