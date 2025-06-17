@@ -39,15 +39,6 @@ jobs:
     - name: Run docsync
       run: node scripts/docsync.js
     
-    - name: Check for changes
-      id: verify-changed-files
-      run: |
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "changed=false" >> $GITHUB_OUTPUT
-        fi
-    
     - name: Commit and push changes (on main branch)
       if: github.ref == 'refs/heads/main' && steps.verify-changed-files.outputs.changed == 'true'
       run: |
@@ -57,15 +48,3 @@ jobs:
         git add _data/docsNavigation.json
         git commit -m "docs: sync external documentation [skip ci]"
         git push
-    
-    - name: Comment on PR (if changes detected)
-      if: github.event_name == 'pull_request' && steps.verify-changed-files.outputs.changed == 'true'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: '🔄 Documentation sync detected changes. The docs will be updated when this PR is merged.'
-          })
