@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "eleventy --watch --serve --port=1234",
-    "build": "eleventy"
+    "build": "eleventy",
+    "docsync": "node scripts/docsync.js"
   },
   "author": "",
   "license": "ISC",

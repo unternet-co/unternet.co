@@ -1,3 +1,7 @@
 node_modules/
 .DS_Store
 _site/
+temp-docs/
+test-external-docs/
+_build/
+docs/

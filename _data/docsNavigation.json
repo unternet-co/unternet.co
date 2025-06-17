@@ -1,0 +1,14 @@
+{
+  "sections": [
+    {
+      "name": "Web Applets",
+      "slug": "web-applets",
+      "url": "/docs/web-applets/introduction/"
+    },
+    {
+      "name": "Tabletop",
+      "slug": "tabletop",
+      "url": "/docs/tabletop/architecture/"
+    }
+  ]
+}
