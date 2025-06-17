@@ -6,8 +6,15 @@ const { DateTime } = require('luxon');
 const eleventyNavigationPlugin = require('@11ty/eleventy-navigation');
 
 module.exports = function (eleventyConfig) {
-  console.log(eleventyConfig);
+  // Use .eleventyignore file instead of .gitignore
+  eleventyConfig.setUseGitIgnore(false);
+
   eleventyConfig.addPassthroughCopy('assets');
+  eleventyConfig.addPassthroughCopy('docs/**/assets');
+  eleventyConfig.addPassthroughCopy('docs/**/*.png');
+  eleventyConfig.addPassthroughCopy('docs/**/*.jpg');
+  eleventyConfig.addPassthroughCopy('docs/**/*.gif');
+  eleventyConfig.addPassthroughCopy('docs/**/*.svg');
   eleventyConfig.addPlugin(pluginDate);
   eleventyConfig.addPlugin(pluginRSS);
   eleventyConfig.addPlugin(metagen);
@@ -19,7 +26,4 @@ module.exports = function (eleventyConfig) {
       day: 'numeric',
     });
   });
-  // Process docs markdown files but also copy any potential dist folder
-  // eleventyConfig.ignores.add('docs/**');
-  // eleventyConfig.addPassthroughCopy({ 'docs/dist': 'docs' });
 };

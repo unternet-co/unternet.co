@@ -5,11 +5,15 @@ stylesheet: 'docs'
 
 {% comment %} Find the current section based on the page URL {% endcomment %}
 {% assign currentSection = "" %}
-{% if page.url contains '/docs/web-applets/' %}
-  {% assign currentSection = "Web Applets" %}
-{% elsif page.url contains '/docs/tabletop/' %}
-  {% assign currentSection = "Tabletop" %}
-{% else %}
+{% for section in docsNavigation.sections %}
+  {% assign sectionPath = '/docs/' | append: section.slug | append: '/' %}
+  {% if page.url contains sectionPath %}
+    {% assign currentSection = section.name %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% comment %} Fallback to Web Applets if no match {% endcomment %}
+{% if currentSection == "" %}
   {% assign currentSection = "Web Applets" %}
 {% endif %}
 
@@ -17,13 +21,12 @@ stylesheet: 'docs'
   <!-- Primary navigation - docs sections -->
   <nav class="docs-primary-nav">
     <ul>
+      {% for section in docsNavigation.sections %}
       <li>
-        <a href="/docs/web-applets/introduction/" class="{% if currentSection == 'Web Applets' %}active{% endif %}">Web Applets</a>
+        <a href="{{ section.url }}" class="{% if currentSection == section.name %}active{% endif %}">{{ section.name }}</a>
       </li>
-      <!-- <li>
-        <a href="/docs/tabletop/introduction/" class="{% if currentSection == 'Tabletop' %}active{% endif %}">Tabletop</a>
-      </li>
-    </ul> -->
+      {% endfor %}
+    </ul>
   </nav>
 
   <!-- Main docs layout -->
@@ -37,22 +40,71 @@ stylesheet: 'docs'
       
       {% assign sidebarNavigation = collections.all | eleventyNavigation: currentSection %}
       
+      {% comment %} Filter navigation items to only show those belonging to the current section {% endcomment %}
+      {% assign currentSectionSlug = "" %}
+      {% for section in docsNavigation.sections %}
+        {% if section.name == currentSection %}
+          {% assign currentSectionSlug = section.slug %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      
+      {% assign filteredNavigation = "" | split: "" %}
+      {% for item in sidebarNavigation %}
+        {% assign shouldIncludeItem = false %}
+        
+        {% comment %} Include if item has URL in current section {% endcomment %}
+        {% if item.url %}
+          {% assign sectionPath = '/docs/' | append: currentSectionSlug | append: '/' %}
+          {% if item.url contains sectionPath %}
+            {% assign shouldIncludeItem = true %}
+          {% endif %}
+        {% endif %}
+        
+        {% comment %} Include if item has children in current section {% endcomment %}
+        {% if item.children and item.children.size > 0 %}
+          {% for child in item.children %}
+            {% if child.url %}
+              {% assign sectionPath = '/docs/' | append: currentSectionSlug | append: '/' %}
+              {% if child.url contains sectionPath %}
+                {% assign shouldIncludeItem = true %}
+                {% break %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        
+        {% if shouldIncludeItem %}
+          {% assign filteredNavigation = filteredNavigation | push: item %}
+        {% endif %}
+      {% endfor %}
+      
       <ul>
-        {% for item in sidebarNavigation %}
+        {% for item in filteredNavigation %}
           {% if item.children and item.children.size > 0 %}
+            {% comment %} Filter children to current section too {% endcomment %}
+            {% assign filteredChildren = "" | split: "" %}
+            {% for child in item.children %}
+              {% if child.url contains sectionPath %}
+                {% assign filteredChildren = filteredChildren | push: child %}
+              {% endif %}
+            {% endfor %}
+            
+            {% if filteredChildren.size > 0 %}
             <li>
-              <h2>{{ item.title }}</h2>
+              <h2>{{ item.key }}</h2>
               <ul>
-                {% for child in item.children %}
+                {% for child in filteredChildren %}
                   <li>
-                    <a href="{{ child.url }}" class="{% if page.url == child.url %}active{% endif %}">{{ child.title }}</a>
+                    <a href="{{ child.url }}" class="{% if page.url == child.url %}active{% endif %}">{{ child.key }}</a>
                   </li>
                 {% endfor %}
               </ul>
             </li>
+            {% endif %}
           {% else %}
             <li>
-              <a href="{{ item.url }}" class="{% if page.url == item.url %}active{% endif %}">{{ item.title }}</a>
+              <a href="{{ item.url }}" class="{% if page.url == item.url %}active{% endif %}">{{ item.key }}</a>
             </li>
           {% endif %}
         {% endfor %}

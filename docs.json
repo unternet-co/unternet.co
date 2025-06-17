@@ -1,0 +1,11 @@
+{
+  "entrypoint": "/docs/web-applets/introduction/",
+  "sources": [
+    {
+      "name": "Web Applets",
+      "slug": "web-applets",
+      "url": "https://github.com/unternet-co/web-applets",
+      "path": "/docs"
+    }
+  ]
+}
