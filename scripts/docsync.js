@@ -158,9 +158,11 @@ class DocSync {
     const content = await fs.readFile(sourcePath, 'utf8');
     const { frontmatter, body } = this.parseFrontmatter(content);
     
-    // Skip files that have docsync: false in frontmatter
-    if (frontmatter.docsync === 'false' || frontmatter.docsync === false) {
-      console.log(`Skipping ${relativePath} - docsync: false in frontmatter`);
+    // Skip files that have docsync: false or publish: false in frontmatter
+    if (
+      frontmatter.publish === 'false' || frontmatter.publish === false
+    ) {
+      console.log(`Skipping ${relativePath} - excluded by frontmatter`);
       return;
     }
     

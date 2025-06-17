@@ -58,4 +58,4 @@ To have your repository automatically trigger documentation updates:
 
 ### Skipping files
 
-Add `docsync: false` to any markdown file's frontmatter to exclude it from sync.
+Add `publish: false` to any markdown file's frontmatter to exclude it from sync.
