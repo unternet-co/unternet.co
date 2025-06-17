@@ -6,12 +6,6 @@
       "slug": "web-applets",
       "url": "https://github.com/unternet-co/web-applets",
       "path": "/docs"
-    },
-    {
-      "name": "Tabletop",
-      "slug": "tabletop",
-      "url": "https://github.com/unternet-co/tabletop",
-      "path": "/desktop/docs"
     }
   ]
 }
