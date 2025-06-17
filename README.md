@@ -31,14 +31,9 @@ To have your repository automatically trigger documentation updates:
 
 2. **Copy `.github/workflows/docsync.yml`** from this repository to your repository's `.github/workflows/` directory
 
-3. **Get your Render deploy hook URL**:
-   - Go to your Render service dashboard
-   - Navigate to Settings → Deploy Hook
-   - Copy the deploy hook URL
-
-4. **Add the deploy hook as a secret** in your external repository:
+4. **Add a deploy hook as a secret** in your external repository:
    - Go to your repo's Settings → Secrets and variables → Actions
-   - Add a new secret named `RENDER_DEPLOY_HOOK` with your deploy hook URL
+   - Add a new secret named `DOCS_DEPLOY_HOOK` with your deploy hook URL
 
 5. **Push to main** - your docs will now automatically trigger a website rebuild!
 
