@@ -109,6 +109,7 @@ footer {
   overflow-x: scroll;
   background: var(--color-header-bg);
   padding: 0 20px;
+  margin-top: -5px;
 }
 
 .main-header .logo-container {
