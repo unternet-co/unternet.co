@@ -288,12 +288,12 @@ tags: ${metadata.tags}
   }
 
   async copySidebarConfig(sourcePath, docSource) {
-    const sidebarPath = path.join(sourcePath, 'sidebar.json');
+    const sidebarPath = path.join(sourcePath, 'nav.json');
     
     if (await this.pathExists(sidebarPath)) {
       const targetSidebarPath = path.join(this.paths.root, '_data', 'sidebars', `${docSource.slug}.json`);
       await fs.copyFile(sidebarPath, targetSidebarPath);
-      console.log(`Copied sidebar config: ${docSource.slug}.json`);
+      console.log(`Copied navigation config: ${docSource.slug}.json`);
     }
   }
 }
