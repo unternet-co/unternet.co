@@ -3,27 +3,25 @@ layout: base
 stylesheet: 'docs'
 ---
 
-{% comment %} Find the current section based on the page URL {% endcomment %}
-{% assign currentSection = "" %}
-{% for section in docsNavigation.sections %}
-  {% assign sectionPath = '/docs/' | append: section.slug | append: '/' %}
-  {% if page.url contains sectionPath %}
-    {% assign currentSection = section.name %}
-    {% break %}
-  {% endif %}
-{% endfor %}
-{% comment %} Fallback to Web Applets if no match {% endcomment %}
-{% if currentSection == "" %}
-  {% assign currentSection = "Web Applets" %}
-{% endif %}
+{% comment %} Extract section slug from page URL {% endcomment %}
+{% assign urlParts = page.url | split: '/' %}
+{% assign currentSlug = urlParts[2] %}
 
 <main class="docs">
   <!-- Primary navigation - docs sections -->
   <nav class="docs-primary-nav">
     <ul>
-      {% for section in docsNavigation.sections %}
+      {% for section in docs.sources %}
+      {% assign firstUrl = '/docs/' | append: section.slug | append: '/' %}
+      {% assign sectionSidebar = sidebars[section.slug] %}
+      {% if sectionSidebar and sectionSidebar.items and sectionSidebar.items.size > 0 %}
+        {% assign firstItem = sectionSidebar.items[0] %}
+        {% if firstItem.path %}
+          {% assign firstUrl = '/docs/' | append: section.slug | append: '/' | append: firstItem.path | append: '/' %}
+        {% endif %}
+      {% endif %}
       <li>
-        <a href="{{ section.url }}" class="{% if currentSection == section.name %}active{% endif %}">{{ section.name }}</a>
+        <a href="{{ firstUrl }}" class="{% if currentSlug == section.slug %}active{% endif %}">{{ section.name }}</a>
       </li>
       {% endfor %}
     </ul>
@@ -37,85 +35,43 @@ stylesheet: 'docs'
         <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
       
-      
-      {% assign sidebarNavigation = collections.all | eleventyNavigation: currentSection %}
-      
-      {% comment %} Filter navigation items to only show those belonging to the current section {% endcomment %}
-      {% assign currentSectionSlug = "" %}
-      {% for section in docsNavigation.sections %}
-        {% if section.name == currentSection %}
-          {% assign currentSectionSlug = section.slug %}
-          {% break %}
-        {% endif %}
-      {% endfor %}
-      
-      {% assign filteredNavigation = "" | split: "" %}
-      {% for item in sidebarNavigation %}
-        {% assign shouldIncludeItem = false %}
-        
-        {% comment %} Include if item has URL in current section {% endcomment %}
-        {% if item.url %}
-          {% assign sectionPath = '/docs/' | append: currentSectionSlug | append: '/' %}
-          {% if item.url contains sectionPath %}
-            {% assign shouldIncludeItem = true %}
-          {% endif %}
-        {% endif %}
-        
-        {% comment %} Include if item has children in current section {% endcomment %}
-        {% if item.children and item.children.size > 0 %}
-          {% for child in item.children %}
-            {% if child.url %}
-              {% assign sectionPath = '/docs/' | append: currentSectionSlug | append: '/' %}
-              {% if child.url contains sectionPath %}
-                {% assign shouldIncludeItem = true %}
-                {% break %}
+      {% assign currentSidebar = sidebars[currentSlug] %}
+      {% if currentSidebar %}
+        <ul>
+          {% for item in currentSidebar.items %}
+            <li>
+              {% if item.items %}
+                <h2>{{ item.title }}</h2>
+                <ul>
+                  {% for subitem in item.items %}
+                    <li>
+                      {% assign itemUrl = '/docs/' | append: currentSlug | append: '/' | append: subitem.path | append: '/' %}
+                      <a href="{{ itemUrl }}" class="{% if page.url == itemUrl %}active{% endif %}">{{ subitem.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                {% assign itemUrl = '/docs/' | append: currentSlug | append: '/' | append: item.path | append: '/' %}
+                <a href="{{ itemUrl }}" class="{% if page.url == itemUrl %}active{% endif %}">{{ item.title }}</a>
               {% endif %}
-            {% endif %}
+            </li>
           {% endfor %}
-        {% endif %}
-        
-        {% if shouldIncludeItem %}
-          {% assign filteredNavigation = filteredNavigation | push: item %}
-        {% endif %}
-      {% endfor %}
-      
-      <ul>
-        {% for item in filteredNavigation %}
-          {% if item.children and item.children.size > 0 %}
-            {% comment %} Filter children to current section too {% endcomment %}
-            {% assign filteredChildren = "" | split: "" %}
-            {% for child in item.children %}
-              {% if child.url contains sectionPath %}
-                {% assign filteredChildren = filteredChildren | push: child %}
-              {% endif %}
-            {% endfor %}
-            
-            {% if filteredChildren.size > 0 %}
-            <li>
-              <h2>{{ item.key }}</h2>
-              <ul>
-                {% for child in filteredChildren %}
-                  <li>
-                    <a href="{{ child.url }}" class="{% if page.url == child.url %}active{% endif %}">{{ child.key }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </li>
-            {% endif %}
-          {% else %}
-            <li>
-              <a href="{{ item.url }}" class="{% if page.url == item.url %}active{% endif %}">{{ item.key }}</a>
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
+        </ul>
+      {% endif %}
     </nav>
+    
     <!-- Main content area -->
     <article class="docs-content">
       <div class="docs-content-inner">{{ content }}</div>
     </article>
   </div>
 </main>
+
+<script type="text/javascript">
+  document.querySelector('#menu-button').addEventListener('click', () => {
+    document.querySelector('.docs-secondary-nav').classList.toggle('collapsed');
+  });
+</script>
 
 <script type="text/javascript">
   document.querySelector('#menu-button').addEventListener('click', () => {

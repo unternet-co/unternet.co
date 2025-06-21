@@ -1,0 +1,15 @@
+DEBUG: sidebar-items called with {{ include.items | size }} items
+<ul>
+  {% for item in include.items %}
+    <li>
+      DEBUG: Processing item: {{ item.title }}
+      {% if item.items %}
+        <h3>{{ item.title }}</h3>
+        {% include 'sidebar-items.html' items: item.items baseUrl: include.baseUrl %}
+      {% else %}
+        {% assign itemUrl = include.baseUrl | append: item.path | replace: '.md', '/' %}
+        <a href="{{ itemUrl }}" class="{% if page.url == itemUrl %}active{% endif %}">{{ item.title }}</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

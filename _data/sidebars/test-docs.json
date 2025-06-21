@@ -1,0 +1,26 @@
+{
+  "title": "Test Documentation",
+  "items": [
+    {
+      "title": "Introduction",
+      "path": "introduction"
+    },
+    {
+      "title": "Quick Start", 
+      "path": "quickstart"
+    },
+    {
+      "title": "Guides",
+      "items": [
+        {
+          "title": "Advanced Configuration",
+          "path": "guides/advanced-config"
+        },
+        {
+          "title": "Troubleshooting",
+          "path": "guides/troubleshooting"
+        }
+      ]
+    }
+  ]
+}
