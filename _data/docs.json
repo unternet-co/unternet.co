@@ -1,12 +1,6 @@
 {
-  "entrypoint": "/docs/test-docs/introduction/",
+  "entrypoint": "/docs/web-applets/introduction/",
   "sources": [
-    {
-      "name": "Test Documentation",
-      "slug": "test-docs",
-      "url": "./test-docs",
-      "path": ""
-    },
     {
       "name": "Web Applets",
       "slug": "web-applets",
