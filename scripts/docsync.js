@@ -137,8 +137,12 @@ class DocSync {
     }
     
     const metadata = this.generateMetadata(relativePath, frontmatter, docSource);
+    
+    // Convert relative paths to absolute paths
+    const processedBody = this.convertRelativeToAbsolutePaths(body, docSource, relativePath);
+    
     const newFrontmatter = this.createFrontmatter(metadata);
-    const newContent = `---\n${newFrontmatter}---\n${body}`;
+    const newContent = `---\n${newFrontmatter}---\n${processedBody}`;
     await fs.writeFile(targetPath, newContent, 'utf8');
   }
 
@@ -295,6 +299,56 @@ tags: ${metadata.tags}
       await fs.copyFile(sidebarPath, targetSidebarPath);
       console.log(`Copied navigation config: ${docSource.slug}.json`);
     }
+  }
+
+  convertRelativeToAbsolutePaths(content, docSource, relativePath) {
+    const sectionBasePath = `/docs/${docSource.slug}`;
+    const currentFileDir = path.dirname(relativePath);
+    const currentDirPath = currentFileDir === '.' ? '' : `/${currentFileDir}`;
+    
+    let modifiedContent = content;
+    
+    // Handle ./ paths (current directory)
+    modifiedContent = modifiedContent.replace(
+      /(\!\[([^\]]*)\]\(|\b(?:src|href)=["'])(\.)([^)"']+)(\)|["'])/g,
+      (match, prefix, alt, dot, pathPart, suffix) => {
+        const absolutePath = `${sectionBasePath}${currentDirPath}${pathPart}`;
+        return `${prefix}${absolutePath}${suffix}`;
+      }
+    );
+    
+    // Handle ../ paths (parent directory)
+    modifiedContent = modifiedContent.replace(
+      /(\!\[([^\]]*)\]\(|\b(?:src|href)=["'])(\.\.)([^)"']+)(\)|["'])/g,
+      (match, prefix, alt, dots, pathPart, suffix) => {
+        const levels = (match.match(/\.\.\//g) || []).length;
+        let absolutePath = sectionBasePath;
+        
+        for (let i = 0; i < levels; i++) {
+          absolutePath = path.dirname(absolutePath);
+        }
+        
+        const remainingPath = pathPart.replace(/^(\.\.\/)+/, '');
+        absolutePath = path.posix.join(absolutePath, remainingPath);
+        
+        return `${prefix}${absolutePath}${suffix}`;
+      }
+    );
+    
+    // Handle relative paths without ./ prefix (assets/file.png -> /docs/section/assets/file.png)
+    modifiedContent = modifiedContent.replace(
+      /(\!\[([^\]]*)\]\(|\b(?:src|href)=["'])([^http:\/\/|https:\/\/|\/][^)"']+)(\)|["'])/g,
+      (match, prefix, alt, relativePath, suffix) => {
+        // Skip if it's already absolute or a URL
+        if (relativePath.startsWith('/') || relativePath.includes('://')) {
+          return match;
+        }
+        const absolutePath = `${sectionBasePath}${currentDirPath}/${relativePath}`;
+        return `${prefix}${absolutePath}${suffix}`;
+      }
+    );
+    
+    return modifiedContent;
   }
 }
 
