@@ -69,19 +69,19 @@
         <li class="{% if page.url == '/' %}active{% endif %}">
           <a href="/">Home</a>
         </li>
-        <li class="{% if page.url contains '/blog/' %}active{% endif %}">
-          <a href="/blog">Updates</a>
-        </li>
         <li class="{% if page.url contains '/docs/' %}active{% endif %}">
           <a href="{{ docs.entrypoint }}">Docs</a>
         </li>
+        <li class="{% if page.url contains '/blog/' %}active{% endif %}">
+          <a href="/blog">Updates</a>
+        </li>
         <li class="{% if page.url contains '/directory/' %}active{% endif %}">
-          <a href="/directory">Directory</a>
+          <a href="/directory">Applets</a>
         </li>
       </ul>
     </header>
     {{ content }}
-    <footer>© 2025 Unternet, PBC</footer>
+    <footer><a href="https://discord.gg/VsMuEKmqvt#">Discord</a> | <a href="mailto:hello@unternet.co">Contact</a> | © 2025 Unternet, PBC</footer>
     <script defer>
       document
         .querySelectorAll('.post-content a')
