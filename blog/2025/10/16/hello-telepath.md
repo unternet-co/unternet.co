@@ -9,7 +9,7 @@ Today, I'm excited to share that Unternet is joining forces with [Telepath](http
 
 ## My year of Unternet
 
-Over the past year, Unternet has been my laboratory for exploring how AI can transform the relationship between users and their software. Working primarily by myself, with occasional contractor support, I've been deep in R&D on a core question: what if the browser—our "user agent"—actually acted as a true _agent_ on your behalf? How would our experience of the web be different, if it was mediated by AI?
+Over the past year, Unternet has been my laboratory for exploring how AI can transform the relationship between users and their software. As a solo founder (albeit with some great contractors that helped me along the way) I've been deep in R&D on a core question: what if the browser—our "user agent"—actually acted as a true _agent_ on your behalf? How would our experience of the web be different, if it was mediated by AI?
 
 This research phase taught me what's possible, what's hard, and where the real leverage points lie. But I’ve realized that to truly reimagine how humans interact with computers, we need to go well beyond the browser layer and rethink the personal computing experience from first principles. And this is a much larger job than I can tackle by myself.
 
